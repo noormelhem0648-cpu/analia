@@ -176,8 +176,9 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
               } else if (isSelected) cls = 'border-blue-400 bg-blue-50'
               return (
                 <button key={i} onClick={() => !checked && setSelected(opt)}
-                  className={`p-3 rounded-xl ${cls} transition-all text-center font-medium flex items-center justify-center min-h-[56px]`}>
-                  <ArabicSpan text={opt} size={/[؀-ۿ]/.test(opt) ? '2rem' : '1rem'} />
+                  className={`p-3 rounded-xl ${cls} transition-all text-center font-bold text-gray-900 flex items-center justify-center min-h-[56px]`}
+                  style={{ color: '#1E3A5F' }}>
+                  <ArabicSpan text={opt} size={/[؀-ۿ]/.test(opt) ? '2.2rem' : '1rem'} />
                 </button>
               )
             })}
