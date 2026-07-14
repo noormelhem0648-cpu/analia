@@ -149,6 +149,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: greeting, timestamp: new Date() }
   ])
+  const [historyLoaded, setHistoryLoaded] = useState(false)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -158,6 +159,27 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
+
+  useEffect(() => {
+    if (historyLoaded) return
+    setHistoryLoaded(true)
+    fetch('/api/ai-tutor/history')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.messages?.length) {
+          setMessages([
+            { role: 'assistant', content: greeting, timestamp: new Date() },
+            ...data.messages.map((m: { role: string; content: string }) => ({
+              role: m.role as 'user' | 'assistant',
+              content: m.content,
+              timestamp: new Date(),
+            }))
+          ])
+        }
+      })
+      .catch(() => {})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function sendMessage(text?: string) {
     const content = (text || input).trim()

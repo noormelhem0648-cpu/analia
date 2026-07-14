@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { speakArabic } from '@/lib/tts'
 
 interface LetterData {
   letter: string
@@ -60,8 +61,14 @@ export default function LetterCard({ data, locale = 'zh', onFlip }: Props) {
           >
             {data.isolated}
           </span>
-          <p className="text-white/70 text-sm">{data.transliteration}</p>
-          <p className="text-white/50 text-xs mt-1">{locale === 'ar' ? 'اضغط لعرض التفاصيل' : locale === 'zh' ? '点击查看详情' : 'Tap to reveal'}</p>
+          <p className="text-blue-200 text-sm">{data.transliteration}</p>
+          <button
+            onClick={e => { e.stopPropagation(); speakArabic(data.isolated) }}
+            className="mt-3 bg-white/20 hover:bg-white/30 text-white rounded-full px-4 py-1.5 text-sm flex items-center gap-1.5 transition-all"
+          >
+            🔊 {locale === 'ar' ? 'استمع' : locale === 'zh' ? '播放' : 'Listen'}
+          </button>
+          <p className="text-blue-100 text-xs mt-2">{locale === 'ar' ? 'اضغط لعرض التفاصيل' : locale === 'zh' ? '点击查看详情' : 'Tap to reveal'}</p>
         </div>
 
         {/* Back */}
@@ -103,12 +110,19 @@ export default function LetterCard({ data, locale = 'zh', onFlip }: Props) {
             {/* Example */}
             <div className="bg-blue-50 rounded-xl p-3 flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">{locale === 'ar' ? 'مثال' : locale === 'zh' ? '例词' : 'Example'}</p>
-                <p className="text-sm text-gray-600">{exampleMeaning}</p>
+                <p className="text-xs text-gray-600 mb-0.5">{locale === 'ar' ? 'مثال' : locale === 'zh' ? '例词' : 'Example'}</p>
+                <p className="text-sm text-gray-700">{exampleMeaning}</p>
               </div>
-              <span className="text-2xl" dir="rtl" style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
-                {data.example_word}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={e => { e.stopPropagation(); speakArabic(data.example_word, 0.7) }}
+                  className="text-lg hover:scale-110 transition-transform"
+                  title="استمع"
+                >🔊</button>
+                <span className="text-2xl" dir="rtl" style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
+                  {data.example_word}
+                </span>
+              </div>
             </div>
           </div>
         </div>

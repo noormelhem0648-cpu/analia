@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, Volume2, BookOpen } from 'lucide-react'
+import { Search } from 'lucide-react'
+import { speakArabic } from '@/lib/tts'
 
 const tx = {
   zh: { title: '词汇库', subtitle: '学过的所有阿拉伯语单词', search: '搜索词汇...', meaning: '含义', example: '例句', all: '全部', no_results: '没有找到词汇' },
@@ -86,8 +87,12 @@ export default function VocabularyClient({ locale, cards }: Props) {
                       {card.word_ar}
                     </span>
                     {card.word_transliteration && (
-                      <span className="text-blue-200 text-xs">{card.word_transliteration}</span>
+                      <span className="text-blue-200 text-xs mb-1">{card.word_transliteration}</span>
                     )}
+                    <button onClick={e => { e.stopPropagation(); speakArabic(card.word_ar) }}
+                      className="text-white/80 hover:text-white text-xs mt-1 flex items-center gap-1 transition-colors">
+                      🔊
+                    </button>
                   </div>
                   {/* Back */}
                   <div className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center p-3 shadow-sm bg-white border border-gray-100"

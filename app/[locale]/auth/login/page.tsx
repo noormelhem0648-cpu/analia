@@ -141,7 +141,13 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-gray-700 text-sm mt-6">
+          <div className="text-center mt-4">
+            <Link href={`/${locale}/auth/forgot-password`} className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+              {locale === 'ar' ? 'نسيت كلمة المرور؟' : locale === 'zh' ? '忘记密码？' : 'Forgot password?'}
+            </Link>
+          </div>
+
+          <p className="text-center text-gray-700 text-sm mt-4">
             {tx.no_account}{' '}
             <Link href={`/${locale}/auth/register`} className="font-semibold text-blue-600 hover:text-blue-700">
               {tx.register}

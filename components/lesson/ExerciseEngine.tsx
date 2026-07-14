@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { CheckCircle, XCircle } from 'lucide-react'
 import type { GeneratedExercise } from '@/lib/generateExercises'
 import Confetti from './Confetti'
+import { speakArabic } from '@/lib/tts'
 
 const tx = {
   zh: { check: '检查', next: '下一题', correct: '正确！', wrong: '错误！', finish: '完成！', score: '得分', perfect: '完美！', good: '很好！', keep_trying: '继续努力！', true: '正确', false: '错误', match_instruction: '点击配对', xp: 'XP', of: '/', exercises: '道题' },
@@ -159,9 +160,17 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
 
       {/* Question */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-4">
-        <p className="text-center font-semibold text-gray-800 text-lg mb-6">
-          <ArabicSpan text={q} size="1.1rem" />
-        </p>
+        <div className="text-center mb-6">
+          <p className="font-semibold text-gray-800 text-lg">
+            <ArabicSpan text={q} size="1.1rem" />
+          </p>
+          {/[؀-ۿ]/.test(q) && (
+            <button onClick={() => speakArabic(q)}
+              className="mt-2 text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 mx-auto">
+              🔊 {/[一-鿿]/.test(q) ? '播放' : 'استمع'}
+            </button>
+          )}
+        </div>
 
         {/* Multiple choice */}
         {ex.type === 'multiple_choice' && ex.options && (
@@ -176,9 +185,13 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
               } else if (isSelected) cls = 'border-blue-400 bg-blue-50'
               return (
                 <button key={i} onClick={() => !checked && setSelected(opt)}
-                  className={`p-3 rounded-xl ${cls} transition-all text-center font-bold text-gray-900 flex items-center justify-center min-h-[56px]`}
+                  className={`p-3 rounded-xl ${cls} transition-all text-center font-bold flex flex-col items-center justify-center min-h-[56px] gap-1`}
                   style={{ color: '#1E3A5F' }}>
                   <ArabicSpan text={opt} size={/[؀-ۿ]/.test(opt) ? '2.2rem' : '1rem'} />
+                  {/[؀-ۿ]/.test(opt) && (
+                    <span onClick={e => { e.stopPropagation(); speakArabic(opt) }}
+                      className="text-xs text-blue-400 hover:text-blue-600">🔊</span>
+                  )}
                 </button>
               )
             })}
