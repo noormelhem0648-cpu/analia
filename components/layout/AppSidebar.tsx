@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Home, BookOpen, Map, Star, MessageCircle, Trophy, Settings, LogOut, ShieldCheck } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Home, BookOpen, Map, Star, MessageCircle, Trophy, Settings, LogOut, ShieldCheck, Globe } from 'lucide-react'
 
 const navItems = [
   { icon: Home, labelZh: '主页', labelEn: 'Home', labelAr: 'الرئيسية', href: 'dashboard' },
@@ -26,8 +26,15 @@ interface Props {
   isAdmin?: boolean
 }
 
+const LANGS = [
+  { code: 'zh', label: '中文', flag: '🇨🇳' },
+  { code: 'en', label: 'EN', flag: '🇬🇧' },
+  { code: 'ar', label: 'ع', flag: '🇸🇦' },
+]
+
 export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false }: Props) {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-20 lg:w-64 flex flex-col border-r border-gray-100 z-40 bg-white">
@@ -97,6 +104,33 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
             {locale === 'zh' ? '重测水平' : locale === 'ar' ? 'اختبر مستواك' : 'Retake Test'}
           </span>
         </Link>
+      </div>
+
+      {/* Language switcher */}
+      <div className="px-2 pb-2">
+        <div className="flex items-center gap-1 px-3 py-2">
+          <Globe size={15} className="text-gray-400 flex-shrink-0" />
+          <div className="hidden lg:flex items-center gap-1 ml-1">
+            {LANGS.map(lang => (
+              <button
+                key={lang.code}
+                onClick={() => {
+                  const newPath = pathname.replace(/^\/[a-z]{2}/, `/${lang.code}`)
+                  router.push(newPath)
+                }}
+                className={`px-2 py-0.5 rounded-lg text-xs font-medium transition-all ${
+                  locale === lang.code
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {lang.flag} {lang.label}
+              </button>
+            ))}
+          </div>
+          {/* Mobile: just show current lang */}
+          <span className="lg:hidden text-xs text-gray-400">{LANGS.find(l => l.code === locale)?.flag}</span>
+        </div>
       </div>
 
       {/* Logout */}

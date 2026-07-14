@@ -108,7 +108,7 @@ export default function RegisterPage() {
                 <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="text" value={form.username} onChange={e => set('username', e.target.value)}
                   required minLength={3} maxLength={20}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="username123" />
               </div>
               <p className="text-xs text-gray-400 mt-1">{tx.username_hint}</p>
@@ -116,7 +116,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{tx.display_name}</label>
               <input type="text" value={form.display_name} onChange={e => set('display_name', e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Your Name" />
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function RegisterPage() {
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
-                required className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="you@example.com" />
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                 <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type={showPw ? 'text' : 'password'} value={form.password}
                   onChange={e => set('password', e.target.value)} required minLength={6}
-                  className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="••••••" />
                 <button type="button" onClick={() => setShowPw(!showPw)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -149,7 +149,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{tx.confirm_password} *</label>
               <input type="password" value={form.confirm} onChange={e => set('confirm', e.target.value)}
-                required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••" />
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function RegisterPage() {
                 <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="number" value={form.age} onChange={e => set('age', e.target.value)}
                   min={5} max={100}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="20" />
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function RegisterPage() {
               <div className="relative">
                 <Globe size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <select value={form.country} onChange={e => set('country', e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                   <option value="">—</option>
                   {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
