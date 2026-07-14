@@ -117,16 +117,16 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
         <div className="text-center py-8">
           <div className="text-6xl mb-4">{finalScore === 100 ? '🏆' : finalScore >= 70 ? '⭐' : '💪'}</div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">{label}</h2>
-          <p className="text-gray-500 mb-6">{correctCount} {t.of} {exercises.length} {t.exercises}</p>
+          <p className="text-gray-700 mb-6">{correctCount} {t.of} {exercises.length} {t.exercises}</p>
           <div className="flex items-center justify-center gap-6 mb-6">
             <div className="text-center">
               <div className="text-3xl font-bold" style={{ color: accentColor }}>{finalScore}%</div>
-              <div className="text-xs text-gray-400">{t.score}</div>
+              <div className="text-xs text-gray-600">{t.score}</div>
             </div>
             <div className="w-px h-10 bg-gray-200" />
             <div className="text-center">
               <div className="text-3xl font-bold text-yellow-500">+{finalXp}</div>
-              <div className="text-xs text-gray-400">{t.xp}</div>
+              <div className="text-xs text-gray-600">{t.xp}</div>
             </div>
           </div>
           {/* Score circle */}
@@ -148,7 +148,7 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
   return (
     <div>
       {/* Progress */}
-      <div className="flex items-center justify-between mb-6 text-sm text-gray-400">
+      <div className="flex items-center justify-between mb-6 text-sm text-gray-600">
         <span>{idx + 1} {t.of} {exercises.length}</span>
         <span className="text-yellow-500 font-medium">+{xpTotal} {t.xp}</span>
       </div>
@@ -217,7 +217,7 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
         {/* Matching */}
         {ex.type === 'matching' && ex.pairs && (
           <div className="space-y-3">
-            <p className="text-xs text-center text-gray-400 mb-4">{t.match_instruction}</p>
+            <p className="text-xs text-center text-gray-600 mb-4">{t.match_instruction}</p>
             {ex.pairs.map(pair => {
               const matched = matchDone[pair.ar]
               const isLeft = matchLeft === pair.ar

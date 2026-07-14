@@ -49,17 +49,17 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-4">
         <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id}`}
-          className="flex items-center gap-1 text-gray-400 hover:text-gray-600 transition-colors">
+          className="flex items-center gap-1 text-gray-600 hover:text-gray-600 transition-colors">
           <ChevronLeft size={18} />
           <span className="text-sm">{t.back}</span>
         </Link>
         <div className="flex-1">
-          <p className="text-xs text-gray-400">{t.practice}</p>
+          <p className="text-xs text-gray-600">{t.practice}</p>
           <p className="font-semibold text-gray-800 text-sm truncate">{title}</p>
         </div>
         {result && (
           <button onClick={() => { setKey(k => k + 1); setResult(null) }}
-            className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50">
+            className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">
             <RotateCcw size={14} /> {t.restart}
           </button>
         )}
@@ -68,7 +68,7 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
       <div className="flex-1 flex items-start justify-center p-6 lg:p-10">
         <div className="w-full max-w-xl">
           {exercises.length === 0 ? (
-            <div className="text-center py-16 text-gray-400">
+            <div className="text-center py-16 text-gray-600">
               <p className="text-4xl mb-3">📭</p>
               <p>{t.no_exercises}</p>
             </div>
@@ -79,11 +79,11 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
               <div className="flex items-center justify-center gap-8 my-6">
                 <div>
                   <div className="text-3xl font-bold" style={{ color }}>{result.score}%</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Score</div>
+                  <div className="text-xs text-gray-600 mt-0.5">Score</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-yellow-500">+{result.xp}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">XP</div>
+                  <div className="text-xs text-gray-600 mt-0.5">XP</div>
                 </div>
               </div>
               <div className="flex gap-3">

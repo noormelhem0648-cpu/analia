@@ -220,11 +220,11 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
           </div>
           <div>
             <h1 className="font-bold text-gray-900">{t.title}</h1>
-            <p className="text-xs text-gray-400">{t.subtitle}</p>
+            <p className="text-xs text-gray-600">{t.subtitle}</p>
           </div>
         </div>
         <button onClick={clearChat}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all">
+          className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all">
           <RotateCcw size={13} />
           {t.clear}
         </button>
@@ -250,7 +250,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
                       style={{ background: '#2D5A8E', animationDelay: `${i * 0.15}s` }} />
                   ))}
                 </div>
-                <span className="text-xs text-gray-400">{t.thinking}</span>
+                <span className="text-xs text-gray-600">{t.thinking}</span>
               </div>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
       {/* Suggestions */}
       {messages.length <= 1 && (
         <div className="px-6 pb-3 flex-shrink-0">
-          <p className="text-xs text-gray-400 mb-2 flex items-center gap-1">
+          <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
             <BookOpen size={12} />
             {t.suggestions}
           </p>
@@ -309,7 +309,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
             <Send size={18} />
           </button>
         </div>
-        <p className="text-xs text-gray-300 text-center mt-2">
+        <p className="text-xs text-gray-600 text-center mt-2">
           {locale === 'ar' ? 'Enter للإرسال • Shift+Enter لسطر جديد' : locale === 'zh' ? 'Enter 发送 • Shift+Enter 换行' : 'Enter to send • Shift+Enter for new line'}
         </p>
       </div>

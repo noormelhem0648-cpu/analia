@@ -53,13 +53,13 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
         <div className="flex items-center gap-1.5 text-sm">
           <span>⭐</span>
           <span className="font-bold text-gray-700">{xp.toLocaleString()}</span>
-          <span className="text-gray-400 text-xs">XP</span>
+          <span className="text-gray-600 text-xs">XP</span>
         </div>
         <div className="w-px h-4 bg-gray-200" />
         <div className="flex items-center gap-1.5 text-sm">
           <span>🔥</span>
           <span className="font-bold text-gray-700">{streak}</span>
-          <span className="text-gray-400 text-xs">{locale === 'ar' ? 'يوم' : locale === 'zh' ? '天' : 'days'}</span>
+          <span className="text-gray-600 text-xs">{locale === 'ar' ? 'يوم' : locale === 'zh' ? '天' : 'days'}</span>
         </div>
       </div>
 
@@ -71,7 +71,7 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
           return (
             <Link key={item.href} href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${
-                isActive ? 'text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
+                isActive ? 'text-white shadow-sm' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-800'
               }`}
               style={isActive ? { background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' } : {}}>
               <item.icon size={19} className="flex-shrink-0" />
@@ -109,7 +109,7 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
       {/* Language switcher */}
       <div className="px-2 pb-2">
         <div className="flex items-center gap-1 px-3 py-2">
-          <Globe size={15} className="text-gray-400 flex-shrink-0" />
+          <Globe size={15} className="text-gray-600 flex-shrink-0" />
           <div className="hidden lg:flex items-center gap-1 ml-1">
             {LANGS.map(lang => (
               <button
@@ -121,7 +121,7 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
                 className={`px-2 py-0.5 rounded-lg text-xs font-medium transition-all ${
                   locale === lang.code
                     ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                    : 'text-gray-600 hover:text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 {lang.flag} {lang.label}
@@ -129,7 +129,7 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
             ))}
           </div>
           {/* Mobile: just show current lang */}
-          <span className="lg:hidden text-xs text-gray-400">{LANGS.find(l => l.code === locale)?.flag}</span>
+          <span className="lg:hidden text-xs text-gray-600">{LANGS.find(l => l.code === locale)?.flag}</span>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export default function AppSidebar({ locale, xp = 0, streak = 0, isAdmin = false
       <div className="px-2 py-3 border-t border-gray-100">
         <form action="/api/auth/logout" method="POST">
           <button type="submit"
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all">
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-500 transition-all">
             <LogOut size={19} className="flex-shrink-0" />
             <span className="hidden lg:block text-sm font-medium">
               {locale === 'zh' ? '退出' : locale === 'ar' ? 'خروج' : 'Logout'}

@@ -51,7 +51,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{t.title}</h1>
-          <p className="text-gray-500 mt-1">{t.subtitle}</p>
+          <p className="text-gray-700 mt-1">{t.subtitle}</p>
         </div>
 
         {/* Path */}
@@ -83,7 +83,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
                   {/* Circle node */}
                   <div className={`relative z-10 w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md transition-all group-hover:scale-105 ${isLocked ? 'opacity-40 grayscale' : ''}`}
                     style={{ background: isLocked ? '#E5E7EB' : `linear-gradient(135deg, ${color}CC, ${color})` }}>
-                    {isLocked ? <Lock size={22} className="text-gray-400" /> : isCompleted ? <CheckCircle size={24} className="text-white" /> : <span>{icon}</span>}
+                    {isLocked ? <Lock size={22} className="text-gray-600" /> : isCompleted ? <CheckCircle size={24} className="text-white" /> : <span>{icon}</span>}
                     {isActive && (
                       <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-white animate-pulse" />
                     )}
@@ -102,7 +102,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
                           {isActive && <span className="text-xs text-green-600 font-medium">● Active</span>}
                         </div>
                         <p className="text-sm text-gray-600">{desc}</p>
-                        <p className="text-xs text-gray-400 mt-1">{totalLessons} {t.lessons} · {done} {t.completed}</p>
+                        <p className="text-xs text-gray-600 mt-1">{totalLessons} {t.lessons} · {done} {t.completed}</p>
                       </div>
                       <div className="flex items-center gap-1 text-yellow-500">
                         <Star size={14} fill="currentColor" />
@@ -117,7 +117,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
                           <div className="h-full rounded-full transition-all duration-700"
                             style={{ width: `${progress}%`, background: color }} />
                         </div>
-                        <p className="text-xs text-gray-400 mt-1">{progress}%</p>
+                        <p className="text-xs text-gray-600 mt-1">{progress}%</p>
                       </div>
                     )}
 

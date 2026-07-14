@@ -89,7 +89,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{t.title}</h1>
-        <p className="text-gray-500 mt-1">{t.subtitle}</p>
+        <p className="text-gray-700 mt-1">{t.subtitle}</p>
       </div>
 
       {/* Summary bar */}
@@ -102,7 +102,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
           <div key={s.label} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center">
             <div className="text-2xl mb-1">{s.icon}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-0.5">{s.label}</div>
+            <div className="text-xs text-gray-700 mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
@@ -127,7 +127,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
                       <h3 className="font-bold text-gray-900 text-sm">{getName(a)}</h3>
                       <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded-full">✓</span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{getDesc(a)}</p>
+                    <p className="text-xs text-gray-700 mt-0.5 leading-relaxed">{getDesc(a)}</p>
                     {a.xp_reward > 0 && (
                       <span className="inline-block mt-2 text-xs text-yellow-600 font-medium bg-yellow-50 px-2 py-0.5 rounded-full">
                         +{a.xp_reward} {t.xp}
@@ -158,7 +158,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-700 text-sm">{getName(a)}</h3>
-                      <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{getDesc(a)}</p>
+                      <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">{getDesc(a)}</p>
                       {/* Progress bar */}
                       {pct > 0 && (
                         <div className="mt-2">
@@ -166,7 +166,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
                             <div className="h-full rounded-full transition-all"
                               style={{ width: `${pct * 100}%`, background: 'linear-gradient(90deg, #1E3A5F, #2D5A8E)' }} />
                           </div>
-                          <p className="text-xs text-gray-400 mt-1">{Math.round(pct * 100)}%</p>
+                          <p className="text-xs text-gray-600 mt-1">{Math.round(pct * 100)}%</p>
                         </div>
                       )}
                     </div>

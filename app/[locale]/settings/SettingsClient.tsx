@@ -116,8 +116,8 @@ export default function SettingsClient({ locale, profile }: Props) {
           </div>
           <div>
             <p className="font-medium text-gray-800">{displayName || profile.username}</p>
-            <p className="text-sm text-gray-400">{profile.email}</p>
-            <div className="flex gap-3 mt-1 text-xs text-gray-500">
+            <p className="text-sm text-gray-600">{profile.email}</p>
+            <div className="flex gap-3 mt-1 text-xs text-gray-700">
               <span>⭐ {profile.total_xp || 0} XP</span>
               <span>🔥 {profile.streak_days || 0} days</span>
             </div>
@@ -138,7 +138,7 @@ export default function SettingsClient({ locale, profile }: Props) {
             <input
               value={profile.username}
               disabled
-              className="w-full px-4 py-2.5 border border-gray-100 rounded-xl text-sm bg-gray-50 text-gray-400 cursor-not-allowed"
+              className="w-full px-4 py-2.5 border border-gray-100 rounded-xl text-sm bg-gray-50 text-gray-600 cursor-not-allowed"
             />
           </div>
           <div>
@@ -146,7 +146,7 @@ export default function SettingsClient({ locale, profile }: Props) {
             <input
               value={profile.email}
               disabled
-              className="w-full px-4 py-2.5 border border-gray-100 rounded-xl text-sm bg-gray-50 text-gray-400 cursor-not-allowed"
+              className="w-full px-4 py-2.5 border border-gray-100 rounded-xl text-sm bg-gray-50 text-gray-600 cursor-not-allowed"
             />
           </div>
         </div>

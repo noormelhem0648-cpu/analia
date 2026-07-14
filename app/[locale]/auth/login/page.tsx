@@ -61,14 +61,14 @@ export default function LoginPage() {
             <span className="text-6xl" style={{ fontFamily: 'Amiri, serif', color: '#C9A84C' }}>أ</span>
             <h1 className="text-5xl font-bold">ANALIA</h1>
           </div>
-          <p className="text-2xl text-white/80 mb-3">تعلّم العربية من الصفر</p>
-          <p className="text-lg text-white/60">从零开始学阿拉伯语</p>
+          <p className="text-2xl text-white mb-3">تعلّم العربية من الصفر</p>
+          <p className="text-lg text-white">从零开始学阿拉伯语</p>
           <div className="mt-12 grid grid-cols-2 gap-4 text-sm">
             {[['🌱', '7 مستويات', '7 Levels'], ['🤖', 'معلم ذكي', 'AI Teacher'], ['🏆', 'شهادات', 'Certificates'], ['🔥', 'نظام تحفيز', 'Gamification']].map(([emoji, ar, en]) => (
               <div key={ar} className="bg-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl mb-1">{emoji}</div>
-                <div className="text-white/90 font-medium">{ar}</div>
-                <div className="text-white/50 text-xs">{en}</div>
+                <div className="text-white font-medium">{ar}</div>
+                <div className="text-blue-100 text-xs">{en}</div>
               </div>
             ))}
           </div>
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900">{tx.welcome}</h2>
-            <p className="text-gray-500 mt-1">{tx.subtitle}</p>
+            <p className="text-gray-700 mt-1">{tx.subtitle}</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -118,7 +118,7 @@ export default function LoginPage() {
                   placeholder="••••••••"
                 />
                 <button type="button" onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
@@ -141,14 +141,14 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-gray-500 text-sm mt-6">
+          <p className="text-center text-gray-700 text-sm mt-6">
             {tx.no_account}{' '}
             <Link href={`/${locale}/auth/register`} className="font-semibold text-blue-600 hover:text-blue-700">
               {tx.register}
             </Link>
           </p>
 
-          <p className="text-center text-gray-400 text-xs mt-4">
+          <p className="text-center text-gray-600 text-xs mt-4">
             <Link href={`/${locale}/auth/language-select`} className="hover:text-gray-600">
               🌐 Change language / 切换语言 / تغيير اللغة
             </Link>

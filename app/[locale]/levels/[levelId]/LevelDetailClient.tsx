@@ -77,7 +77,7 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
       <div className="max-w-2xl mx-auto">
         {/* Back */}
         <Link href={`/${locale}/levels`}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors">
+          className="inline-flex items-center gap-1.5 text-sm text-gray-700 hover:text-gray-800 mb-6 transition-colors">
           <ChevronLeft size={16} />
           {t.back}
         </Link>
@@ -124,14 +124,14 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
                 {/* Status circle */}
                 <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center text-xl ${isCompleted ? 'bg-green-100' : inProgress ? 'bg-blue-50' : unlocked ? 'bg-gray-50' : 'bg-gray-100'}`}>
                   {isCompleted ? <CheckCircle size={22} className="text-green-500" /> :
-                   !unlocked ? <Lock size={18} className="text-gray-300" /> :
+                   !unlocked ? <Lock size={18} className="text-gray-600" /> :
                    <span>{emoji}</span>}
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400">#{idx + 1}</span>
+                    <span className="text-xs text-gray-600">#{idx + 1}</span>
                     {isCompleted && prog?.score !== undefined && (
                       <span className="text-xs font-medium text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full">{prog.score}%</span>
                     )}
@@ -139,7 +139,7 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
                   <p className="font-semibold text-gray-800 truncate">{lesson.title}</p>
                   <div className="flex items-center gap-3 mt-0.5">
                     {lesson.estimated_minutes && (
-                      <span className="text-xs text-gray-400">{lesson.estimated_minutes} {t.minutes}</span>
+                      <span className="text-xs text-gray-600">{lesson.estimated_minutes} {t.minutes}</span>
                     )}
                     <span className="flex items-center gap-0.5 text-xs text-yellow-600">
                       <Star size={11} fill="currentColor" />
@@ -163,7 +163,7 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
         </div>
 
         {lessons.length === 0 && (
-          <div className="text-center py-16 text-gray-400">
+          <div className="text-center py-16 text-gray-600">
             <p className="text-4xl mb-3">📭</p>
             <p>{locale === 'ar' ? 'لا توجد دروس بعد' : locale === 'zh' ? '暂无课程' : 'No lessons yet'}</p>
           </div>

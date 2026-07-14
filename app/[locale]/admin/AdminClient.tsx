@@ -59,7 +59,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">لوحة الإدارة</h1>
-            <p className="text-gray-500 text-sm">Admin Dashboard · ANALIA</p>
+            <p className="text-gray-700 text-sm">Admin Dashboard · ANALIA</p>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: s.bg }}>
                 <s.icon size={18} style={{ color: s.color }} />
               </div>
-              <span className="text-xs text-gray-500 font-medium">{s.label}</span>
+              <span className="text-xs text-gray-700 font-medium">{s.label}</span>
             </div>
             <div className="text-2xl font-bold text-gray-900">{s.value}</div>
           </div>
@@ -97,7 +97,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="text-xs text-gray-400 border-b border-gray-100">
+              <tr className="text-xs text-gray-600 border-b border-gray-100">
                 <th className="text-right px-6 py-3 font-medium">المستخدم</th>
                 <th className="text-right px-4 py-3 font-medium">اللغة</th>
                 <th className="text-right px-4 py-3 font-medium">المستوى</th>
@@ -118,7 +118,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-800">{p.display_name || p.username}</p>
-                        <p className="text-xs text-gray-400">{p.email}</p>
+                        <p className="text-xs text-gray-600">{p.email}</p>
                       </div>
                     </div>
                   </td>
@@ -141,18 +141,18 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                   <td className="px-4 py-4">
                     {p.placement_test_done
                       ? <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">✅ مكتمل</span>
-                      : <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">⏳ لم يؤخذ</span>
+                      : <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">⏳ لم يؤخذ</span>
                     }
                   </td>
                   <td className="px-4 py-4">
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-600">
                       {new Date(p.created_at).toLocaleDateString('ar-SA')}
                     </span>
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={7} className="px-6 py-10 text-center text-gray-400 text-sm">لا توجد نتائج</td></tr>
+                <tr><td colSpan={7} className="px-6 py-10 text-center text-gray-600 text-sm">لا توجد نتائج</td></tr>
               )}
             </tbody>
           </table>

@@ -171,11 +171,11 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
         <div className="max-w-md w-full text-center">
           <div className="text-7xl mb-4">🎉</div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{t.great}</h1>
-          <p className="text-gray-500 mb-6">{title}</p>
+          <p className="text-gray-700 mb-6">{title}</p>
           <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-6 flex items-center justify-center gap-3">
             <Star size={24} className="text-yellow-500" fill="currentColor" />
             <span className="text-2xl font-bold text-gray-800">+{lesson.xp_reward}</span>
-            <span className="text-gray-500">{t.xp_earned}</span>
+            <span className="text-gray-700">{t.xp_earned}</span>
           </div>
           {generatedExercises.length > 0 && (
             <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id}/practice`}
@@ -207,7 +207,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
       {/* Top bar */}
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-4">
         <Link href={`/${locale}/levels/${levelId}`}
-          className="flex items-center gap-1 text-gray-400 hover:text-gray-600 transition-colors">
+          className="flex items-center gap-1 text-gray-600 hover:text-gray-600 transition-colors">
           <ChevronLeft size={18} />
           <span className="text-sm">{t.back}</span>
         </Link>
@@ -221,7 +221,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
           <Star size={14} className="text-yellow-500" fill="currentColor" />
           <span className="font-medium text-gray-700">{lesson.xp_reward} XP</span>
         </div>
-        <span className="text-sm text-gray-400">{currentStep + 1} {t.of} {steps.length}</span>
+        <span className="text-sm text-gray-600">{currentStep + 1} {t.of} {steps.length}</span>
       </div>
 
       {/* Content */}
@@ -236,8 +236,8 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
               </div>
               <p className="text-sm font-medium mb-2" style={{ color: color }}>{levelName}</p>
               <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">{title}</h1>
-              <p className="text-gray-500 mb-6">{desc}</p>
-              <div className="flex items-center justify-center gap-6 text-sm text-gray-400 mb-8">
+              <p className="text-gray-700 mb-6">{desc}</p>
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-600 mb-8">
                 <span className="flex items-center gap-1">
                   <Clock size={14} />
                   {lesson.estimated_minutes} {t.minutes}
@@ -263,11 +263,11 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
           {step.type === 'letter' && letters[step.index] && (
             <div>
-              <p className="text-center text-sm text-gray-400 mb-6">
+              <p className="text-center text-sm text-gray-600 mb-6">
                 {locale === 'ar' ? 'الحرف' : locale === 'zh' ? '字母' : 'Letter'} {step.index + 1} {t.of} {letters.length}
               </p>
               <LetterCard data={letters[step.index]} locale={locale} />
-              <p className="text-center text-xs text-gray-400 mt-4">
+              <p className="text-center text-xs text-gray-600 mt-4">
                 {locale === 'ar' ? 'اضغط على البطاقة لرؤية التفاصيل' : locale === 'zh' ? '点击卡片查看详情' : 'Tap the card to see details'}
               </p>
             </div>
@@ -275,7 +275,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
           {step.type === 'exercise' && generatedExercises[step.index] && (
             <div>
-              <p className="text-center text-sm text-gray-400 mb-4">
+              <p className="text-center text-sm text-gray-600 mb-4">
                 {locale === 'ar' ? 'تمرين' : locale === 'zh' ? '练习' : 'Exercise'} {step.index + 1} {t.of} {generatedExercises.slice(0, 3).length}
               </p>
               <InlineExercise
@@ -294,7 +294,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
                 <CheckCircle size={48} className="text-green-500" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mb-2">{t.great}</h1>
-              <p className="text-gray-500 mb-8">{title}</p>
+              <p className="text-gray-700 mb-8">{title}</p>
               <button onClick={finishLesson} disabled={saving}
                 className="w-full py-4 rounded-xl text-white font-bold text-lg disabled:opacity-60 transition-all hover:opacity-90"
                 style={{ background: color }}>

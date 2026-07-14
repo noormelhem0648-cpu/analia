@@ -101,12 +101,12 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
               {greeting}, <span style={{ color: '#1E3A5F' }}>{name}</span>!
             </h1>
-            <p className="text-gray-500 mt-1">{t.subtitle}</p>
+            <p className="text-gray-700 mt-1">{t.subtitle}</p>
           </div>
           <div className="hidden sm:flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-2">
             <Flame size={18} className="text-orange-500" />
             <span className="font-bold text-gray-800">{streak}</span>
-            <span className="text-xs text-gray-500">{t.streak}</span>
+            <span className="text-xs text-gray-700">{t.streak}</span>
           </div>
         </div>
       </div>
@@ -126,13 +126,13 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
             <Target size={18} style={{ color: '#1E3A5F' }} />
             <span className="font-semibold text-gray-800">{t.daily_goal}</span>
           </div>
-          <span className="text-sm text-gray-500">{xpToday} / {dailyXpGoal} XP</span>
+          <span className="text-sm text-gray-700">{xpToday} / {dailyXpGoal} XP</span>
         </div>
         <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
           <div className="h-full rounded-full transition-all duration-700"
             style={{ width: `${goalPct}%`, background: 'linear-gradient(90deg, #1E3A5F, #2D5A8E)' }} />
         </div>
-        <p className="text-xs text-gray-400 mt-2">{goalPct}% {locale === 'ar' ? 'من هدف اليوم' : locale === 'zh' ? '的每日目标' : 'of daily goal'}</p>
+        <p className="text-xs text-gray-600 mt-2">{goalPct}% {locale === 'ar' ? 'من هدف اليوم' : locale === 'zh' ? '的每日目标' : 'of daily goal'}</p>
       </div>
 
       {/* Continue / Start learning */}
@@ -153,14 +153,14 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">{p.lessons?.title || 'Lesson'}</p>
-                    <p className="text-xs text-gray-400 capitalize">{p.status}</p>
+                    <p className="text-xs text-gray-600 capitalize">{p.status}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {p.score !== undefined && p.score !== null && (
                     <span className="text-sm font-medium text-green-600">{p.score}%</span>
                   )}
-                  <Play size={16} className="text-gray-300 group-hover:text-blue-500 transition-colors" />
+                  <Play size={16} className="text-gray-500 group-hover:text-blue-500 transition-colors" />
                 </div>
               </Link>
             ))}
@@ -178,7 +178,7 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
                 <p className="text-sm text-blue-600 mt-1">{t.start} →</p>
               </div>
             </div>
-            <ChevronRight size={20} className="text-gray-300 group-hover:text-blue-500 transition-colors" />
+            <ChevronRight size={20} className="text-gray-500 group-hover:text-blue-500 transition-colors" />
           </Link>
         )}
       </div>
@@ -206,7 +206,7 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
                   {isDone ? '✓' : level.icon_emoji || String(level.order_index + 1)}
                 </div>
                 <p className="font-bold text-sm text-gray-800">{displayName}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{level.code?.toUpperCase()}</p>
+                <p className="text-xs text-gray-600 mt-0.5">{level.code?.toUpperCase()}</p>
                 {isActive && <span className="inline-block mt-2 text-xs font-medium px-2 py-0.5 rounded-full text-white" style={{ background: color }}>{t.level_current}</span>}
               </Link>
             )
@@ -222,7 +222,7 @@ function StatCard({ icon, label, value, color }: { icon: string; label: string; 
     <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
       <div className="text-2xl mb-2">{icon}</div>
       <div className="text-xl font-bold text-gray-900">{value}</div>
-      <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+      <div className="text-xs text-gray-700 mt-0.5">{label}</div>
       <div className="mt-2 h-1 rounded-full" style={{ background: `${color}30` }}>
         <div className="h-full w-1/2 rounded-full" style={{ background: color }} />
       </div>

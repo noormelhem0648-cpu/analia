@@ -72,7 +72,7 @@ const QUESTIONS: Question[] = [
     question_zh: '这是什么字母？    ب',
     options_ar: ['با (Ba)', 'تا (Ta)', 'نون (Nun)', 'لام (Lam)'],
     options_en: ['Ba (ب)', 'Ta (ت)', 'Nun (ن)', 'Lam (ل)'],
-    options_zh: ['Ba (ب)', 'Ta (ت)', 'Nun (ن)', 'Lam (ل)'],
+    options_zh: ['Ba', 'Ta', 'Nun', 'Lam'],
     correct: 0,
     level: 1,
   },
@@ -127,7 +127,7 @@ const QUESTIONS: Question[] = [
     question_zh: '"طالب"（学生）的阴性形式是什么？',
     options_ar: ['طلاب', 'طالبة', 'مدرسة', 'مدرس'],
     options_en: ['طلاب (students)', 'طالبة (female student)', 'مدرسة (school)', 'مدرس (teacher)'],
-    options_zh: ['طلاب（学生们）', 'طالبة（女学生）', 'مدرسة（学校）', 'مدرس（老师）'],
+    options_zh: ['学生们（复数）', '女学生', '学校', '老师'],
     correct: 1,
     level: 3,
   },
@@ -138,7 +138,7 @@ const QUESTIONS: Question[] = [
     question_zh: '哪句话是过去时？',
     options_ar: ['أنا أدرس العربية', 'أنا درست العربية', 'سأدرس العربية', 'كنت أدرس العربية'],
     options_en: ['أنا أدرس (I study)', 'أنا درست (I studied)', 'سأدرس (I will study)', 'كنت أدرس (I was studying)'],
-    options_zh: ['أنا أدرس（我学习）', 'أنا درست（我学习了）', 'سأدرس（我将学习）', 'كنت أدرس（我过去在学习）'],
+    options_zh: ['我学习阿拉伯语（现在）', '我学习了阿拉伯语（过去）', '我将学习阿拉伯语（将来）', '我过去在学习阿拉伯语（过去进行）'],
     correct: 1,
     level: 4,
   },
@@ -149,7 +149,7 @@ const QUESTIONS: Question[] = [
     question_zh: '"كتاب"（书）的复数是什么？',
     options_ar: ['كتابان', 'كتبٌ', 'كتابات', 'كتيب'],
     options_en: ['كتابان (two books)', 'كتب (books)', 'كتابات (writings)', 'كتيب (booklet)'],
-    options_zh: ['كتابان（两本书）', 'كتب（书籍）', 'كتابات（文章）', 'كتيب（小册子）'],
+    options_zh: ['两本书（双数）', '书籍（复数）', '文章/写作', '小册子'],
     correct: 1,
     level: 4,
   },
@@ -298,7 +298,7 @@ export default function PlacementTestClient({ locale }: Props) {
             <h1 className="text-3xl font-bold text-white">ANALIA</h1>
           </div>
           <p className="text-xl font-semibold text-white">{t.title}</p>
-          <p className="text-white/70 text-sm mt-1">{t.subtitle}</p>
+          <p className="text-white text-sm mt-1">{t.subtitle}</p>
         </div>
 
         {/* Progress */}
@@ -307,7 +307,7 @@ export default function PlacementTestClient({ locale }: Props) {
             <div className="h-full rounded-full bg-amber-400 transition-all duration-500"
               style={{ width: `${((current) / QUESTIONS.length) * 100}%` }} />
           </div>
-          <span className="text-white/70 text-sm whitespace-nowrap">
+          <span className="text-white text-sm whitespace-nowrap">
             {t.question} {current + 1} {t.of} {QUESTIONS.length}
           </span>
         </div>
@@ -334,7 +334,7 @@ export default function PlacementTestClient({ locale }: Props) {
                 <button key={i} onClick={() => handleSelect(i)}
                   className={`w-full text-left px-5 py-3.5 rounded-2xl transition-all flex items-center justify-between group ${cls}`}
                   dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-                  <span className="text-sm font-medium text-gray-700"
+                  <span className="text-sm font-semibold text-gray-900"
                     style={{ fontFamily: locale === 'ar' ? 'Noto Naskh Arabic, Amiri, serif' : 'inherit' }}>
                     {opt}
                   </span>
@@ -356,7 +356,7 @@ export default function PlacementTestClient({ locale }: Props) {
         </div>
 
         <button onClick={skipTest}
-          className="w-full text-center text-white/50 text-sm mt-4 hover:text-white/80 transition-colors py-2">
+          className="w-full text-center text-blue-100 text-sm mt-4 hover:text-white/80 transition-colors py-2">
           {t.skip}
         </button>
       </div>

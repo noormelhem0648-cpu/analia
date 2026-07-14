@@ -45,12 +45,12 @@ export default function VocabularyClient({ locale, cards }: Props) {
     <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10">
       <div className="mb-8">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{t.title}</h1>
-        <p className="text-gray-500 mt-1">{t.subtitle}</p>
+        <p className="text-gray-700 mt-1">{t.subtitle}</p>
       </div>
 
       {/* Search */}
       <div className="relative mb-8">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -62,14 +62,14 @@ export default function VocabularyClient({ locale, cards }: Props) {
       {cards.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4" style={{ fontFamily: 'Amiri, serif' }}>كلمات</div>
-          <p className="text-gray-400 text-lg font-medium">{t.no_results}</p>
-          <p className="text-gray-300 text-sm mt-2">
+          <p className="text-gray-600 text-lg font-medium">{t.no_results}</p>
+          <p className="text-gray-600 text-sm mt-2">
             {locale === 'ar' ? 'أكمل دروساً لتظهر المفردات هنا' : locale === 'zh' ? '完成课程后词汇将显示在这里' : 'Complete lessons to see vocabulary here'}
           </p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-400 mb-4">{filtered.length} {locale === 'ar' ? 'كلمة' : locale === 'zh' ? '个词' : 'words'}</p>
+          <p className="text-sm text-gray-600 mb-4">{filtered.length} {locale === 'ar' ? 'كلمة' : locale === 'zh' ? '个词' : 'words'}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filtered.map(card => (
               <div key={card.id}
@@ -86,7 +86,7 @@ export default function VocabularyClient({ locale, cards }: Props) {
                       {card.word_ar}
                     </span>
                     {card.word_transliteration && (
-                      <span className="text-white/60 text-xs">{card.word_transliteration}</span>
+                      <span className="text-blue-200 text-xs">{card.word_transliteration}</span>
                     )}
                   </div>
                   {/* Back */}
@@ -94,7 +94,7 @@ export default function VocabularyClient({ locale, cards }: Props) {
                     style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
                     <p className="text-sm font-semibold text-gray-800 text-center">{getMeaning(card)}</p>
                     {card.example_sentence_ar && (
-                      <p className="text-xs text-gray-400 text-center mt-2 leading-relaxed" dir="rtl"
+                      <p className="text-xs text-gray-600 text-center mt-2 leading-relaxed" dir="rtl"
                         style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif' }}>
                         {card.example_sentence_ar}
                       </p>
