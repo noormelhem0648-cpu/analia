@@ -240,7 +240,7 @@ export default function PlacementTestClient({ locale }: Props) {
     if (current + 1 >= QUESTIONS.length) {
       setDone(true)
     } else {
-      setCurrent(c => c + 1)
+      setCurrent((c: number) => c + 1)
       setSelected(null)
       setChecked(false)
     }
