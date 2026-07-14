@@ -14,8 +14,8 @@ export default async function LessonPage({
   if (!user) redirect(`/${locale}/auth/login`)
 
   const [{ data: profile }, { data: lesson }, { data: sections }, { data: exercises }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
-    supabase.from('lessons').select('*, levels(name_ar, name_en, name_zh, code, color_primary)').eq('id', parseInt(lessonId)).single(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
+    supabase.from('lessons').select('*, levels(name_ar, name_en, name_zh, code, color_primary)').eq('id', parseInt(lessonId)).maybeSingle(),
     supabase.from('lesson_sections').select('*').eq('lesson_id', parseInt(lessonId)).order('order_index'),
     supabase.from('exercises').select('*').eq('lesson_id', parseInt(lessonId)).order('order_index'),
   ])
@@ -27,7 +27,7 @@ export default async function LessonPage({
     .select('*')
     .eq('user_id', user.id)
     .eq('lesson_id', parseInt(lessonId))
-    .single()
+    .maybeSingle()
 
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>

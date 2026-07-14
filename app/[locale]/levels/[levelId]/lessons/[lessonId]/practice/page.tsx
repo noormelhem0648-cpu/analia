@@ -14,11 +14,11 @@ export default async function PracticePage({
   if (!user) redirect(`/${locale}/auth/login`)
 
   const [{ data: profile }, { data: lesson }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('lessons')
       .select('*, levels(name_ar, name_en, name_zh, code, color_primary)')
       .eq('id', parseInt(lessonId))
-      .single(),
+      .maybeSingle(),
   ])
 
   if (!lesson) notFound()

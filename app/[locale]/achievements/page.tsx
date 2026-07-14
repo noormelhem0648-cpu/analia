@@ -10,7 +10,7 @@ export default async function AchievementsPage({ params }: { params: Promise<{ l
   if (!user) redirect(`/${locale}/auth/login`)
 
   const [{ data: profile }, { data: achievements }, { data: userAchievements }, { count: lessonsCount }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('achievements').select('*').order('condition_value'),
     supabase.from('user_achievements').select('achievement_id, earned_at').eq('user_id', user.id),
     supabase.from('user_lesson_progress').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('status', 'completed'),

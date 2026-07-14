@@ -40,7 +40,7 @@ export default function LoginPage() {
         .from('profiles')
         .select('placement_test_done')
         .eq('id', data.user!.id)
-        .single()
+        .maybeSingle()
       if (!profile?.placement_test_done) {
         router.push(`/${locale}/placement-test`)
       } else {

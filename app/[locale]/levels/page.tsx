@@ -10,7 +10,7 @@ export default async function LevelsPage({ params }: { params: Promise<{ locale:
   if (!user) redirect(`/${locale}/auth/login`)
 
   const [{ data: profile }, { data: levels }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('levels').select('*, lessons(count)').order('order_index'),
   ])
 

@@ -18,7 +18,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     { count: totalAchievements },
   ] = await Promise.all([
     supabase.from('profiles').select('*').order('created_at', { ascending: false }),
-    supabase.from('profiles').select('total_xp, streak_days').eq('id', user.id).single(),
+    supabase.from('profiles').select('total_xp, streak_days').eq('id', user.id).maybeSingle(),
     supabase.from('user_lesson_progress').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
     supabase.from('ai_conversations').select('*', { count: 'exact', head: true }),
     supabase.from('user_achievements').select('*', { count: 'exact', head: true }),

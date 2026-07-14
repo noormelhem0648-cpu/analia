@@ -15,7 +15,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   )
 
   const [{ data: profile }, { data: levels }, { data: recentProgress }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('levels').select('*').order('order_index'),
     supabase.from('user_lesson_progress')
       .select('*, lessons(title, level_id)')

@@ -9,7 +9,7 @@ export default async function VocabularyPage({ params }: { params: Promise<{ loc
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect(`/${locale}/auth/login`)
 
-  const { data: profile } = await supabase.from('profiles').select('total_xp, streak_days').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('total_xp, streak_days').eq('id', user.id).maybeSingle()
 
   // Get all vocabulary cards (public)
   const { data: cards } = await supabase.from('vocabulary_cards').select('*').order('id')

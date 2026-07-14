@@ -9,7 +9,7 @@ export default async function AiTutorPage({ params }: { params: Promise<{ locale
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect(`/${locale}/auth/login`)
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
 
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>
