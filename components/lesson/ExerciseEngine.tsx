@@ -18,6 +18,10 @@ interface Props {
   onComplete?: (score: number, xpEarned: number) => void
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  return [...arr].sort(() => Math.random() - 0.5)
+}
+
 function ArabicSpan({ text, size = '1rem' }: { text: string; size?: string }) {
   const isArabic = /[؀-ۿ]/.test(text)
   return (
