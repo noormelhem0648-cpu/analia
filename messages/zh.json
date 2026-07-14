@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "dashboard": "仪表板",
+    "lessons": "课程",
+    "vocabulary": "词汇",
+    "ai_teacher": "AI老师",
+    "progress": "进度",
+    "certificates": "证书",
+    "favorites": "收藏",
+    "settings": "设置",
+    "logout": "退出登录",
+    "admin": "管理员"
+  },
+  "landing": {
+    "hero_title": "从零开始学阿拉伯语",
+    "hero_subtitle": "全球最全面的阿拉伯语学习平台 — 专为中国学生设计",
+    "cta_start": "免费开始",
+    "cta_login": "已有账户？登录",
+    "features_title": "为什么选择ANALIA？",
+    "feature_levels": "7个学习级别",
+    "feature_ai": "AI个人教师",
+    "feature_srs": "间隔重复记忆法",
+    "feature_cert": "获得证书",
+    "stats_learners": "全球学习者",
+    "stats_lessons": "精品课程",
+    "stats_languages": "界面语言"
+  },
+  "auth": {
+    "choose_language": "选择您的学习界面语言",
+    "login": "登录",
+    "register": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "username": "用户名",
+    "display_name": "显示名称",
+    "age": "年龄",
+    "country": "国家",
+    "already_account": "已有账户？",
+    "no_account": "没有账户？",
+    "login_here": "在此登录",
+    "register_here": "在此注册",
+    "or": "或",
+    "loading": "加载中..."
+  },
+  "dashboard": {
+    "welcome": "欢迎，{name}！",
+    "today_lesson": "今日课程",
+    "continue": "继续学习",
+    "start": "开始",
+    "streak": "连续学习",
+    "days": "天",
+    "xp_to_next": "距下一级还需 {xp} XP",
+    "recent_achievements": "最近成就",
+    "vocabulary_review": "词汇复习",
+    "cards_due": "今日到期 {count} 张卡片",
+    "review_now": "立即复习"
+  },
+  "lesson": {
+    "start": "开始课程",
+    "continue": "继续",
+    "complete": "完成",
+    "locked": "已锁定",
+    "pass_required": "需要通过 {percent}% 才能继续",
+    "xp_reward": "+{xp} XP",
+    "estimated_time": "约 {min} 分钟",
+    "next_lesson": "下一课",
+    "back_to_map": "返回课程地图",
+    "section_complete": "章节完成！",
+    "quiz_pass": "通过！继续下一节",
+    "quiz_fail": "需要 {percent}% 分数。再试一次！",
+    "lesson_complete": "课程完成！",
+    "earned_xp": "获得 {xp} XP！"
+  },
+  "arabic": {
+    "pronunciation": "发音",
+    "meaning": "含义",
+    "example": "例句",
+    "listen": "听发音",
+    "isolated": "独立形",
+    "initial": "词首形",
+    "medial": "词中形",
+    "final": "词尾形",
+    "transliteration": "音译"
+  },
+  "exercise": {
+    "check": "检查",
+    "next": "下一题",
+    "correct": "正确！",
+    "incorrect": "不正确",
+    "explanation": "解释",
+    "score": "得分",
+    "complete": "练习完成！",
+    "try_again": "重试"
+  },
+  "vocabulary": {
+    "title": "词汇复习",
+    "show_answer": "显示答案",
+    "knew_it": "我知道",
+    "didnt_know": "不知道",
+    "almost": "差不多",
+    "cards_remaining": "剩余 {count} 张",
+    "session_complete": "今日复习完成！",
+    "next_review": "下次复习：{date}"
+  },
+  "ai_teacher": {
+    "title": "AI教师 — أنس",
+    "placeholder": "用中文、英文或阿拉伯语提问...",
+    "send": "发送",
+    "suggestions": {
+      "explain": "解释这节课",
+      "practice": "给我练习题",
+      "correct": "纠正我的阿拉伯语写作"
+    }
+  },
+  "progress": {
+    "title": "我的进度",
+    "total_xp": "总XP",
+    "lessons_done": "已完成课程",
+    "streak": "连续天数",
+    "achievements": "成就",
+    "skills": "技能雷达",
+    "weekly_activity": "本周活动"
+  },
+  "achievements": {
+    "first_lesson": "第一课",
+    "streak_3": "3天连续",
+    "streak_7": "7天连续",
+    "streak_30": "30天连续",
+    "alphabet_master": "字母大师",
+    "perfect_week": "完美一周",
+    "level_complete": "通关一级",
+    "speed_learner": "速度学习者",
+    "vocabulary_100": "100词汇",
+    "ai_conversation": "AI对话",
+    "all_levels": "全部通关"
+  },
+  "certificate": {
+    "title": "我的证书",
+    "download": "下载PDF",
+    "share": "分享",
+    "verify": "验证",
+    "issued": "颁发日期"
+  },
+  "levels": {
+    "overview_title": "学习路径",
+    "start_placement": "参加水平测试",
+    "level_locked": "完成上一级别解锁",
+    "lessons_count": "{count} 课",
+    "days_count": "{count} 天"
+  },
+  "admin": {
+    "dashboard": "管理员仪表板",
+    "total_users": "总用户数",
+    "active_today": "今日活跃",
+    "lessons": "管理课程",
+    "users": "管理用户",
+    "notifications": "发送通知",
+    "send_to_all": "发送给所有用户"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了，请重试",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步"
+  }
+}

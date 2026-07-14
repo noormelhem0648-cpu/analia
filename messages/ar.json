@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "lessons": "الدروس",
+    "vocabulary": "المفردات",
+    "ai_teacher": "المعلم الذكي",
+    "progress": "التقدم",
+    "certificates": "الشهادات",
+    "favorites": "المفضلة",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "admin": "المشرف"
+  },
+  "landing": {
+    "hero_title": "تعلّم العربية من الصفر",
+    "hero_subtitle": "أشمل منصة لتعلم اللغة العربية في العالم",
+    "cta_start": "ابدأ مجاناً",
+    "cta_login": "لديك حساب؟ سجل دخولك",
+    "features_title": "لماذا أناليا؟",
+    "feature_levels": "٧ مستويات تعليمية",
+    "feature_ai": "معلم ذكي شخصي",
+    "feature_srs": "التكرار المتباعد",
+    "feature_cert": "احصل على شهادة",
+    "stats_learners": "متعلم حول العالم",
+    "stats_lessons": "درس متميز",
+    "stats_languages": "لغات واجهة"
+  },
+  "auth": {
+    "choose_language": "اختر لغة الواجهة",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "username": "اسم المستخدم",
+    "display_name": "الاسم المعروض",
+    "age": "العمر",
+    "country": "الدولة",
+    "already_account": "لديك حساب؟",
+    "no_account": "ليس لديك حساب؟",
+    "login_here": "سجل دخولك هنا",
+    "register_here": "أنشئ حساباً هنا",
+    "or": "أو",
+    "loading": "جارٍ التحميل..."
+  },
+  "dashboard": {
+    "welcome": "أهلاً، {name}!",
+    "today_lesson": "درس اليوم",
+    "continue": "أكمل",
+    "start": "ابدأ",
+    "streak": "أيام متتالية",
+    "days": "يوم",
+    "xp_to_next": "{xp} نقطة للمستوى التالي",
+    "recent_achievements": "آخر الإنجازات",
+    "vocabulary_review": "مراجعة المفردات",
+    "cards_due": "{count} بطاقة للمراجعة اليوم",
+    "review_now": "راجع الآن"
+  },
+  "lesson": {
+    "start": "ابدأ الدرس",
+    "continue": "أكمل",
+    "complete": "أنهيت",
+    "locked": "مقفل",
+    "pass_required": "تحتاج {percent}٪ للاستمرار",
+    "xp_reward": "+{xp} نقطة",
+    "estimated_time": "حوالي {min} دقيقة",
+    "next_lesson": "الدرس التالي",
+    "back_to_map": "العودة لخريطة الدروس",
+    "section_complete": "اكتمل القسم!",
+    "quiz_pass": "نجحت! تابع للقسم التالي",
+    "quiz_fail": "تحتاج {percent}٪. حاول مجدداً!",
+    "lesson_complete": "اكتمل الدرس!",
+    "earned_xp": "حصلت على {xp} نقطة!"
+  },
+  "arabic": {
+    "pronunciation": "النطق",
+    "meaning": "المعنى",
+    "example": "مثال",
+    "listen": "استمع",
+    "isolated": "مستقل",
+    "initial": "أول الكلمة",
+    "medial": "وسط الكلمة",
+    "final": "آخر الكلمة",
+    "transliteration": "الكتابة الصوتية"
+  },
+  "exercise": {
+    "check": "تحقق",
+    "next": "التالي",
+    "correct": "صحيح!",
+    "incorrect": "خطأ",
+    "explanation": "شرح",
+    "score": "النتيجة",
+    "complete": "اكتملت التمارين!",
+    "try_again": "حاول مجدداً"
+  },
+  "vocabulary": {
+    "title": "مراجعة المفردات",
+    "show_answer": "أظهر الجواب",
+    "knew_it": "عرفتها",
+    "didnt_know": "لم أعرفها",
+    "almost": "تقريباً",
+    "cards_remaining": "{count} بطاقة متبقية",
+    "session_complete": "اكتملت مراجعة اليوم!",
+    "next_review": "المراجعة القادمة: {date}"
+  },
+  "ai_teacher": {
+    "title": "المعلم الذكي — أنس",
+    "placeholder": "اسأل بالعربية أو الإنجليزية أو الصينية...",
+    "send": "إرسال",
+    "suggestions": {
+      "explain": "اشرح هذا الدرس",
+      "practice": "أعطني تمريناً",
+      "correct": "صحح كتابتي العربية"
+    }
+  },
+  "progress": {
+    "title": "تقدمي",
+    "total_xp": "إجمالي النقاط",
+    "lessons_done": "الدروس المكتملة",
+    "streak": "الأيام المتتالية",
+    "achievements": "الإنجازات",
+    "skills": "مهاراتي",
+    "weekly_activity": "نشاط الأسبوع"
+  },
+  "achievements": {
+    "first_lesson": "أول درس",
+    "streak_3": "٣ أيام متتالية",
+    "streak_7": "٧ أيام متتالية",
+    "streak_30": "٣٠ يوماً متتالياً",
+    "alphabet_master": "متقن الحروف",
+    "perfect_week": "أسبوع مثالي",
+    "level_complete": "أتممت مستوى",
+    "speed_learner": "متعلم سريع",
+    "vocabulary_100": "١٠٠ مفردة",
+    "ai_conversation": "محادثة مع الذكاء",
+    "all_levels": "أتممت كل المستويات"
+  },
+  "certificate": {
+    "title": "شهاداتي",
+    "download": "تنزيل PDF",
+    "share": "مشاركة",
+    "verify": "تحقق",
+    "issued": "تاريخ الإصدار"
+  },
+  "levels": {
+    "overview_title": "مسار التعلم",
+    "start_placement": "اختبار تحديد المستوى",
+    "level_locked": "أتمم المستوى السابق للفتح",
+    "lessons_count": "{count} درس",
+    "days_count": "{count} يوم"
+  },
+  "admin": {
+    "dashboard": "لوحة المشرف",
+    "total_users": "إجمالي المستخدمين",
+    "active_today": "نشطون اليوم",
+    "lessons": "إدارة الدروس",
+    "users": "إدارة المستخدمين",
+    "notifications": "إرسال إشعار",
+    "send_to_all": "إرسال للجميع"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ، حاول مجدداً",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق"
+  }
+}

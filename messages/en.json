@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "lessons": "Lessons",
+    "vocabulary": "Vocabulary",
+    "ai_teacher": "AI Teacher",
+    "progress": "Progress",
+    "certificates": "Certificates",
+    "favorites": "Favorites",
+    "settings": "Settings",
+    "logout": "Logout",
+    "admin": "Admin"
+  },
+  "landing": {
+    "hero_title": "Learn Arabic from Zero",
+    "hero_subtitle": "The World's Most Comprehensive Arabic Learning Platform",
+    "cta_start": "Start Free Today",
+    "cta_login": "Already have an account? Login",
+    "features_title": "Why ANALIA?",
+    "feature_levels": "7 Learning Levels",
+    "feature_ai": "AI Personal Teacher",
+    "feature_srs": "Spaced Repetition",
+    "feature_cert": "Earn Certificates",
+    "stats_learners": "Global Learners",
+    "stats_lessons": "Quality Lessons",
+    "stats_languages": "UI Languages"
+  },
+  "auth": {
+    "choose_language": "Choose your interface language",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "display_name": "Display Name",
+    "age": "Age",
+    "country": "Country",
+    "already_account": "Already have an account?",
+    "no_account": "Don't have an account?",
+    "login_here": "Login here",
+    "register_here": "Register here",
+    "or": "or",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}!",
+    "today_lesson": "Today's Lesson",
+    "continue": "Continue",
+    "start": "Start",
+    "streak": "Day Streak",
+    "days": "days",
+    "xp_to_next": "{xp} XP to next level",
+    "recent_achievements": "Recent Achievements",
+    "vocabulary_review": "Vocabulary Review",
+    "cards_due": "{count} cards due today",
+    "review_now": "Review Now"
+  },
+  "lesson": {
+    "start": "Start Lesson",
+    "continue": "Continue",
+    "complete": "Complete",
+    "locked": "Locked",
+    "pass_required": "Pass {percent}% to continue",
+    "xp_reward": "+{xp} XP",
+    "estimated_time": "~{min} min",
+    "next_lesson": "Next Lesson",
+    "back_to_map": "Back to Map",
+    "section_complete": "Section Complete!",
+    "quiz_pass": "Passed! Continue to next section",
+    "quiz_fail": "Need {percent}% score. Try again!",
+    "lesson_complete": "Lesson Complete!",
+    "earned_xp": "Earned {xp} XP!"
+  },
+  "arabic": {
+    "pronunciation": "Pronunciation",
+    "meaning": "Meaning",
+    "example": "Example",
+    "listen": "Listen",
+    "isolated": "Isolated",
+    "initial": "Initial",
+    "medial": "Medial",
+    "final": "Final",
+    "transliteration": "Transliteration"
+  },
+  "exercise": {
+    "check": "Check",
+    "next": "Next",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "explanation": "Explanation",
+    "score": "Score",
+    "complete": "Exercise Complete!",
+    "try_again": "Try Again"
+  },
+  "vocabulary": {
+    "title": "Vocabulary Review",
+    "show_answer": "Show Answer",
+    "knew_it": "I knew it",
+    "didnt_know": "Didn't know",
+    "almost": "Almost",
+    "cards_remaining": "{count} cards remaining",
+    "session_complete": "Session complete for today!",
+    "next_review": "Next review: {date}"
+  },
+  "ai_teacher": {
+    "title": "AI Teacher — أنس",
+    "placeholder": "Ask in Chinese, English, or Arabic...",
+    "send": "Send",
+    "suggestions": {
+      "explain": "Explain this lesson",
+      "practice": "Give me practice",
+      "correct": "Correct my Arabic writing"
+    }
+  },
+  "progress": {
+    "title": "My Progress",
+    "total_xp": "Total XP",
+    "lessons_done": "Lessons Done",
+    "streak": "Day Streak",
+    "achievements": "Achievements",
+    "skills": "Skills Radar",
+    "weekly_activity": "Weekly Activity"
+  },
+  "achievements": {
+    "first_lesson": "First Lesson",
+    "streak_3": "3-Day Streak",
+    "streak_7": "7-Day Streak",
+    "streak_30": "30-Day Streak",
+    "alphabet_master": "Alphabet Master",
+    "perfect_week": "Perfect Week",
+    "level_complete": "Level Complete",
+    "speed_learner": "Speed Learner",
+    "vocabulary_100": "100 Vocabulary",
+    "ai_conversation": "AI Conversation",
+    "all_levels": "All Levels Complete"
+  },
+  "certificate": {
+    "title": "My Certificates",
+    "download": "Download PDF",
+    "share": "Share",
+    "verify": "Verify",
+    "issued": "Issued on"
+  },
+  "levels": {
+    "overview_title": "Learning Path",
+    "start_placement": "Take Placement Test",
+    "level_locked": "Complete previous level to unlock",
+    "lessons_count": "{count} lessons",
+    "days_count": "{count} days"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "total_users": "Total Users",
+    "active_today": "Active Today",
+    "lessons": "Manage Lessons",
+    "users": "Manage Users",
+    "notifications": "Send Notification",
+    "send_to_all": "Send to All Users"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong, please try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  }
+}
