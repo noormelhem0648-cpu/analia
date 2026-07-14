@@ -227,12 +227,14 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
   }
 
   function clearChat() {
+    const msg = locale === 'ar' ? 'هل تريد مسح المحادثة؟' : locale === 'zh' ? '确定要清空对话吗？' : 'Clear chat history?'
+    if (!window.confirm(msg)) return
     setMessages([{ role: 'assistant', content: greeting, timestamp: new Date() }])
     setError(null)
   }
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 flex flex-col" style={{ height: '100vh' }}>
+    <main className="lg:ml-64 flex-1 flex flex-col" style={{ height: '100vh' }}>
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">

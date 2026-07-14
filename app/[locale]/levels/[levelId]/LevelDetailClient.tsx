@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { ChevronLeft, Lock, CheckCircle, Play, Star } from 'lucide-react'
+import { ChevronLeft, Lock, CheckCircle, Play, Star, Search } from 'lucide-react'
 
 const LEVEL_COLORS: Record<string, string> = {
   'pre-a1': '#10B981', 'a1': '#3B82F6', 'a2': '#8B5CF6',
@@ -60,9 +61,14 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
   const displayDesc = locale === 'zh' ? level.description_zh : locale === 'ar' ? level.description_ar : level.description_en
   const isCurrentLevel = level.id === currentLevelId
 
+  const [search, setSearch] = useState('')
   const totalLessons = lessons.length
   const doneCount = Object.values(progressMap).filter(p => p.status === 'completed').length
   const progress = totalLessons > 0 ? Math.round((doneCount / totalLessons) * 100) : 0
+
+  const filteredLessons = search
+    ? lessons.filter(l => (l.title || '').toLowerCase().includes(search.toLowerCase()))
+    : lessons
 
   // Unlock logic: first lesson always unlocked, next unlocked after previous completed
   function isUnlocked(lesson: Lesson, idx: number) {
@@ -73,7 +79,7 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
   }
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10">
+    <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
       <div className="max-w-2xl mx-auto">
         {/* Back */}
         <Link href={`/${locale}/levels`}
@@ -104,9 +110,17 @@ export default function LevelDetailClient({ locale, level, lessons, progressMap,
           </div>
         </div>
 
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder={locale === 'zh' ? '搜索课程...' : locale === 'ar' ? 'ابحث في الدروس...' : 'Search lessons...'}
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-300 bg-white" />
+        </div>
+
         {/* Lessons list */}
         <div className="space-y-3">
-          {lessons.map((lesson, idx) => {
+          {filteredLessons.map((lesson, idx) => {
             const prog = progressMap[lesson.id]
             const isCompleted = prog?.status === 'completed'
             const inProgress = prog && prog.status !== 'completed'

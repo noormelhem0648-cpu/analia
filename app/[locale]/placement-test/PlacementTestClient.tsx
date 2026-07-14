@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle, XCircle, ChevronRight, Award } from 'lucide-react'
+import { speakArabic } from '@/lib/tts'
+
+const STORAGE_KEY = 'analia_placement_progress'
 
 const tx = {
   zh: {
@@ -197,12 +200,24 @@ export default function PlacementTestClient({ locale }: Props) {
   const t = tx[locale as keyof typeof tx] || tx.en
   const router = useRouter()
 
-  const [current, setCurrent] = useState(0)
-  const [answers, setAnswers] = useState<number[]>([])
+  const [current, setCurrent] = useState(() => {
+    if (typeof window === 'undefined') return 0
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}').current || 0 } catch { return 0 }
+  })
+  const [answers, setAnswers] = useState<number[]>(() => {
+    if (typeof window === 'undefined') return []
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}').answers || [] } catch { return [] }
+  })
   const [selected, setSelected] = useState<number | null>(null)
   const [checked, setChecked] = useState(false)
   const [done, setDone] = useState(false)
   const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (!done) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, answers })) } catch {}
+    }
+  }, [current, answers, done])
 
   const q = QUESTIONS[current]
   const question = locale === 'zh' ? q.question_zh : locale === 'ar' ? q.question_ar : q.question_en
@@ -233,6 +248,7 @@ export default function PlacementTestClient({ locale }: Props) {
 
   async function saveAndStart(levelCode: string) {
     setSaving(true)
+    try { localStorage.removeItem(STORAGE_KEY) } catch {}
     await fetch('/api/placement-result', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -314,11 +330,19 @@ export default function PlacementTestClient({ locale }: Props) {
 
         {/* Question card */}
         <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <p className="text-lg font-semibold text-gray-800 mb-6 text-center leading-relaxed"
-            dir={locale === 'ar' ? 'rtl' : 'ltr'}
-            style={{ fontFamily: locale === 'ar' ? 'Noto Naskh Arabic, Amiri, serif' : 'inherit' }}>
-            {question}
-          </p>
+          <div className="text-center mb-6">
+            <p className="text-lg font-semibold text-gray-800 leading-relaxed"
+              dir={locale === 'ar' ? 'rtl' : 'ltr'}
+              style={{ fontFamily: locale === 'ar' ? 'Noto Naskh Arabic, Amiri, serif' : 'inherit' }}>
+              {question}
+            </p>
+            {/[؀-ۿ]/.test(q.question_ar) && (
+              <button onClick={() => speakArabic(q.question_ar)}
+                className="mt-2 text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 mx-auto bg-blue-50 px-3 py-1 rounded-full transition-colors">
+                🔊 {locale === 'zh' ? '听发音' : locale === 'ar' ? 'استمع' : 'Listen'}
+              </button>
+            )}
+          </div>
 
           <div className="space-y-3">
             {options.map((opt, i) => {

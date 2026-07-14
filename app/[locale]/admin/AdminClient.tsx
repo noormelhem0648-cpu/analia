@@ -32,8 +32,26 @@ interface Props {
 
 export default function AdminClient({ profiles, stats, locale }: Props) {
   const [search, setSearch] = useState('')
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [localProfiles, setLocalProfiles] = useState(profiles)
 
-  const filtered = profiles.filter(p =>
+  async function deleteUser(userId: string, name: string) {
+    if (!window.confirm(`حذف المستخدم "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`)) return
+    setDeletingId(userId)
+    try {
+      const res = await fetch('/api/admin/delete-user', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      })
+      if (res.ok) setLocalProfiles(prev => prev.filter(p => p.id !== userId))
+      else alert('فشل الحذف')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  const filtered = localProfiles.filter(p =>
     (p.email || '').toLowerCase().includes(search.toLowerCase()) ||
     (p.display_name || '').toLowerCase().includes(search.toLowerCase()) ||
     (p.username || '').toLowerCase().includes(search.toLowerCase())
@@ -49,7 +67,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
   ]
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10">
+    <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -105,6 +123,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                 <th className="text-right px-4 py-3 font-medium">Streak</th>
                 <th className="text-right px-4 py-3 font-medium">الاختبار</th>
                 <th className="text-right px-4 py-3 font-medium">تاريخ التسجيل</th>
+                <th className="px-4 py-3 font-medium"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -148,6 +167,13 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                     <span className="text-xs text-gray-600">
                       {new Date(p.created_at).toLocaleDateString('ar-SA')}
                     </span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <button onClick={() => deleteUser(p.id, p.display_name || p.username)}
+                      disabled={deletingId === p.id}
+                      className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-lg transition-all disabled:opacity-40">
+                      {deletingId === p.id ? '...' : '🗑️ حذف'}
+                    </button>
                   </td>
                 </tr>
               ))}

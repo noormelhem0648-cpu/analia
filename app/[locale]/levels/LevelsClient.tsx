@@ -46,7 +46,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
   const currentOrder = levels.find(l => l.id === currentLevelId)?.order_index ?? 0
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10">
+    <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-10">

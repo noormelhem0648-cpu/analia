@@ -45,7 +45,7 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
   }
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 flex flex-col">
+    <main className="lg:ml-64 flex-1 flex flex-col pb-20 lg:pb-0">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-4">
         <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id}`}

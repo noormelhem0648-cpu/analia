@@ -135,7 +135,11 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     { type: 'complete', index: 0 },
   ]
 
-  const [currentStep, setCurrentStep] = useState(0)
+  const posKey = `analia_lesson_${lesson.id}_step`
+  const [currentStep, setCurrentStep] = useState(() => {
+    if (progress?.status === 'completed') return 0
+    try { return parseInt(localStorage.getItem(posKey) || '0', 10) } catch { return 0 }
+  })
   const [saving, setSaving] = useState(false)
   const [done, setDone] = useState(progress?.status === 'completed')
   const [confetti, setConfetti] = useState(false)
@@ -145,17 +149,36 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   const isFirst = currentStep === 0
   const isLast = currentStep === steps.length - 1
 
-  function next() { if (!isLast) setCurrentStep(s => s + 1) }
-  function prev() { if (!isFirst) setCurrentStep(s => s - 1) }
+  function next() {
+    if (!isLast) {
+      const next = currentStep + 1
+      setCurrentStep(next)
+      try { localStorage.setItem(posKey, String(next)) } catch {}
+    }
+  }
+  function prev() {
+    if (!isFirst) {
+      const prev = currentStep - 1
+      setCurrentStep(prev)
+      try { localStorage.setItem(posKey, String(prev)) } catch {}
+    }
+  }
 
   async function finishLesson() {
     setSaving(true)
     const timeSpent = Math.round((Date.now() - startTime.current) / 1000)
+    // Track study time in localStorage
+    try {
+      const key = `analia_study_${new Date().toDateString()}`
+      const prev = parseInt(localStorage.getItem(key) || '0', 10)
+      localStorage.setItem(key, String(prev + Math.round(timeSpent / 60)))
+    } catch {}
     await fetch('/api/progress/lesson', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lesson_id: lesson.id, status: 'completed', score: 100, time_spent_seconds: timeSpent, xp_earned: lesson.xp_reward }),
     })
+    try { localStorage.removeItem(posKey) } catch {}
     setDone(true)
     setConfetti(true)
     setTimeout(() => setConfetti(false), 4000)
@@ -166,7 +189,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   if (done) {
     return (
-      <main className="ml-20 lg:ml-64 flex-1 flex items-center justify-center p-6" style={{ minHeight: '100vh' }}>
+      <main className="lg:ml-64 flex-1 flex items-center justify-center p-6" style={{ minHeight: '100vh' }}>
         <Confetti active={confetti} />
         <div className="max-w-md w-full text-center">
           <div className="text-7xl mb-4">🎉</div>
@@ -201,7 +224,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   }
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 flex flex-col" style={{ minHeight: '100vh' }}>
+    <main className="lg:ml-64 flex-1 flex flex-col pb-20 lg:pb-0" style={{ minHeight: '100vh' }}>
       <Confetti active={false} />
 
       {/* Top bar */}

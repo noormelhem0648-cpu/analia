@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimit } from '@/lib/rate-limit'
 
 const SYSTEM_PROMPT = `You are ANALIA, a friendly and expert Arabic language teacher specializing in teaching Arabic to Chinese and English speakers. You are patient, encouraging, and use simple explanations.
 
@@ -62,6 +63,10 @@ async function callOllama(messages: { role: string; content: string }[], langHin
 }
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
+  const { ok } = rateLimit(ip, 30, 60_000)
+  if (!ok) return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()

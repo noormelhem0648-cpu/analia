@@ -96,7 +96,7 @@ export default function SettingsClient({ locale, profile }: Props) {
   }
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10 max-w-2xl">
+    <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10 max-w-2xl">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
       </div>

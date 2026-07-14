@@ -1,7 +1,8 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { BookOpen, Flame, Star, Target, ChevronRight, Play } from 'lucide-react'
+import { BookOpen, Flame, Star, Target, ChevronRight, Play, Clock } from 'lucide-react'
 
 const LEVEL_COLORS: Record<string, string> = {
   'pre-a1': '#10B981', 'a1': '#3B82F6', 'a2': '#8B5CF6',
@@ -78,9 +79,26 @@ function getGreeting() {
   return 'greeting_evening'
 }
 
+function getStudyMinutesToday(): number {
+  try {
+    const key = `analia_study_${new Date().toDateString()}`
+    return parseInt(localStorage.getItem(key) || '0', 10)
+  } catch { return 0 }
+}
+
+export function recordStudyTime(minutes: number) {
+  try {
+    const key = `analia_study_${new Date().toDateString()}`
+    const prev = parseInt(localStorage.getItem(key) || '0', 10)
+    localStorage.setItem(key, String(prev + minutes))
+  } catch {}
+}
+
 export default function DashboardClient({ locale, profile, levels, recentProgress }: Props) {
   const t = tx[locale as keyof typeof tx] || tx.en
   const name = profile?.display_name || profile?.username || 'Learner'
+  const [studyMinutes, setStudyMinutes] = useState(0)
+  useEffect(() => { setStudyMinutes(getStudyMinutesToday()) }, [])
   const xp = profile?.total_xp || 0
   const streak = profile?.streak_days || 0
   const currentLevelId = profile?.current_level_id || 1
@@ -92,7 +110,7 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
   const goalPct = Math.round((xpToday / dailyXpGoal) * 100)
 
   return (
-    <main className="ml-20 lg:ml-64 flex-1 p-6 lg:p-10">
+    <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
 
       {/* Header */}
       <div className="mb-8">
@@ -116,7 +134,13 @@ export default function DashboardClient({ locale, profile, levels, recentProgres
         <StatCard icon="⭐" label={t.total_xp} value={xp.toLocaleString()} color="#F59E0B" />
         <StatCard icon="🔥" label={t.streak} value={`${streak} d`} color="#EF4444" />
         <StatCard icon="📚" label={t.lessons_done} value={recentProgress.length} color="#8B5CF6" />
-        <StatCard icon="🔤" label={t.vocab_learned} value="0" color="#10B981" />
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-1">
+            <Clock size={16} style={{ color: '#10B981' }} />
+            <span className="text-xs text-gray-600 font-medium">{locale === 'zh' ? '今日学习' : locale === 'ar' ? 'دراسة اليوم' : 'Today'}</span>
+          </div>
+          <div className="text-2xl font-bold text-gray-900">{studyMinutes}<span className="text-sm text-gray-500 ml-1">{locale === 'zh' ? '分' : locale === 'ar' ? 'د' : 'm'}</span></div>
+        </div>
       </div>
 
       {/* Daily goal */}
