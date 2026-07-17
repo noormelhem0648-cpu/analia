@@ -15,6 +15,7 @@ import { MING_STORIES, A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS
 import { A2_STORIES, A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
 import { B1_STORIES, B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
 import { B2_STORIES, B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
+import { C1_STORIES, C2_STORIES, C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C2_LITERARY, C2_ACADEMIC_ADVANCED } from '@/lib/c1c2Content'
 
 interface Lesson {
   id: number
@@ -148,6 +149,8 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     if (c === 'a2') return A2_STORIES[d] ?? A2_STORIES[0]
     if (c === 'b1') return B1_STORIES[d] ?? B1_STORIES[0]
     if (c === 'b2') return B2_STORIES[d] ?? B2_STORIES[0]
+    if (c === 'c1') return C1_STORIES[d] ?? C1_STORIES[0]
+    if (c === 'c2') return C2_STORIES[d] ?? C2_STORIES[0]
     return MING_STORIES[d] ?? MING_STORIES[0]
   })() : null
 
@@ -183,6 +186,21 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     return B2_ABSTRACT
   }
 
+  function pickC1Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('rhetoric') || t.includes('eloquence')) return C1_RHETORIC
+    if (t.includes('classical')) return C1_CLASSICAL
+    if (t.includes('philosoph')) return C1_PHILOSOPHY
+    return C1_RHETORIC
+  }
+
+  function pickC2Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('literary') || t.includes('analysis')) return C2_LITERARY
+    if (t.includes('academic')) return C2_ACADEMIC_ADVANCED
+    return C2_LITERARY
+  }
+
   function pickA2Vocab(): VocabItem[] {
     const t = lesson.title_en?.toLowerCase() || ''
     if (t.includes('connector') || t.includes('sentence')) return A2_SENTENCE_STRUCTURE
@@ -196,7 +214,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   const vocabItems: VocabItem[] = isGreetings ? PRE_A1_GREETINGS
     : isNumbers ? ARABIC_NUMBERS
-    : isVocab ? (lesson.levels?.code === 'b2' ? pickB2Vocab() : lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
+    : isVocab ? (lesson.levels?.code === 'c2' ? pickC2Vocab() : lesson.levels?.code === 'c1' ? pickC1Vocab() : lesson.levels?.code === 'b2' ? pickB2Vocab() : lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
     : []
   const vocabExercises = (isGreetings || isNumbers || isVocab)
     ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4)
@@ -222,6 +240,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   const [saving, setSaving] = useState(false)
   const [done, setDone] = useState(progress?.status === 'completed')
   const [confetti, setConfetti] = useState(false)
+  const [newAchievements, setNewAchievements] = useState<Array<{ icon: string; name_zh: string; name_en: string; name_ar: string }>>([])
   const startTime = useRef(Date.now())
 
   const step = steps[currentStep]
@@ -252,11 +271,13 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
       const prev = parseInt(localStorage.getItem(key) || '0', 10)
       localStorage.setItem(key, String(prev + Math.round(timeSpent / 60)))
     } catch {}
-    await fetch('/api/progress/lesson', {
+    const res = await fetch('/api/progress/lesson', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lesson_id: lesson.id, status: 'completed', score: 100, time_spent_seconds: timeSpent, xp_earned: lesson.xp_reward }),
     })
+    const data = await res.json().catch(() => ({}))
+    if (data.achievements?.length) setNewAchievements(data.achievements)
     try { localStorage.removeItem(posKey) } catch {}
     setDone(true)
     setConfetti(true)
@@ -274,11 +295,31 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
           <div className="text-7xl mb-4">🎉</div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{t.great}</h1>
           <p className="text-gray-700 mb-6">{title}</p>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-6 flex items-center justify-center gap-3">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-4 flex items-center justify-center gap-3">
             <Star size={24} className="text-yellow-500" fill="currentColor" />
             <span className="text-2xl font-bold text-gray-800">+{lesson.xp_reward}</span>
             <span className="text-gray-700">{t.xp_earned}</span>
           </div>
+
+          {newAchievements.length > 0 && (
+            <div className="mb-6 space-y-2">
+              {newAchievements.map((ach, i) => {
+                const name = locale === 'zh' ? ach.name_zh : locale === 'ar' ? ach.name_ar : ach.name_en
+                return (
+                  <div key={i} className="flex items-center gap-3 bg-purple-50 border border-purple-200 rounded-2xl px-4 py-3">
+                    <span className="text-2xl">{ach.icon}</span>
+                    <div className="text-left">
+                      <p className="text-xs text-purple-500 font-semibold uppercase tracking-wide">
+                        {locale === 'zh' ? '新成就解锁！' : locale === 'ar' ? 'إنجاز جديد!' : 'Achievement Unlocked!'}
+                      </p>
+                      <p className="text-sm font-bold text-gray-800">{name}</p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
           {generatedExercises.length > 0 && (
             <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id}/practice`}
               className="block w-full py-3 rounded-xl border-2 font-semibold mb-3 transition-all hover:bg-gray-50"

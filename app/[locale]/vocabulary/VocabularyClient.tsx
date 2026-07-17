@@ -8,6 +8,7 @@ import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERB
 import { A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
 import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
 import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
+import { C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C2_LITERARY, C2_ACADEMIC_ADVANCED } from '@/lib/c1c2Content'
 
 const tx = {
   zh: { title: '词汇库', subtitle: '所有阿拉伯语单词', search: '搜索词汇...', meaning: '含义', example: '例句', all: '全部', no_results: '没有找到词汇', builtin: '内置词汇', db: '我的学习词汇', words: '个词', category: '分类', filter_all: '全部分类' },
@@ -41,6 +42,11 @@ const ALL_BUILTIN = [
   ...B2_POLITICS,
   ...B2_ACADEMIC,
   ...B2_ADVANCED_VERBS,
+  ...C1_RHETORIC,
+  ...C1_CLASSICAL,
+  ...C1_PHILOSOPHY,
+  ...C2_LITERARY,
+  ...C2_ACADEMIC_ADVANCED,
 ]
 
 const CATEGORY_COLORS: Record<string, string> = {

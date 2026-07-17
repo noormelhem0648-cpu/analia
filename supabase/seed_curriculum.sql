@@ -160,7 +160,36 @@ BEGIN
 END $$;
 
 -- ─────────────────────────────────────────────────────────────
---  6. ACHIEVEMENTS (الإنجازات)
+--  6. C1 LESSONS (دروس C1 — المستوى المتقدم)
+-- ─────────────────────────────────────────────────────────────
+DO $$
+DECLARE c1_id INT;
+BEGIN
+  SELECT id INTO c1_id FROM levels WHERE code = 'c1';
+  INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
+    (c1_id, 1, 'vocabulary', 'البلاغة والفصاحة',          'Rhetoric & Eloquence',   '修辞学与文采',   80, 35, 1),
+    (c1_id, 2, 'vocabulary', 'العربية الكلاسيكية',         'Classical Arabic',       '古典阿拉伯语',   80, 35, 2),
+    (c1_id, 3, 'vocabulary', 'الفلسفة والفكر',             'Philosophy & Thought',   '哲学与思想',     80, 35, 3),
+    (c1_id, 4, 'dialogue',   'قصة: الشعر الكلاسيكي',      'Story: Classical Poetry','故事：古典诗歌', 100, 40, 4)
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- ─────────────────────────────────────────────────────────────
+--  7. C2 LESSONS (دروس C2 — مستوى الإتقان)
+-- ─────────────────────────────────────────────────────────────
+DO $$
+DECLARE c2_id INT;
+BEGIN
+  SELECT id INTO c2_id FROM levels WHERE code = 'c2';
+  INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
+    (c2_id, 1, 'vocabulary', 'التحليل الأدبي',             'Literary Analysis',          '文学分析',       100, 40, 1),
+    (c2_id, 2, 'vocabulary', 'اللغة الأكاديمية المتقدمة',  'Advanced Academic Language', '高级学术语言',   100, 40, 2),
+    (c2_id, 3, 'dialogue',   'قصة: المؤتمر الدولي',        'Story: International Symposium', '故事：国际研讨会', 120, 45, 3)
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- ─────────────────────────────────────────────────────────────
+--  8. ACHIEVEMENTS (الإنجازات)
 -- ─────────────────────────────────────────────────────────────
 INSERT INTO achievements (code, name_ar, name_en, name_zh, description_ar, description_en, description_zh, icon_emoji, xp_reward, condition_type, condition_value)
 VALUES

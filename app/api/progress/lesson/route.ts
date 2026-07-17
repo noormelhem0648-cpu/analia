@@ -24,9 +24,25 @@ export async function POST(req: NextRequest) {
 
     if (progressErr) throw progressErr
 
-    // Award XP if completed
-    if (status === 'completed' && xp_earned) {
-      await supabase.rpc('increment_xp', { user_id: user.id, xp_amount: xp_earned })
+    if (status === 'completed') {
+      // Award XP
+      if (xp_earned) {
+        await supabase.rpc('increment_xp', { user_id: user.id, xp_amount: xp_earned })
+      }
+
+      // Update streak (fire-and-forget — non-fatal if fails)
+      try { await supabase.rpc('update_streak', { p_user_id: user.id }) } catch {}
+
+      // Check and grant achievements then fetch newly unlocked ones
+      try { await supabase.rpc('check_and_grant_achievements', { p_user_id: user.id }) } catch {}
+
+      const { data: newAchievements } = await supabase
+        .from('user_achievements')
+        .select('achievements(icon, name_ar, name_en, name_zh)')
+        .eq('user_id', user.id)
+        .gte('earned_at', new Date(Date.now() - 10_000).toISOString())
+
+      return NextResponse.json({ ok: true, achievements: newAchievements?.map(r => r.achievements) ?? [] })
     }
 
     return NextResponse.json({ ok: true })

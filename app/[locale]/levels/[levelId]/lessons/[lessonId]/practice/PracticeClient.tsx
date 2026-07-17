@@ -10,6 +10,7 @@ import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERB
 import { A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
 import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
 import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
+import { C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C2_LITERARY, C2_ACADEMIC_ADVANCED } from '@/lib/c1c2Content'
 
 interface Lesson {
   id: number
@@ -73,6 +74,14 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
         else if (ti.includes('academic') || ti.includes('writing')) bank = B2_ACADEMIC
         else if (ti.includes('verb')) bank = B2_ADVANCED_VERBS
         else bank = B2_ABSTRACT
+      } else if (levelCode === 'c1') {
+        if (ti.includes('rhetoric') || ti.includes('eloquence')) bank = C1_RHETORIC
+        else if (ti.includes('classical')) bank = C1_CLASSICAL
+        else if (ti.includes('philosoph')) bank = C1_PHILOSOPHY
+        else bank = C1_RHETORIC
+      } else if (levelCode === 'c2') {
+        if (ti.includes('literary') || ti.includes('analysis')) bank = C2_LITERARY
+        else bank = C2_ACADEMIC_ADVANCED
       }
       return generateVocabExercises(bank.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
     }
