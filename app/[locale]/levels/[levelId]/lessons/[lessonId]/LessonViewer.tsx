@@ -14,6 +14,7 @@ import { PRE_A1_VOCAB, PRE_A1_GREETINGS, ARABIC_NUMBERS, type VocabItem } from '
 import { MING_STORIES, A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
 import { A2_STORIES, A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
 import { B1_STORIES, B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
+import { B2_STORIES, B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
 
 interface Lesson {
   id: number
@@ -141,12 +142,12 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   const isDialogue = lesson.lesson_type === 'dialogue'
 
   // pick dialogue by level code + day_number
-  const allStories = [...MING_STORIES, ...A2_STORIES]
   const activeDialogue = isDialogue ? (() => {
     const c = lesson.levels?.code
     const d = lesson.day_number - 1
     if (c === 'a2') return A2_STORIES[d] ?? A2_STORIES[0]
     if (c === 'b1') return B1_STORIES[d] ?? B1_STORIES[0]
+    if (c === 'b2') return B2_STORIES[d] ?? B2_STORIES[0]
     return MING_STORIES[d] ?? MING_STORIES[0]
   })() : null
 
@@ -172,6 +173,16 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     return B1_WORK
   }
 
+  function pickB2Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('media') || t.includes('news')) return B2_MEDIA
+    if (t.includes('politic') || t.includes('society')) return B2_POLITICS
+    if (t.includes('abstract')) return B2_ABSTRACT
+    if (t.includes('academic') || t.includes('writing')) return B2_ACADEMIC
+    if (t.includes('verb')) return B2_ADVANCED_VERBS
+    return B2_ABSTRACT
+  }
+
   function pickA2Vocab(): VocabItem[] {
     const t = lesson.title_en?.toLowerCase() || ''
     if (t.includes('connector') || t.includes('sentence')) return A2_SENTENCE_STRUCTURE
@@ -185,7 +196,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   const vocabItems: VocabItem[] = isGreetings ? PRE_A1_GREETINGS
     : isNumbers ? ARABIC_NUMBERS
-    : isVocab ? (lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
+    : isVocab ? (lesson.levels?.code === 'b2' ? pickB2Vocab() : lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
     : []
   const vocabExercises = (isGreetings || isNumbers || isVocab)
     ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4)

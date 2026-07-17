@@ -142,7 +142,25 @@ BEGIN
 END $$;
 
 -- ─────────────────────────────────────────────────────────────
---  5. ACHIEVEMENTS (الإنجازات)
+--  5. B2 LESSONS (دروس B2 — المستوى المتوسط المتقدم)
+-- ─────────────────────────────────────────────────────────────
+DO $$
+DECLARE b2_id INT;
+BEGIN
+  SELECT id INTO b2_id FROM levels WHERE code = 'b2';
+  INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
+    (b2_id, 1, 'vocabulary', 'الإعلام والأخبار',           'Media & News',             '媒体与新闻',     60, 30, 1),
+    (b2_id, 2, 'vocabulary', 'السياسة والمجتمع',            'Politics & Society',       '政治与社会',     60, 30, 2),
+    (b2_id, 3, 'vocabulary', 'المفاهيم التجريدية',          'Abstract Concepts',        '抽象概念',       60, 28, 3),
+    (b2_id, 4, 'vocabulary', 'الكتابة الأكاديمية',          'Academic Writing',         '学术写作',       60, 30, 4),
+    (b2_id, 5, 'vocabulary', 'الأفعال المتقدمة',            'Advanced Verbs',           '高级动词',       60, 25, 5),
+    (b2_id, 6, 'dialogue',   'قصة: مناقشة أطروحة منغ',     'Story: Ming''s Thesis Defense',  '故事：明的论文答辩',  80, 35, 6),
+    (b2_id, 7, 'dialogue',   'قصة: مؤتمر الحوار الثقافي', 'Story: Cultural Conference', '故事：文化交流会议', 80, 35, 7)
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- ─────────────────────────────────────────────────────────────
+--  6. ACHIEVEMENTS (الإنجازات)
 -- ─────────────────────────────────────────────────────────────
 INSERT INTO achievements (code, name_ar, name_en, name_zh, description_ar, description_en, description_zh, icon_emoji, xp_reward, condition_type, condition_value)
 VALUES

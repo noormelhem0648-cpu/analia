@@ -5,6 +5,9 @@ import { Search, BookOpen } from 'lucide-react'
 import { speakArabic } from '@/lib/tts'
 import { PRE_A1_GREETINGS, ARABIC_NUMBERS, PRE_A1_VOCAB } from '@/lib/preA1Content'
 import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
+import { A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
+import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
+import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
 
 const tx = {
   zh: { title: '词汇库', subtitle: '所有阿拉伯语单词', search: '搜索词汇...', meaning: '含义', example: '例句', all: '全部', no_results: '没有找到词汇', builtin: '内置词汇', db: '我的学习词汇', words: '个词', category: '分类', filter_all: '全部分类' },
@@ -23,6 +26,21 @@ const ALL_BUILTIN = [
   ...A1_TIME,
   ...A1_VERBS_PAST,
   ...A1_VERBS_PRESENT,
+  ...A2_SENTENCE_STRUCTURE,
+  ...A2_BODY_HEALTH,
+  ...A2_FOOD,
+  ...A2_TRAVEL,
+  ...A2_COMPARISON,
+  ...A2_FAMILY,
+  ...B1_VERBS,
+  ...B1_CULTURE,
+  ...B1_WORK,
+  ...B1_OPINION,
+  ...B2_ABSTRACT,
+  ...B2_MEDIA,
+  ...B2_POLITICS,
+  ...B2_ACADEMIC,
+  ...B2_ADVANCED_VERBS,
 ]
 
 const CATEGORY_COLORS: Record<string, string> = {

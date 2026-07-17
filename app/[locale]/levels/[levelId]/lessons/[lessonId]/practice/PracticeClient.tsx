@@ -7,6 +7,9 @@ import ExerciseEngine from '@/components/lesson/ExerciseEngine'
 import { generateLetterExercises, generateVocabExercises } from '@/lib/generateExercises'
 import { PRE_A1_GREETINGS, ARABIC_NUMBERS, PRE_A1_VOCAB } from '@/lib/preA1Content'
 import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
+import { A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
+import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
+import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
 
 interface Lesson {
   id: number
@@ -49,6 +52,27 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
         else if (ti.includes('time')) bank = A1_TIME
         else if (ti.includes('past')) bank = A1_VERBS_PAST
         else if (ti.includes('present')) bank = A1_VERBS_PRESENT
+      } else if (levelCode === 'a2') {
+        if (ti.includes('connector') || ti.includes('sentence')) bank = A2_SENTENCE_STRUCTURE
+        else if (ti.includes('body') || ti.includes('health')) bank = A2_BODY_HEALTH
+        else if (ti.includes('food') || ti.includes('drink')) bank = A2_FOOD
+        else if (ti.includes('travel') || ti.includes('transport')) bank = A2_TRAVEL
+        else if (ti.includes('compar')) bank = A2_COMPARISON
+        else if (ti.includes('family') || ti.includes('relation')) bank = A2_FAMILY
+        else bank = A2_FOOD
+      } else if (levelCode === 'b1') {
+        if (ti.includes('verb')) bank = B1_VERBS
+        else if (ti.includes('culture') || ti.includes('heritage')) bank = B1_CULTURE
+        else if (ti.includes('work') || ti.includes('career')) bank = B1_WORK
+        else if (ti.includes('opinion') || ti.includes('express')) bank = B1_OPINION
+        else bank = B1_WORK
+      } else if (levelCode === 'b2') {
+        if (ti.includes('media') || ti.includes('news')) bank = B2_MEDIA
+        else if (ti.includes('politic') || ti.includes('society')) bank = B2_POLITICS
+        else if (ti.includes('abstract')) bank = B2_ABSTRACT
+        else if (ti.includes('academic') || ti.includes('writing')) bank = B2_ACADEMIC
+        else if (ti.includes('verb')) bank = B2_ADVANCED_VERBS
+        else bank = B2_ABSTRACT
       }
       return generateVocabExercises(bank.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
     }
