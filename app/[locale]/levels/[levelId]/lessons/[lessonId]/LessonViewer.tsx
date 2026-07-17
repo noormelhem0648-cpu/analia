@@ -5,8 +5,13 @@ import Link from 'next/link'
 import { ChevronLeft, ChevronRight, CheckCircle, Clock, Star, BookOpen, Trophy } from 'lucide-react'
 import LetterCard from '@/components/lesson/LetterCard'
 import Confetti from '@/components/lesson/Confetti'
+import HarakatLesson from '@/components/lesson/HarakatLesson'
+import VocabFlashcard from '@/components/lesson/VocabFlashcard'
+import StoryDialogueLesson from '@/components/lesson/StoryDialogueLesson'
 import { getLettersForLesson } from '@/lib/arabicAlphabet'
-import { generateLetterExercises, type GeneratedExercise } from '@/lib/generateExercises'
+import { generateLetterExercises, generateVocabExercises, type GeneratedExercise } from '@/lib/generateExercises'
+import { PRE_A1_VOCAB, PRE_A1_GREETINGS, ARABIC_NUMBERS, type VocabItem } from '@/lib/preA1Content'
+import { MING_STORIES, A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
 
 interface Lesson {
   id: number
@@ -32,7 +37,7 @@ const tx = {
   ar: { back: 'رجوع', of: 'من', start: 'ابدأ', next: 'التالي', prev: 'السابق', finish: 'أنهِ واكسب النقاط', loading: 'جارٍ الحفظ...', great: 'أحسنت!', xp_earned: 'نقاط مكتسبة', minutes: 'د', check: 'تحقق', correct: 'صحيح!', wrong: 'خطأ!', letters: 'حرف', practice: 'تمرين التعزيز' },
 }
 
-type StepType = 'intro' | 'letter' | 'exercise' | 'complete'
+type StepType = 'intro' | 'letter' | 'exercise' | 'complete' | 'harakat' | 'vocab' | 'dialogue'
 interface Step { type: StepType; index: number }
 
 function InlineExercise({ ex, locale, color, onNext }: {
@@ -127,13 +132,47 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   const letters = lesson.lesson_type === 'letters' ? getLettersForLesson(lesson.day_number) : []
   const generatedExercises = lesson.lesson_type === 'letters' ? generateLetterExercises(lesson.day_number, 4) : []
+  const isHarakat = lesson.lesson_type === 'harakat'
+  const isVocab = lesson.lesson_type === 'vocabulary'
+  const isGreetings = lesson.lesson_type === 'greetings'
+  const isNumbers = lesson.lesson_type === 'numbers'
+  const isDialogue = lesson.lesson_type === 'dialogue'
 
-  const steps: Step[] = [
-    { type: 'intro', index: 0 },
-    ...letters.map((_, i) => ({ type: 'letter' as const, index: i })),
-    ...generatedExercises.slice(0, 3).map((_, i) => ({ type: 'exercise' as const, index: i })),
-    { type: 'complete', index: 0 },
-  ]
+  // pick dialogue by day_number (1-based index into MING_STORIES)
+  const activeDialogue = isDialogue ? (MING_STORIES[lesson.day_number - 1] ?? MING_STORIES[0]) : null
+
+  // pick A1 vocab bank by title keyword
+  function pickA1Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('pronoun')) return A1_PRONOUNS
+    if (t.includes('profession')) return A1_PROFESSIONS
+    if (t.includes('place') || t.includes('national')) return A1_PLACES
+    if (t.includes('time')) return A1_TIME
+    if (t.includes('past')) return A1_VERBS_PAST
+    if (t.includes('present')) return A1_VERBS_PRESENT
+    if (t.includes('demonst')) return A1_PRONOUNS
+    return A1_PRONOUNS
+  }
+
+  const vocabItems: VocabItem[] = isGreetings ? PRE_A1_GREETINGS
+    : isNumbers ? ARABIC_NUMBERS
+    : isVocab ? (lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
+    : []
+  const vocabExercises = (isGreetings || isNumbers || isVocab)
+    ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4)
+    : []
+
+  const steps: Step[] = isDialogue
+    ? [{ type: 'intro', index: 0 }, { type: 'dialogue' as StepType, index: 0 }, { type: 'complete', index: 0 }]
+    : isHarakat
+    ? [{ type: 'intro', index: 0 }, { type: 'harakat' as StepType, index: 0 }, { type: 'complete', index: 0 }]
+    : [
+        { type: 'intro', index: 0 },
+        ...letters.map((_, i) => ({ type: 'letter' as const, index: i })),
+        ...vocabItems.map((_, i) => ({ type: 'vocab' as StepType, index: i })),
+        ...[...generatedExercises, ...vocabExercises].slice(0, 3).map((_, i) => ({ type: 'exercise' as const, index: i })),
+        { type: 'complete', index: 0 },
+      ]
 
   const posKey = `analia_lesson_${lesson.id}_step`
   const [currentStep, setCurrentStep] = useState(() => {
@@ -296,21 +335,31 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
             </div>
           )}
 
-          {step.type === 'exercise' && generatedExercises[step.index] && (
-            <div>
-              <p className="text-center text-sm text-gray-600 mb-4">
-                {locale === 'ar' ? 'تمرين' : locale === 'zh' ? '练习' : 'Exercise'} {step.index + 1} {t.of} {generatedExercises.slice(0, 3).length}
-              </p>
-              <InlineExercise
-                key={currentStep}
-                ex={generatedExercises[step.index]}
-                locale={locale}
-                color={color}
-                onNext={next}
-              />
-            </div>
+          {step.type === 'harakat' && (
+            <HarakatLesson locale={locale} onComplete={next} />
           )}
 
+          {step.type === 'dialogue' && activeDialogue && (
+            <StoryDialogueLesson dialogue={activeDialogue} locale={locale} onComplete={next} />
+          )}
+
+          {step.type === 'vocab' && vocabItems[step.index] && (
+            <VocabFlashcard item={vocabItems[step.index]} locale={locale} onNext={next} />
+          )}
+
+          {step.type === 'exercise' && (() => {
+            const allEx = [...generatedExercises, ...vocabExercises].slice(0, 3)
+            const ex = allEx[step.index]
+            if (!ex) return null
+            return (
+              <div>
+                <p className="text-center text-sm text-gray-600 mb-4">
+                  {locale === 'ar' ? 'تمرين' : locale === 'zh' ? '练习' : 'Exercise'} {step.index + 1} {t.of} {allEx.length}
+                </p>
+                <InlineExercise key={currentStep} ex={ex} locale={locale} color={color} onNext={next} />
+              </div>
+            )
+          })()}
           {step.type === 'complete' && (
             <div className="text-center">
               <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-green-100">
