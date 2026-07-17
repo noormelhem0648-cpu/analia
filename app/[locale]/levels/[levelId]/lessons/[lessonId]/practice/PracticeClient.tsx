@@ -4,7 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, RotateCcw } from 'lucide-react'
 import ExerciseEngine from '@/components/lesson/ExerciseEngine'
-import { generateLetterExercises } from '@/lib/generateExercises'
+import { generateLetterExercises, generateVocabExercises } from '@/lib/generateExercises'
+import { PRE_A1_GREETINGS, ARABIC_NUMBERS, PRE_A1_VOCAB } from '@/lib/preA1Content'
+import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
 
 interface Lesson {
   id: number
@@ -31,9 +33,28 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
   const [key, setKey] = useState(0)
   const [result, setResult] = useState<{ score: number; xp: number } | null>(null)
 
-  const exercises = lesson.lesson_type === 'letters'
-    ? generateLetterExercises(lesson.day_number, 8)
-    : []
+  function buildExercises() {
+    const t = lesson.lesson_type
+    const ti = lesson.title_en?.toLowerCase() || ''
+    if (t === 'letters') return generateLetterExercises(lesson.day_number, 8)
+    if (t === 'greetings') return generateVocabExercises(PRE_A1_GREETINGS.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
+    if (t === 'numbers')   return generateVocabExercises(ARABIC_NUMBERS.map(v => ({ ar: v.arabic_with_harakat, en: v.meaning_en, zh: v.meaning_zh })), 8)
+    if (t === 'vocabulary') {
+      const levelCode = lesson.levels?.code
+      let bank = PRE_A1_VOCAB
+      if (levelCode === 'a1') {
+        if (ti.includes('pronoun') || ti.includes('demonst')) bank = A1_PRONOUNS
+        else if (ti.includes('profession')) bank = A1_PROFESSIONS
+        else if (ti.includes('place') || ti.includes('national')) bank = A1_PLACES
+        else if (ti.includes('time')) bank = A1_TIME
+        else if (ti.includes('past')) bank = A1_VERBS_PAST
+        else if (ti.includes('present')) bank = A1_VERBS_PRESENT
+      }
+      return generateVocabExercises(bank.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
+    }
+    return []
+  }
+  const exercises = buildExercises()
 
   function handleComplete(score: number, xp: number) {
     setResult({ score, xp })

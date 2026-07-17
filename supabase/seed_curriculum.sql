@@ -106,6 +106,42 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- ─────────────────────────────────────────────────────────────
+--  4b. A2 LESSONS
+-- ─────────────────────────────────────────────────────────────
+DO $$
+DECLARE a2_id INT;
+BEGIN
+  SELECT id INTO a2_id FROM levels WHERE code = 'a2';
+  INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
+    (a2_id, 1, 'vocabulary', 'الروابط وبنية الجملة', 'Connectors & Sentence Structure', '连接词和句子结构', 30, 20, 1),
+    (a2_id, 1, 'vocabulary', 'أجزاء الجسم والصحة', 'Body & Health', '身体部位和健康', 25, 18, 2),
+    (a2_id, 2, 'dialogue',   'قصة: مينغ يزور الطبيب', 'Story: Ming Visits the Doctor', '故事：明去看医生', 35, 22, 3),
+    (a2_id, 1, 'vocabulary', 'الطعام والشراب', 'Food & Drink', '食物和饮料', 25, 18, 4),
+    (a2_id, 3, 'dialogue',   'قصة: في المطعم', 'Story: At the Restaurant', '故事：在餐厅点餐', 35, 22, 5),
+    (a2_id, 1, 'vocabulary', 'السفر والمواصلات', 'Travel & Transport', '旅行和交通', 30, 20, 6),
+    (a2_id, 4, 'dialogue',   'قصة: التخطيط للسفر إلى الإسكندرية', 'Story: Planning Trip to Alexandria', '故事：计划去亚历山大旅行', 35, 22, 7),
+    (a2_id, 1, 'vocabulary', 'المقارنة والتفضيل', 'Comparison', '比较级和最高级', 30, 20, 8),
+    (a2_id, 1, 'vocabulary', 'الأسرة والعلاقات', 'Family & Relationships', '家庭和人际关系', 25, 18, 9)
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- ─────────────────────────────────────────────────────────────
+--  4c. B1 LESSONS
+-- ─────────────────────────────────────────────────────────────
+DO $$
+DECLARE b1_id INT;
+BEGIN
+  SELECT id INTO b1_id FROM levels WHERE code = 'b1';
+  INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
+    (b1_id, 1, 'vocabulary', 'الأفعال المزيدة', 'Advanced Verb Forms', '高级动词形式', 40, 25, 1),
+    (b1_id, 1, 'vocabulary', 'الثقافة العربية والتراث', 'Arab Culture & Heritage', '阿拉伯文化与传统', 35, 22, 2),
+    (b1_id, 1, 'vocabulary', 'العمل والمهنة', 'Work & Career', '工作与职场', 35, 22, 3),
+    (b1_id, 2, 'dialogue',   'قصة: مقابلة عمل مينغ', 'Story: Ming''s Job Interview', '故事：明的工作面试', 45, 28, 4),
+    (b1_id, 1, 'vocabulary', 'التعبير عن الرأي', 'Expressing Opinions', '表达观点与意见', 35, 22, 5)
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- ─────────────────────────────────────────────────────────────
 --  5. ACHIEVEMENTS (الإنجازات)
 -- ─────────────────────────────────────────────────────────────
 INSERT INTO achievements (code, name_ar, name_en, name_zh, description_ar, description_en, description_zh, icon_emoji, xp_reward, condition_type, condition_value)

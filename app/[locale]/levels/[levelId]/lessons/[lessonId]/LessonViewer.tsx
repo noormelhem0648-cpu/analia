@@ -12,6 +12,8 @@ import { getLettersForLesson } from '@/lib/arabicAlphabet'
 import { generateLetterExercises, generateVocabExercises, type GeneratedExercise } from '@/lib/generateExercises'
 import { PRE_A1_VOCAB, PRE_A1_GREETINGS, ARABIC_NUMBERS, type VocabItem } from '@/lib/preA1Content'
 import { MING_STORIES, A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
+import { A2_STORIES, A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
+import { B1_STORIES, B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
 
 interface Lesson {
   id: number
@@ -138,8 +140,15 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   const isNumbers = lesson.lesson_type === 'numbers'
   const isDialogue = lesson.lesson_type === 'dialogue'
 
-  // pick dialogue by day_number (1-based index into MING_STORIES)
-  const activeDialogue = isDialogue ? (MING_STORIES[lesson.day_number - 1] ?? MING_STORIES[0]) : null
+  // pick dialogue by level code + day_number
+  const allStories = [...MING_STORIES, ...A2_STORIES]
+  const activeDialogue = isDialogue ? (() => {
+    const c = lesson.levels?.code
+    const d = lesson.day_number - 1
+    if (c === 'a2') return A2_STORIES[d] ?? A2_STORIES[0]
+    if (c === 'b1') return B1_STORIES[d] ?? B1_STORIES[0]
+    return MING_STORIES[d] ?? MING_STORIES[0]
+  })() : null
 
   // pick A1 vocab bank by title keyword
   function pickA1Vocab(): VocabItem[] {
@@ -154,9 +163,29 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     return A1_PRONOUNS
   }
 
+  function pickB1Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('verb')) return B1_VERBS
+    if (t.includes('culture') || t.includes('heritage')) return B1_CULTURE
+    if (t.includes('work') || t.includes('career')) return B1_WORK
+    if (t.includes('opinion') || t.includes('express')) return B1_OPINION
+    return B1_WORK
+  }
+
+  function pickA2Vocab(): VocabItem[] {
+    const t = lesson.title_en?.toLowerCase() || ''
+    if (t.includes('connector') || t.includes('sentence')) return A2_SENTENCE_STRUCTURE
+    if (t.includes('body') || t.includes('health')) return A2_BODY_HEALTH
+    if (t.includes('food') || t.includes('drink')) return A2_FOOD
+    if (t.includes('travel') || t.includes('transport')) return A2_TRAVEL
+    if (t.includes('compar')) return A2_COMPARISON
+    if (t.includes('family') || t.includes('relation')) return A2_FAMILY
+    return A2_FOOD
+  }
+
   const vocabItems: VocabItem[] = isGreetings ? PRE_A1_GREETINGS
     : isNumbers ? ARABIC_NUMBERS
-    : isVocab ? (lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
+    : isVocab ? (lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
     : []
   const vocabExercises = (isGreetings || isNumbers || isVocab)
     ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4)
