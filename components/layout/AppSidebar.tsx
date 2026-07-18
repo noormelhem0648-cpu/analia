@@ -2,16 +2,17 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Home, BookOpen, Map, Star, MessageCircle, Trophy, Settings, LogOut, ShieldCheck, Globe, Medal } from 'lucide-react'
+import { Home, BookOpen, Map, Star, MessageCircle, Trophy, Settings, LogOut, ShieldCheck, Globe, Medal, Music2 } from 'lucide-react'
 
 const navItems = [
-  { icon: Home, labelZh: '主页', labelEn: 'Home', labelAr: 'الرئيسية', href: 'dashboard' },
-  { icon: Map, labelZh: '路径', labelEn: 'Path', labelAr: 'المسار', href: 'levels' },
-  { icon: BookOpen, labelZh: '词汇', labelEn: 'Vocab', labelAr: 'المفردات', href: 'vocabulary' },
-  { icon: MessageCircle, labelZh: 'AI老师', labelEn: 'AI', labelAr: 'معلم', href: 'ai-tutor' },
-  { icon: Medal, labelZh: '排行榜', labelEn: 'Ranks', labelAr: 'المتصدرون', href: 'leaderboard' },
-  { icon: Trophy, labelZh: '成就', labelEn: 'Awards', labelAr: 'إنجازات', href: 'achievements' },
-  { icon: Settings, labelZh: '设置', labelEn: 'Settings', labelAr: 'الإعدادات', href: 'settings' },
+  { icon: Home,        labelZh: '主页',     labelEn: 'Home',    labelAr: 'الرئيسية',    href: 'dashboard' },
+  { icon: Map,         labelZh: '路径',     labelEn: 'Path',    labelAr: 'المسار',      href: 'levels' },
+  { icon: Music2,      labelZh: '发音图表', labelEn: 'Sounds',  labelAr: 'الأصوات',     href: 'sounds' },
+  { icon: BookOpen,    labelZh: '词汇',     labelEn: 'Vocab',   labelAr: 'المفردات',    href: 'vocabulary' },
+  { icon: MessageCircle, labelZh: 'AI老师', labelEn: 'AI',      labelAr: 'معلم',        href: 'ai-tutor' },
+  { icon: Medal,       labelZh: '排行榜',   labelEn: 'Ranks',   labelAr: 'المتصدرون',   href: 'leaderboard' },
+  { icon: Trophy,      labelZh: '成就',     labelEn: 'Awards',  labelAr: 'إنجازات',     href: 'achievements' },
+  { icon: Settings,    labelZh: '设置',     labelEn: 'Settings',labelAr: 'الإعدادات',   href: 'settings' },
 ]
 
 function getLabel(item: typeof navItems[0], locale: string) {
