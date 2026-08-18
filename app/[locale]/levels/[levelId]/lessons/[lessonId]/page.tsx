@@ -2,6 +2,8 @@ import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import AppSidebar from '@/components/layout/AppSidebar'
 import LessonViewer from './LessonViewer'
+import ZhLessonViewer from '@/components/lesson/ZhLessonViewer'
+import ArLessonViewer from '@/components/lesson/ArLessonViewer'
 
 export default async function LessonPage({
   params,
@@ -22,6 +24,16 @@ export default async function LessonPage({
 
   if (!lesson) notFound()
 
+  // Fetch the next lesson in the same level (by order_index)
+  const { data: nextLesson } = await supabase
+    .from('lessons')
+    .select('id, order_index')
+    .eq('level_id', parseInt(levelId))
+    .gt('order_index', lesson.order_index ?? 0)
+    .order('order_index', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+
   const { data: progress } = await supabase
     .from('user_lesson_progress')
     .select('*')
@@ -29,17 +41,40 @@ export default async function LessonPage({
     .eq('lesson_id', parseInt(lessonId))
     .maybeSingle()
 
+  const isZh = (lesson.levels?.code || '').startsWith('zh-')
+  // New Arabic path lessons live under units; legacy flat lessons fall back to the old viewer.
+  const isArUnit = !isZh && lesson.unit_id != null
+
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>
       <AppSidebar locale={locale} xp={profile?.total_xp || 0} streak={profile?.streak_days || 0} />
-      <LessonViewer
-        locale={locale}
-        lesson={lesson}
-        sections={sections || []}
-        exercises={exercises || []}
-        progress={progress}
-        levelId={parseInt(levelId)}
-      />
+      {isZh ? (
+        <ZhLessonViewer
+          locale={locale}
+          lesson={lesson}
+          progress={progress}
+          levelId={parseInt(levelId)}
+          nextLessonId={nextLesson?.id ?? null}
+        />
+      ) : isArUnit ? (
+        <ArLessonViewer
+          locale={locale}
+          lesson={lesson}
+          progress={progress}
+          levelId={parseInt(levelId)}
+          nextLessonId={nextLesson?.id ?? null}
+        />
+      ) : (
+        <LessonViewer
+          locale={locale}
+          lesson={lesson}
+          sections={sections || []}
+          exercises={exercises || []}
+          progress={progress}
+          levelId={parseInt(levelId)}
+          nextLessonId={nextLesson?.id ?? null}
+        />
+      )}
     </div>
   )
 }

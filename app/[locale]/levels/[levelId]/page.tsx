@@ -21,6 +21,17 @@ export default async function LevelDetailPage({
 
   if (!level) notFound()
 
+  // Units for this level (may be empty for the Arabic path — falls back to flat list)
+  let units: Array<{ id: number; code: string; title_ar: string; title_en: string; title_zh: string; icon_emoji?: string; order_index: number }> = []
+  try {
+    const { data: unitData } = await supabase
+      .from('units')
+      .select('id, code, title_ar, title_en, title_zh, icon_emoji, order_index')
+      .eq('level_id', parseInt(levelId))
+      .order('order_index')
+    units = unitData || []
+  } catch { /* units table may not exist yet */ }
+
   const { data: progress } = await supabase
     .from('user_lesson_progress')
     .select('lesson_id, status, score, xp_earned')
@@ -37,6 +48,7 @@ export default async function LevelDetailPage({
         locale={locale}
         level={level}
         lessons={lessons || []}
+        units={units}
         progressMap={progressMap}
         currentLevelId={profile?.current_level_id || 1}
       />

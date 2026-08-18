@@ -31,7 +31,7 @@ BEGIN
   VALUES
     -- Alphabet lessons
     (pre_a1_id, 1,  'letters',    'الحروف: ا ب ت ث',          'Letters: ا ب ت ث',          '字母 ا ب ت ث',           'تعلّم أول أربعة حروف في الأبجدية العربية', 'Learn the first 4 letters with articulation diagrams', '学习前4个字母及发音图解', 20, 15, 1),
-    (pre_a1_id, 1,  'harakat',    'الحركات القصيرة',           'Harakat (Short Vowels)',     '短元音符号 الحركات',      'الفتحة والضمة والكسرة والسكون والشدة والتنوين والمدة', 'All 9 diacritics: fatha, damma, kasra, sukun, shadda, tanwin, madda', '9个元音符号：开口、圆唇、下折、静音、加倍、双符、长音', 30, 20, 2),
+    (pre_a1_id, 1,  'letters',    'الحركات القصيرة',           'Harakat (Short Vowels)',     '短元音符号 الحركات',      'الفتحة والضمة والكسرة والسكون والشدة والتنوين والمدة', 'All 9 diacritics: fatha, damma, kasra, sukun, shadda, tanwin, madda', '9个元音符号：开口、圆唇、下折、静音、加倍、双符、长音', 30, 20, 2),
     (pre_a1_id, 2,  'letters',    'الحروف: ج ح خ',             'Letters: ج ح خ',             '字母 ج ح خ',              'حروف الحلق والحنك', 'Palatal and pharyngeal letters', '腭音和咽喉音字母', 20, 15, 3),
     (pre_a1_id, 3,  'letters',    'الحروف: د ذ ر ز',           'Letters: د ذ ر ز',           '字母 د ذ ر ز',            'حروف اللثة والأسنان', 'Alveolar and interdental letters', '齿龈音和齿间音字母', 20, 15, 4),
     (pre_a1_id, 4,  'letters',    'الحروف: س ش',               'Letters: س ش',               '字母 س ش',                'حروف الصفير والحنك', 'Sibilant and palatal letters', '嘶音和腭音字母', 15, 12, 5),
@@ -41,8 +41,8 @@ BEGIN
     (pre_a1_id, 8,  'letters',    'الحروف: ف ق ك',             'Letters: ف ق ك',             '字母 ف ق ك',              'حروف الشفة والأقصى والحنك اللين', 'Labial, uvular, and velar letters', '唇音、小舌音和软腭音', 20, 15, 9),
     (pre_a1_id, 9,  'letters',    'الحروف: ل م ن',             'Letters: ل م ن',             '字母 ل م ن',              'الحروف الشائعة', 'Common consonants', '常见辅音', 20, 15, 10),
     (pre_a1_id, 10, 'letters',    'الحروف الأخيرة: ه و ي ء',  'Final Letters: ه و ي ء',    '最后字母 ه و ي ء',        'إتمام الأبجدية العربية بالكامل', 'Completing the full Arabic alphabet', '完成完整的阿拉伯字母表', 20, 15, 11),
-    (pre_a1_id, 1,  'greetings',  'التحيات والتعارف',          'Greetings & Introductions',  '打招呼与自我介绍',         'تعلّم التحيات الأساسية وكيفية تقديم نفسك', 'Learn basic greetings and how to introduce yourself', '学习基本问候语和自我介绍', 25, 15, 12),
-    (pre_a1_id, 1,  'numbers',    'الأرقام العربية ٠–١٠٠',     'Arabic Numbers 0–100',       '阿拉伯数字 0–100',         'الأرقام العربية والهندية-العربية', 'Arabic and Hindu-Arabic numerals', '阿拉伯数字和印度-阿拉伯数字', 25, 15, 13),
+    (pre_a1_id, 1,  'vocabulary', 'التحيات والتعارف',          'Greetings & Introductions',  '打招呼与自我介绍',         'تعلّم التحيات الأساسية وكيفية تقديم نفسك', 'Learn basic greetings and how to introduce yourself', '学习基本问候语和自我介绍', 25, 15, 12),
+    (pre_a1_id, 1,  'vocabulary', 'الأرقام العربية ٠–١٠٠',     'Arabic Numbers 0–100',       '阿拉伯数字 0–100',         'الأرقام العربية والهندية-العربية', 'Arabic and Hindu-Arabic numerals', '阿拉伯数字和印度-阿拉伯数字', 25, 15, 13),
     (pre_a1_id, 1,  'vocabulary', 'المفردات الأساسية',          'Core Vocabulary',            '基础词汇：代词、颜色、家庭','الضمائر والألوان وأفراد الأسرة والكلمات الأساسية', 'Pronouns, colors, family members, basic adjectives', '代词、颜色、家庭成员和基础形容词', 30, 20, 14)
   ON CONFLICT DO NOTHING;
 END $$;
@@ -58,14 +58,14 @@ BEGIN
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, description_ar, description_en, description_zh, xp_reward, estimated_minutes, order_index)
   VALUES
     (a1_id, 1,  'vocabulary', 'الضمائر المنفصلة',             'Personal Pronouns',          '人称代词',                'أنا، أنت، هو، هي وأسماء الإشارة', 'I, you, he, she + demonstratives', '我、你、他、她和指示代词', 25, 15, 1),
-    (a1_id, 2,  'dialogue',   'قصة: مينغ يصل إلى القاهرة',    'Story: Ming Arrives in Cairo','故事：明到达开罗',         'الحوار الأول: في المطار', 'First story dialogue: at Cairo airport', '第一个故事对话：在开罗机场', 30, 20, 2),
+    (a1_id, 2,  'conversation',   'قصة: مينغ يصل إلى القاهرة',    'Story: Ming Arrives in Cairo','故事：明到达开罗',         'الحوار الأول: في المطار', 'First story dialogue: at Cairo airport', '第一个故事对话：在开罗机场', 30, 20, 2),
     (a1_id, 3,  'vocabulary', 'المهن والهويات',                'Professions & Identity',     '职业与身份',              'طالب، معلم، طبيب، مهندس...', 'Student, teacher, doctor, engineer...', '学生、老师、医生、工程师...', 25, 15, 3),
     (a1_id, 4,  'vocabulary', 'أسماء الإشارة',                 'Demonstratives',             '指示代词 هذا/هذه/ذلك',    'هذا وهذه وذلك وتلك', 'This (m/f) and That (m/f)', '这个（男/女）和那个（男/女）', 20, 12, 4),
-    (a1_id, 5,  'dialogue',   'قصة: في الجامعة',               'Story: At the University',   '故事：在大学里',           'الحوار الثاني: أول يوم في الجامعة', 'Second story: first day at university', '第二个故事：在大学的第一天', 30, 20, 5),
+    (a1_id, 5,  'conversation',   'قصة: في الجامعة',               'Story: At the University',   '故事：在大学里',           'الحوار الثاني: أول يوم في الجامعة', 'Second story: first day at university', '第二个故事：在大学的第一天', 30, 20, 5),
     (a1_id, 6,  'vocabulary', 'الأماكن والجنسيات',             'Places & Nationalities',     '地点与国籍',              'المدرسة، الجامعة، المستشفى، السوق...', 'School, university, hospital, market...', '学校、大学、医院、市场...', 25, 15, 6),
     (a1_id, 7,  'vocabulary', 'تعبيرات الزمن',                 'Time Expressions',           '时间表达',                'اليوم، غداً، أمس، الآن، صباح، مساء...', 'Today, tomorrow, yesterday, now, morning, evening...', '今天、明天、昨天、现在、早上、晚上...', 20, 12, 7),
     (a1_id, 8,  'vocabulary', 'الفعل الماضي',                  'Past Tense Verbs',           '过去时动词',              'كتب، قرأ، ذهب، جاء، أكل، شرب...', 'Wrote, read, went, came, ate, drank...', '写了、读了、去了、来了、吃了、喝了...', 35, 25, 8),
-    (a1_id, 9,  'dialogue',   'قصة: في السوق',                 'Story: At the Market',       '故事：在市场里',           'الحوار الثالث: خان الخليلي', 'Third story: Khan al-Khalili market', '第三个故事：汗·哈利利市场', 30, 20, 9),
+    (a1_id, 9,  'conversation',   'قصة: في السوق',                 'Story: At the Market',       '故事：在市场里',           'الحوار الثالث: خان الخليلي', 'Third story: Khan al-Khalili market', '第三个故事：汗·哈利利市场', 30, 20, 9),
     (a1_id, 10, 'vocabulary', 'الفعل المضارع',                  'Present Tense Verbs',        '现在时动词',              'يكتب، يقرأ، يذهب، يتكلم، يريد...', 'Writes, reads, goes, speaks, wants...', '写、读、去、说、想要...', 35, 25, 10)
   ON CONFLICT DO NOTHING;
 END $$;
@@ -115,11 +115,11 @@ BEGIN
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
     (a2_id, 1, 'vocabulary', 'الروابط وبنية الجملة', 'Connectors & Sentence Structure', '连接词和句子结构', 30, 20, 1),
     (a2_id, 1, 'vocabulary', 'أجزاء الجسم والصحة', 'Body & Health', '身体部位和健康', 25, 18, 2),
-    (a2_id, 2, 'dialogue',   'قصة: مينغ يزور الطبيب', 'Story: Ming Visits the Doctor', '故事：明去看医生', 35, 22, 3),
+    (a2_id, 2, 'conversation',   'قصة: مينغ يزور الطبيب', 'Story: Ming Visits the Doctor', '故事：明去看医生', 35, 22, 3),
     (a2_id, 1, 'vocabulary', 'الطعام والشراب', 'Food & Drink', '食物和饮料', 25, 18, 4),
-    (a2_id, 3, 'dialogue',   'قصة: في المطعم', 'Story: At the Restaurant', '故事：在餐厅点餐', 35, 22, 5),
+    (a2_id, 3, 'conversation',   'قصة: في المطعم', 'Story: At the Restaurant', '故事：在餐厅点餐', 35, 22, 5),
     (a2_id, 1, 'vocabulary', 'السفر والمواصلات', 'Travel & Transport', '旅行和交通', 30, 20, 6),
-    (a2_id, 4, 'dialogue',   'قصة: التخطيط للسفر إلى الإسكندرية', 'Story: Planning Trip to Alexandria', '故事：计划去亚历山大旅行', 35, 22, 7),
+    (a2_id, 4, 'conversation',   'قصة: التخطيط للسفر إلى الإسكندرية', 'Story: Planning Trip to Alexandria', '故事：计划去亚历山大旅行', 35, 22, 7),
     (a2_id, 1, 'vocabulary', 'المقارنة والتفضيل', 'Comparison', '比较级和最高级', 30, 20, 8),
     (a2_id, 1, 'vocabulary', 'الأسرة والعلاقات', 'Family & Relationships', '家庭和人际关系', 25, 18, 9)
   ON CONFLICT DO NOTHING;
@@ -133,11 +133,16 @@ DECLARE b1_id INT;
 BEGIN
   SELECT id INTO b1_id FROM levels WHERE code = 'b1';
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
-    (b1_id, 1, 'vocabulary', 'الأفعال المزيدة', 'Advanced Verb Forms', '高级动词形式', 40, 25, 1),
-    (b1_id, 1, 'vocabulary', 'الثقافة العربية والتراث', 'Arab Culture & Heritage', '阿拉伯文化与传统', 35, 22, 2),
-    (b1_id, 1, 'vocabulary', 'العمل والمهنة', 'Work & Career', '工作与职场', 35, 22, 3),
-    (b1_id, 2, 'dialogue',   'قصة: مقابلة عمل مينغ', 'Story: Ming''s Job Interview', '故事：明的工作面试', 45, 28, 4),
-    (b1_id, 1, 'vocabulary', 'التعبير عن الرأي', 'Expressing Opinions', '表达观点与意见', 35, 22, 5)
+    (b1_id,  1, 'vocabulary', 'الأفعال المزيدة',          'Advanced Verb Forms',        '高级动词形式',     40, 25,  1),
+    (b1_id,  2, 'vocabulary', 'الثقافة العربية والتراث',   'Arab Culture & Heritage',    '阿拉伯文化与传统', 35, 22,  2),
+    (b1_id,  3, 'vocabulary', 'العمل والمهنة',              'Work & Career',              '工作与职场',       35, 22,  3),
+    (b1_id,  4, 'vocabulary', 'التعبير عن الرأي',           'Expressing Opinions',        '表达观点与意见',   35, 22,  4),
+    (b1_id,  5, 'vocabulary', 'الهوايات ووقت الفراغ',       'Hobbies & Free Time',        '兴趣爱好与休闲',   35, 22,  5),
+    (b1_id,  6, 'vocabulary', 'المدينة والحي السكني',       'City & Neighborhood',        '城市与居民区',     35, 22,  6),
+    (b1_id,  7, 'vocabulary', 'الصفات والأحوال',            'Adjectives & Adverbs',       '形容词与副词',     35, 22,  7),
+    (b1_id,  8, 'conversation',   'قصة: مقابلة عمل مينغ',     'Story: Ming''s Job Interview','故事：明的工作面试', 45, 28, 8),
+    (b1_id,  9, 'conversation',   'قصة: إفطار رمضاني',         'Story: Ramadan Iftar',       '故事：斋月开斋饭', 45, 28,  9),
+    (b1_id, 10, 'conversation',   'قصة: زيارة الأهرامات',      'Story: Pyramids Visit',      '故事：参观金字塔', 45, 28, 10)
   ON CONFLICT DO NOTHING;
 END $$;
 
@@ -149,13 +154,16 @@ DECLARE b2_id INT;
 BEGIN
   SELECT id INTO b2_id FROM levels WHERE code = 'b2';
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
-    (b2_id, 1, 'vocabulary', 'الإعلام والأخبار',           'Media & News',             '媒体与新闻',     60, 30, 1),
-    (b2_id, 2, 'vocabulary', 'السياسة والمجتمع',            'Politics & Society',       '政治与社会',     60, 30, 2),
-    (b2_id, 3, 'vocabulary', 'المفاهيم التجريدية',          'Abstract Concepts',        '抽象概念',       60, 28, 3),
-    (b2_id, 4, 'vocabulary', 'الكتابة الأكاديمية',          'Academic Writing',         '学术写作',       60, 30, 4),
-    (b2_id, 5, 'vocabulary', 'الأفعال المتقدمة',            'Advanced Verbs',           '高级动词',       60, 25, 5),
-    (b2_id, 6, 'dialogue',   'قصة: مناقشة أطروحة منغ',     'Story: Ming''s Thesis Defense',  '故事：明的论文答辩',  80, 35, 6),
-    (b2_id, 7, 'dialogue',   'قصة: مؤتمر الحوار الثقافي', 'Story: Cultural Conference', '故事：文化交流会议', 80, 35, 7)
+    (b2_id,  1, 'vocabulary', 'الإعلام والأخبار',             'Media & News',                        '媒体与新闻',         60, 30, 1),
+    (b2_id,  2, 'vocabulary', 'السياسة والمجتمع',              'Politics & Society',                  '政治与社会',         60, 30, 2),
+    (b2_id,  3, 'vocabulary', 'المفاهيم التجريدية',            'Abstract Concepts',                   '抽象概念',           60, 28, 3),
+    (b2_id,  4, 'vocabulary', 'الكتابة الأكاديمية',            'Academic Writing',                    '学术写作',           60, 30, 4),
+    (b2_id,  5, 'vocabulary', 'الأفعال المتقدمة',              'Advanced Verbs',                      '高级动词',           60, 25, 5),
+    (b2_id,  6, 'vocabulary', 'الاقتصاد والتجارة',             'Economics & Trade',                   '经济与贸易',         60, 28, 6),
+    (b2_id,  7, 'vocabulary', 'البيئة والمناخ',                'Environment & Climate',               '环境与气候',         60, 28, 7),
+    (b2_id,  8, 'conversation',   'قصة: مناقشة أطروحة منغ',       'Story: Ming''s Thesis Defense',       '故事：明的论文答辩', 80, 35, 8),
+    (b2_id,  9, 'conversation',   'قصة: مؤتمر الحوار الثقافي',   'Story: Cultural Conference',          '故事：文化交流会议', 80, 35, 9),
+    (b2_id, 10, 'conversation',   'قصة: مناقشة بيئية في الأمم المتحدة', 'Story: UN Environment Discussion', '故事：联合国环境讨论', 80, 35, 10)
   ON CONFLICT DO NOTHING;
 END $$;
 
@@ -167,10 +175,16 @@ DECLARE c1_id INT;
 BEGIN
   SELECT id INTO c1_id FROM levels WHERE code = 'c1';
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
-    (c1_id, 1, 'vocabulary', 'البلاغة والفصاحة',          'Rhetoric & Eloquence',   '修辞学与文采',   80, 35, 1),
-    (c1_id, 2, 'vocabulary', 'العربية الكلاسيكية',         'Classical Arabic',       '古典阿拉伯语',   80, 35, 2),
-    (c1_id, 3, 'vocabulary', 'الفلسفة والفكر',             'Philosophy & Thought',   '哲学与思想',     80, 35, 3),
-    (c1_id, 4, 'dialogue',   'قصة: الشعر الكلاسيكي',      'Story: Classical Poetry','故事：古典诗歌', 100, 40, 4)
+    (c1_id,  1, 'vocabulary', 'البلاغة والفصاحة',              'Rhetoric & Eloquence',             '修辞学与文采',       80,  30,  1),
+    (c1_id,  2, 'vocabulary', 'العربية الكلاسيكية',             'Classical Arabic',                 '古典阿拉伯语',       80,  30,  2),
+    (c1_id,  3, 'vocabulary', 'الفلسفة والفكر',                 'Philosophy & Thought',             '哲学与思想',         80,  28,  3),
+    (c1_id,  4, 'vocabulary', 'اللهجات العربية',                'Arabic Dialects',                  '阿拉伯方言',         80,  28,  4),
+    (c1_id,  5, 'vocabulary', 'التقنية واللغة',                 'Technology & Language',            '科技与语言',         85,  30,  5),
+    (c1_id,  6, 'vocabulary', 'التراث الإسلامي والعلوم',        'Islamic Heritage & Science',       '伊斯兰文明遗产',     85,  32,  6),
+    (c1_id,  7, 'conversation',   'قصة: الشعر الكلاسيكي',          'Story: Classical Poetry',          '故事：古典诗歌',     100, 35,  7),
+    (c1_id,  8, 'conversation',   'قصة: رحلة في اللهجات',          'Story: A Journey Through Dialects','故事：方言之旅',     100, 35,  8),
+    (c1_id,  9, 'conversation',   'قصة: التقنية ومستقبل العربية',   'Story: Technology & Arabic Future','故事：科技与阿拉伯语',100, 35,  9),
+    (c1_id, 10, 'conversation',   'قصة: إرث العصر الذهبي',         'Story: Legacy of the Golden Age',  '故事：黄金时代遗产', 100, 35, 10)
   ON CONFLICT DO NOTHING;
 END $$;
 
@@ -182,9 +196,13 @@ DECLARE c2_id INT;
 BEGIN
   SELECT id INTO c2_id FROM levels WHERE code = 'c2';
   INSERT INTO lessons (level_id, day_number, lesson_type, title_ar, title_en, title_zh, xp_reward, estimated_minutes, order_index) VALUES
-    (c2_id, 1, 'vocabulary', 'التحليل الأدبي',             'Literary Analysis',          '文学分析',       100, 40, 1),
-    (c2_id, 2, 'vocabulary', 'اللغة الأكاديمية المتقدمة',  'Advanced Academic Language', '高级学术语言',   100, 40, 2),
-    (c2_id, 3, 'dialogue',   'قصة: المؤتمر الدولي',        'Story: International Symposium', '故事：国际研讨会', 120, 45, 3)
+    (c2_id, 1, 'vocabulary', 'التحليل الأدبي',            'Literary Analysis',              '文学分析',         100, 35, 1),
+    (c2_id, 2, 'vocabulary', 'اللغة الأكاديمية المتقدمة', 'Advanced Academic Language',     '高级学术语言',     100, 35, 2),
+    (c2_id, 3, 'vocabulary', 'الترجمة والتأويل',           'Translation & Interpretation',   '翻译与诠释',       100, 35, 3),
+    (c2_id, 4, 'vocabulary', 'الأدب المقارن',              'Comparative Literature',         '比较文学',         100, 35, 4),
+    (c2_id, 5, 'vocabulary', 'مناهج البحث المتقدمة',      'Advanced Research Methods',      '高级研究方法',     110, 38, 5),
+    (c2_id, 6, 'conversation',   'قصة: المؤتمر الدولي',       'Story: International Symposium', '故事：国际研讨会', 120, 40, 6),
+    (c2_id, 7, 'conversation',   'قصة: بانية الجسور',         'Story: The Bridge Builder',      '故事：架桥者',     120, 40, 7)
   ON CONFLICT DO NOTHING;
 END $$;
 

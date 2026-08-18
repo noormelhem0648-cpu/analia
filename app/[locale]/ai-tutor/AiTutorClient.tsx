@@ -73,6 +73,20 @@ const SUGGESTIONS: Record<string, string[]> = {
   ],
 }
 
+// Guided session scope: pick a level then a topic before chatting (optional — skippable).
+const LEVELS = [
+  { key: 'beginner', ar: 'مبتدئ', zh: '初级', en: 'Beginner', sub: 'A1–A2', icon: '🟢' },
+  { key: 'intermediate', ar: 'متوسط', zh: '中级', en: 'Intermediate', sub: 'B1–B2', icon: '🟡' },
+  { key: 'advanced', ar: 'متقدم', zh: '高级', en: 'Advanced', sub: 'C1–C2', icon: '🔴' },
+]
+const TOPICS = [
+  { key: 'conversation', ar: 'المحادثة اليومية', zh: '日常对话', en: 'Daily Conversation', icon: '💬' },
+  { key: 'grammar', ar: 'القواعد', zh: '语法', en: 'Grammar', icon: '📖' },
+  { key: 'vocabulary', ar: 'المفردات', zh: '词汇', en: 'Vocabulary', icon: '📝' },
+  { key: 'pronunciation', ar: 'النطق', zh: '发音', en: 'Pronunciation', icon: '🔊' },
+  { key: 'writing', ar: 'الكتابة', zh: '写作', en: 'Writing', icon: '✍️' },
+]
+
 const GREETING: Record<string, string> = {
   zh: `مرحباً! 👋 我是 ANALIA，您的AI阿拉伯语老师！
 
@@ -114,16 +128,14 @@ function MessageBubble({ msg, locale }: { msg: Message; locale: string }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
       {!isUser && (
         <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mr-2 mt-1"
-          style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+          style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
           <span className="text-white text-sm font-bold" style={{ fontFamily: 'Amiri, serif' }}>أ</span>
         </div>
       )}
-      <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
-        isUser
-          ? 'text-white rounded-tr-sm'
-          : 'bg-white border border-gray-100 shadow-sm rounded-tl-sm'
-      }`}
-        style={isUser ? { background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' } : {}}>
+      <div className="max-w-[78%] px-4 py-3"
+        style={isUser
+          ? { background: '#C9858A', color: '#FFFFFF', borderRadius: '16px', borderBottomRightRadius: '4px' }
+          : { background: '#F8F5F2', border: '1px solid #E8E2DB', borderRadius: '16px', borderBottomLeftRadius: '4px' }}>
         <p className={`text-sm whitespace-pre-wrap leading-relaxed ${isUser ? 'text-white' : 'text-gray-800'}`}
           dir={isArabic && !isUser ? 'rtl' : 'ltr'}
           style={{ fontFamily: isArabic ? 'Noto Naskh Arabic, Amiri, serif, sans-serif' : 'inherit' }}>
@@ -150,6 +162,9 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
     { role: 'assistant', content: greeting, timestamp: new Date() }
   ])
   const [historyLoaded, setHistoryLoaded] = useState(false)
+  const [level, setLevel] = useState<string | null>(null)
+  const [topic, setTopic] = useState<string | null>(null)
+  const [showPicker, setShowPicker] = useState(true)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -162,6 +177,8 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
 
   useEffect(() => {
     if (historyLoaded) return
+    // One-time guard before fetching chat history on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHistoryLoaded(true)
     fetch('/api/ai-tutor/history')
       .then(r => r.ok ? r.json() : null)
@@ -178,8 +195,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
         }
       })
       .catch(() => {})
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [greeting, historyLoaded])
 
   async function sendMessage(text?: string) {
     const content = (text || input).trim()
@@ -191,6 +207,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
     setInput('')
     setLoading(true)
     setError(null)
+    setShowPicker(false)
 
     try {
       const res = await fetch('/api/ai-tutor', {
@@ -199,6 +216,8 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
         body: JSON.stringify({
           messages: newMessages.map(m => ({ role: m.role, content: m.content })),
           ui_language: uiLanguage,
+          level,
+          topic,
         }),
       })
 
@@ -239,7 +258,7 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+            style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
             <Sparkles size={18} className="text-white" />
           </div>
           <div>
@@ -263,17 +282,12 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
         {loading && (
           <div className="flex justify-start mb-4">
             <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mr-2"
-              style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+              style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
               <span className="text-white text-sm font-bold" style={{ fontFamily: 'Amiri, serif' }}>أ</span>
             </div>
-            <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+            <div className="px-4 py-3" style={{ background: '#F8F5F2', border: '1px solid #E8E2DB', borderRadius: '16px', borderBottomLeftRadius: '4px' }}>
               <div className="flex items-center gap-2">
-                <div className="flex gap-1">
-                  {[0, 1, 2].map(i => (
-                    <div key={i} className="w-2 h-2 rounded-full animate-bounce"
-                      style={{ background: '#2D5A8E', animationDelay: `${i * 0.15}s` }} />
-                  ))}
-                </div>
+                <span className="loading-dots"><span /><span /><span /></span>
                 <span className="text-xs text-gray-600">{t.thinking}</span>
               </div>
             </div>
@@ -289,6 +303,52 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
         <div ref={bottomRef} />
       </div>
 
+      {/* Guided level + topic picker — optional, sets session context for the AI */}
+      {showPicker && messages.length <= 1 && (
+        <div className="px-6 pb-3 flex-shrink-0 space-y-3">
+          <div>
+            <p className="text-xs text-gray-600 mb-2">
+              {locale === 'ar' ? 'اختر مستواك (اختياري)' : locale === 'zh' ? '选择你的水平（可选）' : 'Choose your level (optional)'}
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              {LEVELS.map(l => {
+                const active = level === l.key
+                const label = locale === 'ar' ? l.ar : locale === 'zh' ? l.zh : l.en
+                return (
+                  <button key={l.key} onClick={() => setLevel(active ? null : l.key)}
+                    className="text-xs px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5"
+                    style={active
+                      ? { background: '#F5E8E9', borderColor: '#C9858A', color: '#A96368' }
+                      : { background: '#FFFFFF', borderColor: '#E8E2DB', color: '#7A7370' }}>
+                    <span>{l.icon}</span>{label} <span className="opacity-60">({l.sub})</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs text-gray-600 mb-2">
+              {locale === 'ar' ? 'اختر موضوعاً (اختياري)' : locale === 'zh' ? '选择主题（可选）' : 'Choose a topic (optional)'}
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              {TOPICS.map(tp => {
+                const active = topic === tp.key
+                const label = locale === 'ar' ? tp.ar : locale === 'zh' ? tp.zh : tp.en
+                return (
+                  <button key={tp.key} onClick={() => setTopic(active ? null : tp.key)}
+                    className="text-xs px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5"
+                    style={active
+                      ? { background: '#F5E8E9', borderColor: '#C9858A', color: '#A96368' }
+                      : { background: '#FFFFFF', borderColor: '#E8E2DB', color: '#7A7370' }}>
+                    <span>{tp.icon}</span>{label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Suggestions */}
       {messages.length <= 1 && (
         <div className="px-6 pb-3 flex-shrink-0">
@@ -299,7 +359,10 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
           <div className="flex gap-2 flex-wrap">
             {suggestions.map((s, i) => (
               <button key={i} onClick={() => sendMessage(s)}
-                className="text-xs px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 transition-all bg-white">
+                className="text-xs px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 transition-all bg-white"
+                style={{ borderRadius: '8px' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#C9858A'; e.currentTarget.style.color = '#C9858A'; e.currentTarget.style.background = '#F5E8E9' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.color = ''; e.currentTarget.style.background = '#FFFFFF' }}>
                 {s}
               </button>
             ))}
@@ -317,8 +380,10 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
             onKeyDown={handleKeyDown}
             placeholder={t.placeholder}
             rows={1}
-            className="flex-1 resize-none px-4 py-3 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all"
-            style={{ maxHeight: '120px', minHeight: '48px' }}
+            className="flex-1 resize-none px-4 py-3 text-sm focus:outline-none transition-all"
+            style={{ maxHeight: '120px', minHeight: '48px', background: '#F8F5F2', border: '1.5px solid #E8E2DB', borderRadius: '12px' }}
+            onFocus={e => { e.currentTarget.style.borderColor = '#C9858A' }}
+            onBlur={e => { e.currentTarget.style.borderColor = '#E8E2DB' }}
             onInput={e => {
               const el = e.currentTarget
               el.style.height = 'auto'
@@ -328,8 +393,10 @@ export default function AiTutorClient({ locale, userName, uiLanguage, currentLev
           <button
             onClick={() => sendMessage()}
             disabled={!input.trim() || loading}
-            className="w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-all hover:opacity-90 disabled:opacity-40 flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+            className="w-12 h-12 flex items-center justify-center text-white transition-all disabled:opacity-40 flex-shrink-0"
+            style={{ background: '#C9858A', borderRadius: '12px' }}
+            onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.background = '#A96368' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#C9858A' }}>
             <Send size={18} />
           </button>
         </div>

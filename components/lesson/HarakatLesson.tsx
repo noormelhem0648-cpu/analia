@@ -148,8 +148,8 @@ export default function HarakatLesson({ locale = 'zh', onComplete }: Props) {
           <button key={h.id} onClick={() => { setCurrent(i); setSeen(prev => new Set([...prev, i])) }}
             className="w-8 h-8 rounded-full text-xs font-bold transition-all border-2"
             style={{
-              background: i === current ? h.color : seen.has(i) ? h.color + '33' : 'white',
-              borderColor: i === current ? h.color : seen.has(i) ? h.color : '#E5E7EB',
+              background: i === current ? h.color : seen.has(i) ? h.color + '33' : '#F8F5F2',
+              borderColor: i === current ? h.color : seen.has(i) ? h.color : '#E8E2DB',
               color: i === current ? 'white' : seen.has(i) ? h.color : '#9CA3AF',
             }}>
             {h.symbol || '◌'}
@@ -170,7 +170,9 @@ export default function HarakatLesson({ locale = 'zh', onComplete }: Props) {
             </span>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-800">{haraka.name_zh}</h3>
+            <h3 className="text-lg font-bold text-gray-800">
+              {locale === 'en' ? haraka.name_en : locale === 'ar' ? haraka.name_en : haraka.name_zh}
+            </h3>
             <p className="text-sm text-gray-600 mt-0.5">{haraka.name_en}</p>
             <div className="mt-2">
               <PositionBadge position={haraka.position} locale={locale} />
@@ -183,18 +185,15 @@ export default function HarakatLesson({ locale = 'zh', onComplete }: Props) {
           <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: haraka.color }}>
             {t.sound}
           </p>
-          <p className="text-base font-medium text-gray-800">{haraka.sound_zh}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{haraka.sound_en}</p>
+          <p className="text-base font-medium text-gray-800">
+            {locale === 'zh' ? haraka.sound_zh : haraka.sound_en}
+          </p>
         </div>
 
         {/* With ب demonstration */}
         <div className="rounded-2xl p-4 mb-4 bg-gray-50">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">{t.with_ba}</p>
           <div className="flex items-center gap-3 flex-wrap">
-            {['فَتْحة','ضَمَّة','كَسْرة','سُكون'].map((_, idx) => {
-              const demos = [haraka.example_with_ba, haraka.example_with_ba, haraka.example_with_ba, haraka.example_with_ba]
-              return null
-            })}
             <div className="flex items-center gap-2">
               <span className="text-4xl font-bold" style={{ fontFamily: 'Amiri, serif', color: haraka.color }}>
                 {haraka.example_with_ba}
@@ -214,12 +213,12 @@ export default function HarakatLesson({ locale = 'zh', onComplete }: Props) {
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t.example}</p>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#1E3A5F' }}>
+              <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#C9858A' }}>
                 {haraka.example_word_with_harakat}
               </span>
               <p className="text-xs text-gray-500 mt-1">{haraka.example_transliteration}</p>
               <p className="text-sm text-gray-700 font-medium mt-0.5">
-                {locale === 'ar' ? haraka.example_meaning_en : locale === 'en' ? haraka.example_meaning_en : haraka.example_meaning_zh}
+                {locale === 'zh' ? haraka.example_meaning_zh : haraka.example_meaning_en}
               </p>
             </div>
             <button
@@ -232,15 +231,17 @@ export default function HarakatLesson({ locale = 'zh', onComplete }: Props) {
         </div>
 
         {/* Tip */}
-        <div className="rounded-2xl p-4 mb-4 border-l-4" style={{ borderColor: haraka.color, background: '#FFFBEB' }}>
+        <div className="rounded-2xl p-4 mb-4 border-l-4" style={{ borderColor: haraka.color, background: '#F5E8E9' }}>
           <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: haraka.color }}>
             {t.tip}
           </p>
-          <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">{haraka.tip_zh}</p>
+          <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
+            {locale === 'zh' ? haraka.tip_zh : haraka.sound_en}
+          </p>
         </div>
 
-        {/* Memory trick */}
-        {haraka.memory_trick_zh && (
+        {/* Memory trick — only shown for Chinese learners since mnemonic is zh-specific */}
+        {haraka.memory_trick_zh && locale === 'zh' && (
           <div className="rounded-2xl p-4" style={{ background: haraka.color + '11' }}>
             <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: haraka.color }}>
               {t.memory}

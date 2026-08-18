@@ -33,7 +33,7 @@ function ArabicSpan({ text, size = '1rem' }: { text: string; size?: string }) {
   )
 }
 
-export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A5F', onComplete }: Props) {
+export default function ExerciseEngine({ exercises, locale, accentColor = '#C9858A', onComplete }: Props) {
   const t = tx[locale as keyof typeof tx] || tx.en
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -42,12 +42,18 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
   const [correctCount, setCorrectCount] = useState(0)
   const [xpTotal, setXpTotal] = useState(0)
   const [done, setDone] = useState(false)
+  const [finalResult, setFinalResult] = useState<{ score: number; xp: number } | null>(null)
   const [confetti, setConfetti] = useState(false)
   // matching state
   const [matchLeft, setMatchLeft] = useState<string | null>(null)
   const [matchDone, setMatchDone] = useState<Record<string, string>>({})
 
   const ex = exercises[idx]
+  // Stable shuffle per exercise index — computed once, not on every render
+  const [shuffledAnswers] = useState<Record<number, string[]>>(() =>
+    Object.fromEntries(exercises.map((e, i) => [i, e.pairs ? shuffle(e.pairs.map(p => p.answer)) : []]))
+  )
+
   if (!ex) return null
 
   const q = locale === 'zh' ? ex.question_zh : locale === 'ar' ? ex.question_ar : ex.question_en
@@ -76,13 +82,18 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
 
   function nextExercise() {
     if (idx + 1 >= exercises.length) {
-      const score = Math.round((correctCount + (isCorrect ? 1 : 0)) / exercises.length * 100)
-      const finalXp = xpTotal + (isCorrect ? ex.xp_reward : 0)
+      // Compute final totals synchronously (React state updates are async)
+      const totalCorrect = correctCount + (isCorrect ? 1 : 0)
+      const totalXp = xpTotal + (isCorrect ? ex.xp_reward : 0)
+      const score = Math.round(totalCorrect / exercises.length * 100)
       const isPerfect = score === 100
+      setCorrectCount(totalCorrect)
+      setXpTotal(totalXp)
+      setFinalResult({ score, xp: totalXp })
       setDone(true)
       if (isPerfect) setConfetti(true)
       setTimeout(() => {
-        onComplete?.(score, finalXp)
+        onComplete?.(score, totalXp)
         if (isPerfect) setTimeout(() => setConfetti(false), 3000)
       }, isPerfect ? 1500 : 0)
       return
@@ -109,8 +120,8 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
   }
 
   if (done) {
-    const finalScore = Math.round((correctCount) / exercises.length * 100)
-    const finalXp = xpTotal
+    const finalScore = finalResult?.score ?? Math.round(correctCount / exercises.length * 100)
+    const finalXp = finalResult?.xp ?? xpTotal
     const label = finalScore === 100 ? t.perfect : finalScore >= 70 ? t.good : t.keep_trying
     return (
       <>
@@ -133,7 +144,7 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
           {/* Score circle */}
           <div className="w-24 h-24 mx-auto mb-4 relative">
             <svg viewBox="0 0 36 36" className="w-24 h-24 -rotate-90">
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E5E7EB" strokeWidth="3" />
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E8E2DB" strokeWidth="3" />
               <circle cx="18" cy="18" r="15.9" fill="none" stroke={accentColor} strokeWidth="3"
                 strokeDasharray={`${finalScore} 100`} strokeLinecap="round" />
             </svg>
@@ -186,7 +197,7 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
               return (
                 <button key={i} onClick={() => !checked && setSelected(opt)}
                   className={`p-3 rounded-xl ${cls} transition-all text-center font-bold flex flex-col items-center justify-center min-h-[56px] gap-1`}
-                  style={{ color: '#1E3A5F' }}>
+                  style={{ color: '#C9858A' }}>
                   <ArabicSpan text={opt} size={/[؀-ۿ]/.test(opt) ? '2.2rem' : '1rem'} />
                   {/[؀-ۿ]/.test(opt) && (
                     <span onClick={e => { e.stopPropagation(); speakArabic(opt) }}
@@ -235,7 +246,7 @@ export default function ExerciseEngine({ exercises, locale, accentColor = '#1E3A
             {ex.pairs.map(pair => {
               const matched = matchDone[pair.ar]
               const isLeft = matchLeft === pair.ar
-              const names = shuffle(ex.pairs!.map(p => p.answer))
+              const names = shuffledAnswers[idx] ?? []
               return (
                 <div key={pair.ar} className="flex items-center gap-3">
                   <button onClick={() => !checked && handleMatchClick(pair.ar)}

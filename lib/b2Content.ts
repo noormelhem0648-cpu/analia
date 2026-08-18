@@ -215,12 +215,64 @@ export const B2_STORIES: StoryDialogue[] = [
   },
 ]
 
+// ─────────────────────────────────────────────────────────────
+//  الاقتصاد والتجارة — Economics & Trade (B2 Unit 6)
+// ─────────────────────────────────────────────────────────────
+export const B2_ECONOMY: VocabItem[] = [
+  { arabic: 'اقتصاد', arabic_with_harakat: 'اِقْتِصَاد', transliteration: 'iqtiṣād', meaning_en: 'economy', meaning_zh: '经济', category: 'economics', example_sentence: 'الاقتصاد الصيني من أكبر اقتصادات العالم.', emoji: '📈' },
+  { arabic: 'تجارة', arabic_with_harakat: 'تِجَارَة', transliteration: 'tijāra', meaning_en: 'trade / commerce', meaning_zh: '贸易/商业', category: 'economics', example_sentence: 'التجارة بين الصين والدول العربية في تنامٍ مستمر.', emoji: '🤝' },
+  { arabic: 'استثمار', arabic_with_harakat: 'اِسْتِثْمَار', transliteration: 'istithmār', meaning_en: 'investment', meaning_zh: '投资', category: 'economics', example_sentence: 'الاستثمار الأجنبي يدعم الاقتصاد.', emoji: '💰' },
+  { arabic: 'صادرات', arabic_with_harakat: 'صَادِرَات', transliteration: 'ṣādirāt', meaning_en: 'exports', meaning_zh: '出口', category: 'economics', example_sentence: 'تزداد صادرات النفط العربي كل عام.', emoji: '🛢️' },
+  { arabic: 'واردات', arabic_with_harakat: 'وَارِدَات', transliteration: 'wāridāt', meaning_en: 'imports', meaning_zh: '进口', category: 'economics', example_sentence: 'تستورد الدول العربية السلع الصينية.', emoji: '📦' },
+  { arabic: 'ميزانية', arabic_with_harakat: 'مِيزَانِيَّة', transliteration: 'mīzāniyya', meaning_en: 'budget', meaning_zh: '预算', category: 'economics', example_sentence: 'وافق البرلمان على الميزانية الجديدة.', emoji: '📊' },
+  { arabic: 'نمو', arabic_with_harakat: 'نُمُو', transliteration: 'numuww', meaning_en: 'growth', meaning_zh: '增长', category: 'economics', example_sentence: 'يُسجّل الاقتصاد نمواً ملحوظاً هذا العام.', emoji: '🌱' },
+  { arabic: 'تضخم', arabic_with_harakat: 'تَضَخُّم', transliteration: 'taḍakhkhum', meaning_en: 'inflation', meaning_zh: '通货膨胀', category: 'economics', example_sentence: 'يؤثر التضخم على القدرة الشرائية.', emoji: '📉' },
+]
+
+// ─────────────────────────────────────────────────────────────
+//  البيئة والمناخ — Environment & Climate (B2 Unit 7)
+// ─────────────────────────────────────────────────────────────
+export const B2_ENVIRONMENT: VocabItem[] = [
+  { arabic: 'بيئة', arabic_with_harakat: 'بِيئَة', transliteration: 'bīʾa', meaning_en: 'environment', meaning_zh: '环境', category: 'environment', example_sentence: 'يجب حماية البيئة من التلوث.', emoji: '🌿' },
+  { arabic: 'تلوث', arabic_with_harakat: 'تَلَوُّث', transliteration: 'talawwuth', meaning_en: 'pollution', meaning_zh: '污染', category: 'environment', example_sentence: 'التلوث الهوائي مشكلة عالمية.', emoji: '🏭' },
+  { arabic: 'تغيّر المناخ', arabic_with_harakat: 'تَغَيُّر المَنَاخ', transliteration: 'taghayur al-manākh', meaning_en: 'climate change', meaning_zh: '气候变化', category: 'environment', example_sentence: 'تغيّر المناخ يهدد مستقبل كوكبنا.', emoji: '🌡️' },
+  { arabic: 'طاقة متجددة', arabic_with_harakat: 'طَاقَة مُتَجَدِّدَة', transliteration: 'ṭāqa mutajaddida', meaning_en: 'renewable energy', meaning_zh: '可再生能源', category: 'environment', example_sentence: 'تستثمر دول الخليج في الطاقة المتجددة.', emoji: '☀️' },
+  { arabic: 'تشجير', arabic_with_harakat: 'تَشْجِير', transliteration: 'tashjīr', meaning_en: 'reforestation / tree planting', meaning_zh: '植树造林', category: 'environment', example_sentence: 'تنفّذ المملكة مشاريع تشجير واسعة.', emoji: '🌳' },
+  { arabic: 'جفاف', arabic_with_harakat: 'جَفَاف', transliteration: 'jafāf', meaning_en: 'drought', meaning_zh: '干旱', category: 'environment', example_sentence: 'يعاني كثير من المناطق العربية من الجفاف.', emoji: '🏜️' },
+  { arabic: 'استدامة', arabic_with_harakat: 'اِسْتِدَامَة', transliteration: 'istidāma', meaning_en: 'sustainability', meaning_zh: '可持续性', category: 'environment', example_sentence: 'الاستدامة ضرورة لمستقبل أفضل.', emoji: '♻️' },
+]
+
+// ─────────────────────────────────────────────────────────────
+//  B2 Additional Story: مناقشة بيئية في الأمم المتحدة
+// ─────────────────────────────────────────────────────────────
+export const B2_ENVIRONMENT_STORY: StoryDialogue = {
+  id: 'un-environment',
+  title_zh: '联合国环境讨论',
+  title_en: 'UN Environment Discussion',
+  title_ar: 'مناقشة بيئية في الأمم المتحدة',
+  scene_zh: '🌍 明代表中国大学生参加了联合国青年气候峰会。她用阿拉伯语发言，令与会者惊叹。',
+  scene_en: '🌍 Ming represents Chinese students at a UN Youth Climate Summit. She speaks in Arabic, stunning the audience.',
+  scene_emoji: '🌍🌿',
+  vocab_focus: ['بيئة', 'تغيّر المناخ', 'استدامة', 'تلوث', 'طاقة متجددة', 'تعاون'],
+  lines: [
+    { speaker: 'other', speaker_name_zh: '主持人', speaker_name_en: 'Moderator', speaker_emoji: '🎙️', arabic: 'كلمة التالية لممثلة الطلاب الصينيين، السيدة مينغ.', arabic_with_harakat: 'الْكَلِمَةُ التَّالِيَةُ لِمُمَثِّلَةِ الطُّلَّابِ الصِّينِيِّينَ، السَّيِّدَةِ مِينْغ.', meaning_zh: '下一个发言的是中国学生代表，明女士。', meaning_en: 'The next word goes to the representative of Chinese students, Ms. Ming.', transliteration: 'Al-kalima at-tāliya li-mumaththilat aṭ-ṭullāb aṣ-ṣīniyyīn, as-sayyida Mīng.' },
+    { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'شكراً. أيها السادة، تغيّر المناخ ليس مجرد مشكلة علمية — إنه أزمة حضارية تمسّ كل إنسان على هذه الأرض.', arabic_with_harakat: 'شُكْرًا. أَيُّهَا السَّادَة، تَغَيُّرُ المَنَاخِ لَيْسَ مُجَرَّدَ مُشْكِلَةٍ عِلْمِيَّةٍ — إِنَّهُ أَزْمَةٌ حَضَارِيَّةٌ تَمَسُّ كُلَّ إِنْسَانٍ عَلَى هَذِهِ الأَرْض.', meaning_zh: '谢谢。女士们先生们，气候变化不仅仅是一个科学问题——它是一场影响地球上每一个人的文明危机。', meaning_en: 'Thank you. Ladies and gentlemen, climate change is not merely a scientific problem — it is a civilizational crisis that touches every human being on this earth.', transliteration: 'Shukran. Ayyuhā as-sāda, taghayur al-manākh laysa mujarrad mushkila ʿilmiyya — innahu azma ḥaḍāriyya tamass kull insān ʿalā hādhihi l-arḍ.' },
+    { speaker: 'other', speaker_name_zh: '阿拉伯代表', speaker_name_en: 'Arab Delegate', speaker_emoji: '👨‍💼', arabic: 'نتفق معك. دول الخليج تعاني من الجفاف والحرارة الشديدة. نحتاج إلى تعاون دولي حقيقي في مجال الطاقة المتجددة.', arabic_with_harakat: 'نَتَّفِقُ مَعَكِ. دُوَلُ الخَلِيجِ تُعَانِي مِنَ الجَفَافِ وَالحَرَارَةِ الشَّدِيدَة. نَحْتَاجُ إِلَى تَعَاوُنٍ دَوْلِيٍّ حَقِيقِيٍّ فِي مَجَالِ الطَّاقَةِ المُتَجَدِّدَة.', meaning_zh: '我们同意你的看法。海湾国家正遭受干旱和极端高温之苦。我们需要在可再生能源领域真正的国际合作。', meaning_en: 'We agree with you. Gulf states suffer from drought and extreme heat. We need genuine international cooperation in renewable energy.', transliteration: 'Nattafiqu maʿaki. Duwal al-khalīj tuʿānī min al-jafāf wa-l-ḥarāra ash-shadīda. Naḥtāju ilā taʿāwun dawlī ḥaqīqī fī majāl aṭ-ṭāqa al-mutajaddida.' },
+    { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'بالضبط. الصين والدول العربية شريكتان طبيعيتان في هذا التحدي. تُصدّر الصين تقنيات الطاقة الشمسية وتحتاج المنطقة العربية إلى بنية تحتية خضراء.', arabic_with_harakat: 'بِالضَّبْط. الصِّينُ وَالدُّوَلُ العَرَبِيَّةُ شَرِيكَتَانِ طَبِيعِيَّتَانِ فِي هَذَا التَّحَدِّي. تُصَدِّرُ الصِّينُ تَقْنِيَاتِ الطَّاقَةِ الشَّمْسِيَّةِ وَتَحْتَاجُ المِنْطَقَةُ العَرَبِيَّةُ إِلَى بُنْيَةٍ تَحْتِيَّةٍ خَضْرَاء.', meaning_zh: '正是如此。中国和阿拉伯国家是这一挑战中天然的伙伴。中国出口太阳能技术，阿拉伯地区需要绿色基础设施。', meaning_en: 'Exactly. China and Arab nations are natural partners in this challenge. China exports solar energy technologies and the Arab region needs green infrastructure.', transliteration: 'Bil-ḍabṭ. Aṣ-Ṣīn wa-d-duwal al-ʿarabiyya sharīkatān ṭabīʿiyyatān fī hādhā t-taḥaddī. Tuṣaddiru ṣ-Ṣīn taqniyyāt aṭ-ṭāqa sh-shamsiyya wa-taḥtāju l-minṭaqa l-ʿarabiyya ilā bunyā taḥtiyya khaḍrāʾ.' },
+    { speaker: 'other', speaker_name_zh: '主持人', speaker_name_en: 'Moderator', speaker_emoji: '🎙️', arabic: 'خطاب رائع بالعربية! من أين تعلّمتِ هذه اللغة يا سيدة مينغ؟', arabic_with_harakat: 'خِطَابٌ رَائِعٌ بِالْعَرَبِيَّة! مِنْ أَيْنَ تَعَلَّمْتِ هَذِهِ اللُّغَةَ يَا سَيِّدَةَ مِينْغ؟', meaning_zh: '用阿拉伯语发表的精彩演讲！明女士，你是在哪里学的这门语言？', meaning_en: 'What a wonderful speech in Arabic! Where did you learn this language, Ms. Ming?', transliteration: 'Khiṭāb rāʾiʿ bil-ʿarabiyya! Min ayna taʿallamti hādhihi l-lugha yā sayyidat Mīng?' },
+    { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'تعلّمتها في القاهرة مع صديقي العزيز خالد — وبفضل إيماني بأن اللغة هي أول خطوة نحو الاستدامة الثقافية.', arabic_with_harakat: 'تَعَلَّمْتُهَا فِي الْقَاهِرَةِ مَعَ صَدِيقِي العَزِيزِ خَالِد — وَبِفَضْلِ إِيمَانِي بِأَنَّ اللُّغَةَ هِيَ أَوَّلُ خُطْوَةٍ نَحْوَ الاسْتِدَامَةِ الثَّقَافِيَّة.', meaning_zh: '我在开罗和我亲爱的朋友哈立德一起学的——也得益于我相信语言是走向文化可持续性的第一步。', meaning_en: 'I learned it in Cairo with my dear friend Khalid — and thanks to my belief that language is the first step toward cultural sustainability.', transliteration: 'Taʿallamtuhā fī l-Qāhira maʿa ṣadīqī l-ʿazīz Khālid — wa-bi-faḍl īmānī bi-anna l-lugha hiya awwalu khuṭwa naḥwa l-istidāma th-thaqāfiyya.' },
+  ],
+}
+
 export const B2_LESSON_PLAN = [
-  { day_number: 1, title_zh: '媒体与新闻', title_en: 'Media & News', title_ar: 'الإعلام والأخبار', lesson_type: 'vocabulary', xp: 60 },
-  { day_number: 2, title_zh: '政治与社会', title_en: 'Politics & Society', title_ar: 'السياسة والمجتمع', lesson_type: 'vocabulary', xp: 60 },
-  { day_number: 3, title_zh: '抽象概念', title_en: 'Abstract Concepts', title_ar: 'المفاهيم التجريدية', lesson_type: 'vocabulary', xp: 60 },
-  { day_number: 4, title_zh: '学术写作', title_en: 'Academic Writing', title_ar: 'الكتابة الأكاديمية', lesson_type: 'vocabulary', xp: 60 },
-  { day_number: 5, title_zh: '高级动词', title_en: 'Advanced Verbs', title_ar: 'الأفعال المتقدمة', lesson_type: 'vocabulary', xp: 60 },
-  { day_number: 6, title_zh: '故事：论文答辩', title_en: "Story: Ming's Thesis Defense", title_ar: 'قصة: مناقشة الأطروحة', lesson_type: 'dialogue', xp: 80 },
-  { day_number: 7, title_zh: '故事：文化交流会议', title_en: 'Story: Cultural Conference', title_ar: 'قصة: مؤتمر الحوار الثقافي', lesson_type: 'dialogue', xp: 80 },
+  { day_number: 1, title_zh: '媒体与新闻',       title_en: 'Media & News',              title_ar: 'الإعلام والأخبار',           lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 30 },
+  { day_number: 2, title_zh: '政治与社会',        title_en: 'Politics & Society',         title_ar: 'السياسة والمجتمع',            lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 30 },
+  { day_number: 3, title_zh: '抽象概念',          title_en: 'Abstract Concepts',          title_ar: 'المفاهيم التجريدية',          lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 28 },
+  { day_number: 4, title_zh: '学术写作',          title_en: 'Academic Writing',           title_ar: 'الكتابة الأكاديمية',          lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 30 },
+  { day_number: 5, title_zh: '高级动词',          title_en: 'Advanced Verbs',             title_ar: 'الأفعال المتقدمة',            lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 25 },
+  { day_number: 6, title_zh: '经济与贸易',        title_en: 'Economics & Trade',          title_ar: 'الاقتصاد والتجارة',           lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 28 },
+  { day_number: 7, title_zh: '环境与气候',        title_en: 'Environment & Climate',      title_ar: 'البيئة والمناخ',              lesson_type: 'vocabulary', xp_reward: 60, estimated_minutes: 28 },
+  { day_number: 8, title_zh: '故事：论文答辩',    title_en: "Story: Ming's Thesis Defense", title_ar: 'قصة: مناقشة الأطروحة',      lesson_type: 'dialogue',   xp_reward: 80, estimated_minutes: 35 },
+  { day_number: 9, title_zh: '故事：文化交流会议', title_en: 'Story: Cultural Conference', title_ar: 'قصة: مؤتمر الحوار الثقافي',  lesson_type: 'dialogue',   xp_reward: 80, estimated_minutes: 35 },
+  { day_number: 10, title_zh: '故事：联合国环境讨论', title_en: 'Story: UN Environment Discussion', title_ar: 'قصة: مناقشة بيئية في الأمم المتحدة', lesson_type: 'dialogue', xp_reward: 80, estimated_minutes: 35 },
 ]

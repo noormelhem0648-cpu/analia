@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
     const res = await fetch('/api/auth/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, locale }),
     })
     setLoading(false)
     if (res.ok) {
@@ -41,10 +41,10 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6"
-      style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+      style={{ background: 'linear-gradient(155deg, #F8F5F2 0%, #F5E8E9 55%, #F5E8E9 100%)' }}>
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#1E3A5F' }}>أ</span>
+          <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#C9858A' }}>أ</span>
           <span className="text-xl font-bold text-gray-800">ANALIA</span>
         </div>
 
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
             <div className="text-5xl mb-4">📧</div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">{tx.success}</h2>
             <Link href={`/${locale}/auth/login`}
-              className="mt-6 inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
+              className="mt-6 inline-flex items-center gap-2 text-[#C9858A] hover:text-[#A96368] font-medium">
               <ArrowLeft size={16} /> {tx.back}
             </Link>
           </div>
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
                   <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     required
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                     placeholder="you@example.com" />
                 </div>
               </div>
@@ -82,14 +82,14 @@ export default function ForgotPasswordPage() {
 
               <button type="submit" disabled={loading}
                 className="w-full py-3 rounded-xl font-semibold text-white disabled:opacity-60"
-                style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+                style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
                 {loading ? tx.sending : tx.btn}
               </button>
             </form>
 
             <p className="text-center mt-4">
               <Link href={`/${locale}/auth/login`}
-                className="text-sm text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1">
+                className="text-sm text-[#C9858A] hover:text-[#A96368] flex items-center justify-center gap-1">
                 <ArrowLeft size={14} /> {tx.back}
               </Link>
             </p>

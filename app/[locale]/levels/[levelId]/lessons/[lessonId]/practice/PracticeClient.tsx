@@ -8,9 +8,9 @@ import { generateLetterExercises, generateVocabExercises } from '@/lib/generateE
 import { PRE_A1_GREETINGS, ARABIC_NUMBERS, PRE_A1_VOCAB } from '@/lib/preA1Content'
 import { A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
 import { A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
-import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
-import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
-import { C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C2_LITERARY, C2_ACADEMIC_ADVANCED } from '@/lib/c1c2Content'
+import { B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION, B1_HOBBIES, B1_CITY, B1_GRAMMAR } from '@/lib/b1Content'
+import { B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS, B2_ECONOMY, B2_ENVIRONMENT } from '@/lib/b2Content'
+import { C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C1_DIALECTS, C2_LITERARY, C2_ACADEMIC_ADVANCED, C2_TRANSLATION } from '@/lib/c1c2Content'
 
 interface Lesson {
   id: number
@@ -31,19 +31,19 @@ const tx = {
 
 export default function PracticeClient({ locale, lesson, levelId }: { locale: string; lesson: Lesson; levelId: number }) {
   const t = tx[locale as keyof typeof tx] || tx.en
-  const color = lesson.levels?.color_primary || '#1E3A5F'
+  const color = lesson.levels?.color_primary || '#C9858A'
   const title = locale === 'zh' ? lesson.title_zh : locale === 'ar' ? lesson.title_ar : lesson.title_en
 
   const [key, setKey] = useState(0)
   const [result, setResult] = useState<{ score: number; xp: number } | null>(null)
 
   function buildExercises() {
-    const t = lesson.lesson_type
+    const lessonType = lesson.lesson_type
     const ti = lesson.title_en?.toLowerCase() || ''
-    if (t === 'letters') return generateLetterExercises(lesson.day_number, 8)
-    if (t === 'greetings') return generateVocabExercises(PRE_A1_GREETINGS.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
-    if (t === 'numbers')   return generateVocabExercises(ARABIC_NUMBERS.map(v => ({ ar: v.arabic_with_harakat, en: v.meaning_en, zh: v.meaning_zh })), 8)
-    if (t === 'vocabulary') {
+    if (lessonType === 'letters') return generateLetterExercises(lesson.day_number, 8)
+    if (lessonType === 'greetings') return generateVocabExercises(PRE_A1_GREETINGS.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
+    if (lessonType === 'numbers')   return generateVocabExercises(ARABIC_NUMBERS.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
+    if (lessonType === 'vocabulary') {
       const levelCode = lesson.levels?.code
       let bank = PRE_A1_VOCAB
       if (levelCode === 'a1') {
@@ -66,6 +66,9 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
         else if (ti.includes('culture') || ti.includes('heritage')) bank = B1_CULTURE
         else if (ti.includes('work') || ti.includes('career')) bank = B1_WORK
         else if (ti.includes('opinion') || ti.includes('express')) bank = B1_OPINION
+        else if (ti.includes('hobb') || ti.includes('free time') || ti.includes('leisure')) bank = B1_HOBBIES
+        else if (ti.includes('city') || ti.includes('neighbor') || ti.includes('urban')) bank = B1_CITY
+        else if (ti.includes('adjective') || ti.includes('adverb') || ti.includes('grammar')) bank = B1_GRAMMAR
         else bank = B1_WORK
       } else if (levelCode === 'b2') {
         if (ti.includes('media') || ti.includes('news')) bank = B2_MEDIA
@@ -73,14 +76,18 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
         else if (ti.includes('abstract')) bank = B2_ABSTRACT
         else if (ti.includes('academic') || ti.includes('writing')) bank = B2_ACADEMIC
         else if (ti.includes('verb')) bank = B2_ADVANCED_VERBS
+        else if (ti.includes('econom') || ti.includes('trade') || ti.includes('commerce')) bank = B2_ECONOMY
+        else if (ti.includes('environ') || ti.includes('climate') || ti.includes('nature')) bank = B2_ENVIRONMENT
         else bank = B2_ABSTRACT
       } else if (levelCode === 'c1') {
         if (ti.includes('rhetoric') || ti.includes('eloquence')) bank = C1_RHETORIC
         else if (ti.includes('classical')) bank = C1_CLASSICAL
         else if (ti.includes('philosoph')) bank = C1_PHILOSOPHY
+        else if (ti.includes('dialect') || ti.includes('colloquial')) bank = C1_DIALECTS
         else bank = C1_RHETORIC
       } else if (levelCode === 'c2') {
         if (ti.includes('literary') || ti.includes('analysis')) bank = C2_LITERARY
+        else if (ti.includes('translat') || ti.includes('interpret')) bank = C2_TRANSLATION
         else bank = C2_ACADEMIC_ADVANCED
       }
       return generateVocabExercises(bank.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 8)
@@ -89,13 +96,17 @@ export default function PracticeClient({ locale, lesson, levelId }: { locale: st
   }
   const exercises = buildExercises()
 
-  function handleComplete(score: number, xp: number) {
+  async function handleComplete(score: number, xp: number) {
     setResult({ score, xp })
-    fetch('/api/progress/lesson', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lesson_id: lesson.id, status: score >= 80 ? 'completed' : 'in_progress', score, xp_earned: xp }),
-    })
+    try {
+      await fetch('/api/progress/lesson', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lesson_id: lesson.id, status: score >= 80 ? 'completed' : 'in_progress', score, xp_earned: xp }),
+      })
+    } catch {
+      // Progress save failed silently — non-critical, user still sees their score
+    }
   }
 
   return (

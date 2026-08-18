@@ -1,7 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Lock, CheckCircle, ChevronRight, Star } from 'lucide-react'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
+  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, type: 'spring' as const, stiffness: 240, damping: 22 } }),
+}
 
 const LEVEL_META: Record<string, { color: string; icon: string }> = {
   'pre-a1': { color: '#10B981', icon: '🌱' },
@@ -10,7 +16,13 @@ const LEVEL_META: Record<string, { color: string; icon: string }> = {
   'b1':     { color: '#F59E0B', icon: '💬' },
   'b2':     { color: '#EF4444', icon: '📰' },
   'c1':     { color: '#6366F1', icon: '🎓' },
-  'c2':     { color: '#EC4899', icon: '👑' },
+  'c2':     { color: '#C9858A', icon: '👑' },
+  'zh-pre-a1': { color: '#DC2626', icon: '🀄' },
+  'zh-a1':     { color: '#EA580C', icon: '🏮' },
+  'zh-a2':     { color: '#D97706', icon: '🎋' },
+  'zh-b1':     { color: '#16A34A', icon: '🐉' },
+  'zh-b2':     { color: '#0284C7', icon: '🏯' },
+  'zh-c1':     { color: '#7C3AED', icon: '⛩️' },
 }
 
 interface Level {
@@ -25,6 +37,8 @@ interface Level {
   color_primary?: string
   icon_emoji?: string
   order_index: number
+  xp_required?: number
+  lang_pair?: string
   lessons?: [{ count: number }]
 }
 
@@ -33,17 +47,30 @@ interface Props {
   levels: Level[]
   currentLevelId: number
   completedByLevel: Record<number, number>
+  learningDirection?: string
 }
 
 const tx = {
-  zh: { title: '学习路径', subtitle: '从初级到精通的阿拉伯语之旅', lessons: '课程', completed: '已完成', locked: '未解锁', start: '开始', continue: '继续', done: '完成 ✓' },
-  en: { title: 'Learning Path', subtitle: 'Your Arabic journey from beginner to mastery', lessons: 'lessons', completed: 'completed', locked: 'Locked', start: 'Start', continue: 'Continue', done: 'Done ✓' },
-  ar: { title: 'مسار التعلم', subtitle: 'رحلتك في العربية من المبتدئ إلى الإتقان', lessons: 'درس', completed: 'مكتمل', locked: 'مقفل', start: 'ابدأ', continue: 'تابع', done: 'مكتمل ✓' },
+  zh: {
+    title: '学习路径', subtitle_ar: '从初级到精通的阿拉伯语之旅', subtitle_zh: '从初级到精通的汉语之旅',
+    lessons: '课程', completed: '已完成', locked: '未解锁', start: '开始', continue: '继续', done: '完成 ✓',
+  },
+  en: {
+    title: 'Learning Path', subtitle_ar: 'Your Arabic journey from beginner to mastery', subtitle_zh: 'Your Chinese journey from beginner to mastery',
+    lessons: 'lessons', completed: 'completed', locked: 'Locked', start: 'Start', continue: 'Continue', done: 'Done ✓',
+  },
+  ar: {
+    title: 'مسار التعلم', subtitle_ar: 'رحلتك في العربية من المبتدئ إلى الإتقان', subtitle_zh: 'رحلتك في الصينية من المبتدئ إلى الإتقان',
+    lessons: 'درس', completed: 'مكتمل', locked: 'مقفل', start: 'ابدأ', continue: 'تابع', done: 'مكتمل ✓',
+  },
 }
 
-export default function LevelsClient({ locale, levels, currentLevelId, completedByLevel }: Props) {
+export default function LevelsClient({ locale, levels, currentLevelId, completedByLevel, learningDirection }: Props) {
   const t = tx[locale as keyof typeof tx] || tx.en
-  const currentOrder = levels.find(l => l.id === currentLevelId)?.order_index ?? 0
+  const isChinesePath = learningDirection === 'ar_learns_zh'
+  // For Chinese path: never lock levels (all open). For Arabic path: use XP-based order.
+  const currentOrder = isChinesePath ? 999 : (levels.find(l => l.id === currentLevelId)?.order_index ?? 0)
+  const subtitle = isChinesePath ? t.subtitle_zh : t.subtitle_ar
 
   return (
     <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
@@ -51,7 +78,7 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{t.title}</h1>
-          <p className="text-gray-700 mt-1">{t.subtitle}</p>
+          <p className="text-gray-700 mt-1">{subtitle}</p>
         </div>
 
         {/* Path */}
@@ -79,18 +106,21 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
               else if (isActive && done > 0) btnLabel = t.continue
 
               return (
-                <div key={level.id} className={`relative flex gap-6 items-start group`}>
+                <motion.div key={level.id} variants={fadeUp} initial="hidden" animate="show" custom={idx}
+                  className={`relative flex gap-6 items-start group`}>
                   {/* Circle node */}
-                  <div className={`relative z-10 w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md transition-all group-hover:scale-105 ${isLocked ? 'opacity-40 grayscale' : ''}`}
-                    style={{ background: isLocked ? '#E5E7EB' : `linear-gradient(135deg, ${color}CC, ${color})` }}>
+                  <motion.div whileHover={isLocked ? {} : { scale: 1.08, rotate: -3 }} whileTap={isLocked ? {} : { scale: 0.94 }}
+                    className={`relative z-10 w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md ${isLocked ? 'opacity-40 grayscale' : ''}`}
+                    style={{ background: isLocked ? '#E8E2DB' : `linear-gradient(135deg, ${color}CC, ${color})` }}>
                     {isLocked ? <Lock size={22} className="text-gray-600" /> : isCompleted ? <CheckCircle size={24} className="text-white" /> : <span>{icon}</span>}
                     {isActive && (
                       <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-white animate-pulse" />
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Card */}
-                  <div className={`flex-1 bg-white rounded-2xl p-5 shadow-sm border transition-all ${isActive ? 'border-2' : 'border-gray-100'} ${isLocked ? 'opacity-50' : 'hover:shadow-md'}`}
+                  <motion.div whileHover={isLocked ? {} : { y: -2 }}
+                    className={`flex-1 bg-white rounded-2xl p-5 shadow-sm border transition-shadow ${isActive ? 'border-2' : 'border-gray-100'} ${isLocked ? 'opacity-50' : 'hover:shadow-md'}`}
                     style={isActive ? { borderColor: color } : {}}>
                     <div className="flex items-start justify-between">
                       <div>
@@ -104,18 +134,22 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
                         <p className="text-sm text-gray-600">{desc}</p>
                         <p className="text-xs text-gray-600 mt-1">{totalLessons} {t.lessons} · {done} {t.completed}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-yellow-500">
-                        <Star size={14} fill="currentColor" />
-                        <span className="text-xs font-bold text-gray-600">{(idx + 1) * 100} XP</span>
-                      </div>
+                      {level.xp_required !== undefined && level.xp_required > 0 && (
+                        <div className="flex items-center gap-1 text-yellow-500">
+                          <Star size={14} fill="currentColor" />
+                          <span className="text-xs font-bold text-gray-600">{level.xp_required} XP</span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Progress bar */}
                     {!isLocked && totalLessons > 0 && (
                       <div className="mt-3">
                         <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                          <div className="h-full rounded-full transition-all duration-700"
-                            style={{ width: `${progress}%`, background: color }} />
+                          <motion.div className="h-full rounded-full"
+                            initial={{ width: 0 }} animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.9, ease: 'easeOut', delay: idx * 0.07 + 0.2 }}
+                            style={{ background: color }} />
                         </div>
                         <p className="text-xs text-gray-600 mt-1">{progress}%</p>
                       </div>
@@ -124,14 +158,14 @@ export default function LevelsClient({ locale, levels, currentLevelId, completed
                     {/* CTA */}
                     {!isLocked && (
                       <Link href={`/${locale}/levels/${level.id}`}
-                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all hover:opacity-90"
+                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all hover:opacity-90 active:scale-95"
                         style={{ background: isCompleted ? '#10B981' : color }}>
                         {btnLabel}
-                        <ChevronRight size={15} />
+                        <ChevronRight size={15} className={locale === 'ar' ? 'rotate-180' : ''} />
                       </Link>
                     )}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )
             })}
           </div>

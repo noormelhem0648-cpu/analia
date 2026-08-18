@@ -249,20 +249,24 @@ export default function PlacementTestClient({ locale }: Props) {
   async function saveAndStart(levelCode: string) {
     setSaving(true)
     try { localStorage.removeItem(STORAGE_KEY) } catch {}
-    await fetch('/api/placement-result', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ level_code: levelCode }),
-    })
+    try {
+      await fetch('/api/placement-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ level_code: levelCode }),
+      })
+    } catch { /* non-critical — user still proceeds to dashboard */ }
     router.push(`/${locale}/dashboard`)
   }
 
   async function skipTest() {
-    await fetch('/api/placement-result', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ level_code: 'pre-a1' }),
-    })
+    try {
+      await fetch('/api/placement-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ level_code: 'pre-a1' }),
+      })
+    } catch { /* non-critical */ }
     router.push(`/${locale}/dashboard`)
   }
 
@@ -270,7 +274,7 @@ export default function PlacementTestClient({ locale }: Props) {
   if (done) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6"
-        style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+        style={{ background: 'linear-gradient(135deg, #C9858A 0%, #A96368 100%)' }}>
         <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md text-center">
           <div className="text-6xl mb-4">{level.icon}</div>
           <div className="inline-block px-4 py-1.5 rounded-full text-white text-sm font-medium mb-4"
@@ -305,12 +309,12 @@ export default function PlacementTestClient({ locale }: Props) {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6"
-      style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+      style={{ background: 'linear-gradient(135deg, #C9858A 0%, #A96368 100%)' }}>
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <span className="text-4xl" style={{ fontFamily: 'Amiri, serif', color: '#C9A84C' }}>أ</span>
+            <span className="text-4xl" style={{ fontFamily: 'Amiri, serif', color: '#A96368' }}>أ</span>
             <h1 className="text-3xl font-bold text-white">ANALIA</h1>
           </div>
           <p className="text-xl font-semibold text-white">{t.title}</p>
@@ -372,7 +376,7 @@ export default function PlacementTestClient({ locale }: Props) {
           {checked && (
             <button onClick={handleNext}
               className="w-full mt-6 py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 flex items-center justify-center gap-2"
-              style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+              style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
               {current + 1 >= QUESTIONS.length ? t.finish : t.next}
               <ChevronRight size={18} />
             </button>

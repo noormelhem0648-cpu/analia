@@ -2,125 +2,111 @@
 
 import { Trophy, Flame, Star } from 'lucide-react'
 
-const tx = {
-  zh: { title: '排行榜', subtitle: '与其他学生竞争', rank: '排名', xp: 'XP积分', streak: '连续天数', level: '等级', you: '你', empty: '暂无数据' },
-  en: { title: 'Leaderboard', subtitle: 'Compete with other learners', rank: 'Rank', xp: 'XP', streak: 'Streak', level: 'Level', you: 'You', empty: 'No data yet' },
-  ar: { title: 'لوحة المتصدرين', subtitle: 'تنافس مع الطلاب الآخرين', rank: 'المركز', xp: 'النقاط', streak: 'التسلسل', level: 'المستوى', you: 'أنت', empty: 'لا توجد بيانات' },
-}
-
-const MEDAL = ['🥇', '🥈', '🥉']
-
-interface User {
+interface Entry {
   id: string
   display_name?: string
   username: string
   total_xp: number
   streak_days: number
-  placement_level_code?: string
 }
 
 interface Props {
   locale: string
-  users: User[]
-  myId: string
-  myRank: number
+  currentUserId: string
+  entries: Entry[]
 }
 
-export default function LeaderboardClient({ locale, users, myId, myRank }: Props) {
-  const t = tx[locale as keyof typeof tx] || tx.en
+const tx = {
+  zh: { title: '排行榜', subtitle: '全球学习者排名', xp: '积分', streak: '连续', days: '天', you: '你', empty: '暂无数据' },
+  en: { title: 'Leaderboard', subtitle: 'Global learner rankings', xp: 'XP', streak: 'Streak', days: 'days', you: 'You', empty: 'No data yet' },
+  ar: { title: 'لوحة المتصدرين', subtitle: 'ترتيب المتعلمين العالمي', xp: 'نقطة', streak: 'سلسلة', days: 'أيام', you: 'أنت', empty: 'لا توجد بيانات' },
+}
 
-  const top3 = users.slice(0, 3)
-  const rest = users.slice(3)
+const MEDAL: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' }
+
+export default function LeaderboardClient({ locale, currentUserId, entries }: Props) {
+  const t = tx[locale as keyof typeof tx] || tx.en
+  const top3 = entries.slice(0, 3)
+  const rest = entries.slice(3)
+
+  function displayName(e: Entry) {
+    return e.display_name || e.username || '---'
+  }
 
   return (
     <main className="lg:ml-64 flex-1 p-6 lg:p-10 pb-24 lg:pb-10">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-xl mx-auto">
+        {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #F59E0B, #EF4444)' }}>
-              <Trophy size={20} className="text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
-              <p className="text-gray-600 text-sm">{t.subtitle}</p>
-            </div>
+          <div className="flex items-center gap-3 mb-1">
+            <Trophy size={26} style={{ color: '#F59E0B' }} />
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{t.title}</h1>
           </div>
-
-          {myRank > 0 && (
-            <div className="mt-4 bg-blue-50 border border-blue-100 rounded-2xl px-5 py-3 flex items-center gap-3">
-              <span className="text-2xl font-bold text-blue-600">#{myRank}</span>
-              <span className="text-blue-700 text-sm font-medium">{t.you}</span>
-              <span className="text-blue-500 text-sm ml-auto">⭐ {users.find(u => u.id === myId)?.total_xp?.toLocaleString() || 0} XP</span>
-            </div>
-          )}
+          <p className="text-gray-600 text-sm">{t.subtitle}</p>
         </div>
 
-        {/* Top 3 podium */}
-        {top3.length > 0 && (
-          <div className="flex items-end justify-center gap-4 mb-8">
-            {[top3[1], top3[0], top3[2]].filter(Boolean).map((u, i) => {
-              const rank = i === 0 ? 2 : i === 1 ? 1 : 3
-              const heights = { 1: 'h-32', 2: 'h-24', 3: 'h-20' }
-              const isMe = u.id === myId
-              return (
-                <div key={u.id} className="flex flex-col items-center gap-2 flex-1">
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-md ${isMe ? 'ring-4 ring-blue-400' : ''}`}
-                    style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
-                    {(u.display_name || u.username || '?')[0].toUpperCase()}
-                  </div>
-                  <p className="text-xs font-medium text-gray-700 text-center truncate w-full text-center">
-                    {u.display_name || u.username}{isMe ? ` (${t.you})` : ''}
-                  </p>
-                  <p className="text-xs text-gray-500">⭐ {u.total_xp?.toLocaleString()}</p>
-                  <div className={`w-full ${heights[rank as keyof typeof heights]} rounded-t-2xl flex items-start justify-center pt-2`}
-                    style={{ background: rank === 1 ? '#F59E0B' : rank === 2 ? '#94A3B8' : '#CD7F32' }}>
-                    <span className="text-2xl">{MEDAL[rank - 1]}</span>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-
-        {/* Rest of leaderboard */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          {rest.map((u, i) => {
-            const rank = i + 4
-            const isMe = u.id === myId
-            return (
-              <div key={u.id}
-                className={`flex items-center gap-4 px-5 py-3.5 border-b border-gray-50 last:border-b-0 transition-colors ${isMe ? 'bg-blue-50' : 'hover:bg-gray-50'}`}>
-                <span className="w-8 text-center text-sm font-bold text-gray-500">#{rank}</span>
-                <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                  style={{ background: isMe ? 'linear-gradient(135deg, #2563EB, #1D4ED8)' : 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
-                  {(u.display_name || u.username || '?')[0].toUpperCase()}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate">
-                    {u.display_name || u.username}{isMe ? ` (${t.you})` : ''}
-                  </p>
-                  {u.placement_level_code && (
-                    <span className="text-xs text-blue-600">{u.placement_level_code.toUpperCase()}</span>
-                  )}
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <div className="flex items-center gap-1 text-xs text-orange-500">
-                    <Flame size={13} />
-                    <span className="font-medium">{u.streak_days}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-amber-500">
-                    <Star size={13} />
-                    <span className="font-bold">{u.total_xp?.toLocaleString()}</span>
-                  </div>
-                </div>
+        {entries.length === 0 ? (
+          <div className="text-center py-20 text-gray-500">{t.empty}</div>
+        ) : (
+          <>
+            {/* Podium — top 3 */}
+            {top3.length > 0 && (
+              <div className="flex items-end justify-center gap-3 mb-8">
+                {[top3[1], top3[0], top3[2]].filter(Boolean).map((e, vi) => {
+                  const rank = vi === 0 ? 2 : vi === 1 ? 1 : 3
+                  const height = rank === 1 ? 'h-28' : rank === 2 ? 'h-20' : 'h-16'
+                  const isMe = e.id === currentUserId
+                  return (
+                    <div key={e.id} className="flex flex-col items-center gap-2 flex-1">
+                      <div className={`text-2xl ${isMe ? 'ring-2 ring-blue-400 rounded-full' : ''}`}>
+                        {MEDAL[rank]}
+                      </div>
+                      <p className={`text-xs font-bold truncate max-w-[80px] text-center ${isMe ? 'text-blue-600' : 'text-gray-700'}`}>
+                        {displayName(e)}{isMe ? ` (${t.you})` : ''}
+                      </p>
+                      <p className="text-xs text-yellow-600 font-semibold">{e.total_xp.toLocaleString()} {t.xp}</p>
+                      <div className={`w-full rounded-t-2xl ${height} flex items-center justify-center text-white font-bold text-lg shadow-md`}
+                        style={{ background: rank === 1 ? 'linear-gradient(180deg,#F59E0B,#D97706)' : rank === 2 ? 'linear-gradient(180deg,#94A3B8,#64748B)' : 'linear-gradient(180deg,#CD7C2F,#A0522D)' }}>
+                        #{rank}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
-            )
-          })}
-          {users.length === 0 && (
-            <div className="text-center py-16 text-gray-500">{t.empty}</div>
-          )}
-        </div>
+            )}
+
+            {/* Remaining entries */}
+            <div className="space-y-2">
+              {rest.map((e, i) => {
+                const rank = i + 4
+                const isMe = e.id === currentUserId
+                return (
+                  <div key={e.id}
+                    className={`flex items-center gap-4 rounded-2xl px-4 py-3 border transition-all ${isMe ? 'border-blue-300 bg-blue-50 shadow-sm' : 'border-gray-100 bg-white'}`}>
+                    <span className="w-7 text-sm font-bold text-gray-500 text-center flex-shrink-0">#{rank}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className={`font-semibold truncate ${isMe ? 'text-blue-700' : 'text-gray-800'}`}>
+                        {displayName(e)}{isMe ? ` (${t.you})` : ''}
+                      </p>
+                      <div className="flex items-center gap-3 mt-0.5">
+                        <span className="flex items-center gap-1 text-xs text-yellow-600">
+                          <Star size={11} fill="currentColor" />
+                          {e.total_xp.toLocaleString()} {t.xp}
+                        </span>
+                        {e.streak_days > 0 && (
+                          <span className="flex items-center gap-1 text-xs text-orange-500">
+                            <Flame size={11} />
+                            {e.streak_days} {t.days}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        )}
       </div>
     </main>
   )

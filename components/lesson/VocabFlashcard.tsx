@@ -27,9 +27,9 @@ export default function VocabFlashcard({ item, locale = 'zh', onNext, totalItems
   const categoryColors: Record<string, string> = {
     greetings: '#10B981', pronouns: '#3B82F6', family: '#F59E0B',
     colors: '#8B5CF6', objects: '#6366F1', food: '#EF4444',
-    adjectives: '#EC4899', numbers: '#14B8A6',
+    adjectives: '#C9858A', numbers: '#14B8A6',
   }
-  const color = categoryColors[item.category] || '#1E3A5F'
+  const color = categoryColors[item.category] || '#C9858A'
 
   function handleNext() {
     setRevealed(false)
@@ -45,7 +45,7 @@ export default function VocabFlashcard({ item, locale = 'zh', onNext, totalItems
             <div key={i} className="h-1.5 rounded-full transition-all"
               style={{
                 width: i === currentIndex ? 24 : 8,
-                background: i <= currentIndex ? color : '#E5E7EB',
+                background: i <= currentIndex ? color : '#E8E2DB',
               }} />
           ))}
         </div>
@@ -69,7 +69,7 @@ export default function VocabFlashcard({ item, locale = 'zh', onNext, totalItems
           {/* Arabic */}
           <div className="mb-2">
             <span className="text-6xl font-bold leading-none" dir="rtl"
-              style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
+              style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#C9858A' }}>
               {item.arabic_with_harakat}
             </span>
           </div>
@@ -108,7 +108,7 @@ export default function VocabFlashcard({ item, locale = 'zh', onNext, totalItems
                 <div className="bg-gray-50 rounded-2xl p-4 text-right">
                   <p className="text-xs font-semibold text-gray-500 text-left mb-2">{exampleLabel}</p>
                   <p className="text-lg leading-relaxed" dir="rtl"
-                    style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
+                    style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#C9858A' }}>
                     {item.example_sentence}
                   </p>
                   {item.example_meaning_zh && locale === 'zh' && (

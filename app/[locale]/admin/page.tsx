@@ -36,7 +36,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>
-      <AppSidebar locale={locale} xp={profile?.total_xp || 0} streak={profile?.streak_days || 0} />
+      <AppSidebar locale={locale} xp={profile?.total_xp || 0} streak={profile?.streak_days || 0} isAdmin={true} />
       <AdminClient profiles={profiles || []} stats={stats} locale={locale} />
     </div>
   )

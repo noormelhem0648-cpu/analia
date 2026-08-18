@@ -35,14 +35,14 @@ export default function LoginPage() {
       setError(tx.error)
       setLoading(false)
     } else {
-      // Check if placement test done
+      // New users first choose interface language + what to learn, then placement, then dashboard.
       const { data: profile } = await supabase
         .from('profiles')
         .select('placement_test_done')
         .eq('id', data.user!.id)
         .maybeSingle()
       if (!profile?.placement_test_done) {
-        router.push(`/${locale}/placement-test`)
+        router.push(`/${locale}/onboarding`)
       } else {
         router.push(`/${locale}/dashboard`)
       }
@@ -50,25 +50,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+    <div className="min-h-screen flex" style={{ background: 'linear-gradient(155deg, #F8F5F2 0%, #F5E8E9 55%, #F5E8E9 100%)' }}>
       {/* Left panel — branding */}
       <div className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 flex items-center justify-center">
-          <span className="text-[20rem]" style={{ fontFamily: 'Amiri, serif', color: '#C9A84C' }}>أ</span>
+          <span className="text-[20rem]" style={{ fontFamily: 'Amiri, serif', color: '#A96368' }}>أ</span>
         </div>
-        <div className="relative z-10 text-center text-white px-12">
+        <div className="relative z-10 text-center px-12" style={{ color: '#1A1A1A' }}>
           <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="text-6xl" style={{ fontFamily: 'Amiri, serif', color: '#C9A84C' }}>أ</span>
-            <h1 className="text-5xl font-bold">ANALIA</h1>
+            <span className="text-6xl" style={{ fontFamily: 'Amiri, serif', color: '#A96368' }}>أ</span>
+            <h1 className="text-5xl font-bold" style={{ color: '#C9858A' }}>ANALIA</h1>
           </div>
-          <p className="text-2xl text-white mb-3">تعلّم العربية من الصفر</p>
-          <p className="text-lg text-white">从零开始学阿拉伯语</p>
+          <p className="text-2xl mb-3" style={{ color: '#1A1A1A' }}>تعلّم العربية من الصفر</p>
+          <p className="text-lg" style={{ color: '#7A7370' }}>从零开始学阿拉伯语</p>
           <div className="mt-12 grid grid-cols-2 gap-4 text-sm">
             {[['🌱', '7 مستويات', '7 Levels'], ['🤖', 'معلم ذكي', 'AI Teacher'], ['🏆', 'شهادات', 'Certificates'], ['🔥', 'نظام تحفيز', 'Gamification']].map(([emoji, ar, en]) => (
-              <div key={ar} className="bg-white/10 rounded-xl p-3 text-center">
+              <div key={ar} className="rounded-xl p-3 text-center bg-white border" style={{ borderColor: '#E8E2DB' }}>
                 <div className="text-2xl mb-1">{emoji}</div>
-                <div className="text-white font-medium">{ar}</div>
-                <div className="text-blue-100 text-xs">{en}</div>
+                <div className="font-medium" style={{ color: '#1A1A1A' }}>{ar}</div>
+                <div className="text-xs" style={{ color: '#7A7370' }}>{en}</div>
               </div>
             ))}
           </div>
@@ -84,7 +84,7 @@ export default function LoginPage() {
         >
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2 mb-6">
-            <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#1E3A5F' }}>أ</span>
+            <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#C9858A' }}>أ</span>
             <span className="text-xl font-bold text-gray-800">ANALIA</span>
           </div>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C9858A] focus:border-transparent transition"
                 placeholder="you@example.com"
               />
             </div>
@@ -114,11 +114,11 @@ export default function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition pr-12"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C9858A] focus:border-transparent transition pr-12"
                   placeholder="••••••••"
                 />
                 <button type="button" onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
@@ -135,21 +135,21 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 disabled:opacity-60"
-              style={{ background: loading ? '#94a3b8' : 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}
+              style={{ background: loading ? '#94a3b8' : 'linear-gradient(135deg, #C9858A, #A96368)' }}
             >
               {loading ? tx.loading : tx.btn}
             </button>
           </form>
 
           <div className="text-center mt-4">
-            <Link href={`/${locale}/auth/forgot-password`} className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href={`/${locale}/auth/forgot-password`} className="text-sm text-gray-600 hover:text-[#C9858A] transition-colors">
               {locale === 'ar' ? 'نسيت كلمة المرور؟' : locale === 'zh' ? '忘记密码？' : 'Forgot password?'}
             </Link>
           </div>
 
           <p className="text-center text-gray-700 text-sm mt-4">
             {tx.no_account}{' '}
-            <Link href={`/${locale}/auth/register`} className="font-semibold text-blue-600 hover:text-blue-700">
+            <Link href={`/${locale}/auth/register`} className="font-semibold text-[#C9858A] hover:text-[#A96368]">
               {tx.register}
             </Link>
           </p>

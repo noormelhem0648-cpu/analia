@@ -42,7 +42,7 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
       <div className="text-center">
         <span className="text-3xl">{dialogue.scene_emoji}</span>
         <h2 className="text-lg font-bold text-gray-800 mt-1">
-          {locale === 'ar' ? dialogue.title_ar : dialogue.title_zh}
+          {locale === 'ar' ? dialogue.title_ar : locale === 'en' ? dialogue.title_en : dialogue.title_zh}
         </h2>
         {/* progress bar */}
         <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -57,7 +57,9 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
         <div className="rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-6">
           <div className="flex items-start gap-3">
             <BookOpen size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-gray-700 leading-relaxed text-sm">{dialogue.scene_zh}</p>
+            <p className="text-gray-700 leading-relaxed text-sm">
+              {locale === 'ar' ? (dialogue.scene_ar ?? dialogue.scene_zh) : locale === 'en' ? (dialogue.scene_en ?? dialogue.scene_zh) : dialogue.scene_zh}
+            </p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {dialogue.vocab_focus.map(w => (
@@ -80,9 +82,13 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
           {/* Speaker */}
           <div className="flex items-center gap-2 mb-3">
             <span className="text-2xl">{currentLine.speaker_emoji}</span>
-            <span className="font-semibold text-gray-700 text-sm">{currentLine.speaker_name_zh}</span>
+            <span className="font-semibold text-gray-700 text-sm">
+              {locale === 'ar' ? (currentLine.speaker_name_ar ?? currentLine.speaker_name_zh) : locale === 'en' ? (currentLine.speaker_name_en ?? currentLine.speaker_name_zh) : currentLine.speaker_name_zh}
+            </span>
             {currentLine.speaker === 'ming' && (
-              <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">你</span>
+              <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
+                {locale === 'ar' ? 'أنت' : locale === 'zh' ? '你' : 'You'}
+              </span>
             )}
           </div>
 
@@ -111,7 +117,9 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
             </button>
           ) : (
             <div className="bg-white rounded-xl px-3 py-2 border border-gray-100">
-              <p className="text-sm font-medium text-gray-800">{currentLine.meaning_zh}</p>
+              <p className="text-sm font-medium text-gray-800">
+                {locale === 'ar' ? (currentLine.meaning_ar ?? currentLine.meaning_zh) : locale === 'en' ? (currentLine.meaning_en ?? currentLine.meaning_zh) : currentLine.meaning_zh}
+              </p>
             </div>
           )}
         </div>
@@ -125,7 +133,7 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
             {locale === 'zh' ? '对话完成！' : locale === 'ar' ? 'أحسنت!' : 'Dialogue complete!'}
           </p>
           <p className="text-sm text-gray-600 mt-1">
-            {locale === 'zh' ? `你学会了 ${dialogue.vocab_focus.length} 个关键词` : `${dialogue.vocab_focus.length} key words learned`}
+            {locale === 'zh' ? `你学会了 ${dialogue.vocab_focus.length} 个关键词` : locale === 'ar' ? `تعلمت ${dialogue.vocab_focus.length} كلمات رئيسية` : `${dialogue.vocab_focus.length} key words learned`}
           </p>
         </div>
       )}
@@ -138,7 +146,7 @@ export default function StoryDialogueLesson({ dialogue, locale = 'zh', onComplet
         </button>
         <button onClick={goNext}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90"
-          style={{ background: isDone ? '#10B981' : 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+          style={{ background: isDone ? '#10B981' : 'linear-gradient(135deg, #C9858A, #A96368)' }}>
           {isDone
             ? (locale === 'zh' ? '完成 ✓' : 'Complete ✓')
             : (<>{nextLabel} <ChevronRight size={16} /></>)

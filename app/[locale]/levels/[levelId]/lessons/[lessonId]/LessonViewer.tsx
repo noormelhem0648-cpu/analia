@@ -8,14 +8,17 @@ import Confetti from '@/components/lesson/Confetti'
 import HarakatLesson from '@/components/lesson/HarakatLesson'
 import VocabFlashcard from '@/components/lesson/VocabFlashcard'
 import StoryDialogueLesson from '@/components/lesson/StoryDialogueLesson'
+import HanziCard from '@/components/lesson/HanziCard'
 import { getLettersForLesson } from '@/lib/arabicAlphabet'
-import { generateLetterExercises, generateVocabExercises, type GeneratedExercise } from '@/lib/generateExercises'
+import { generateLetterExercises, generateVocabExercises, generateHskExercises, type GeneratedExercise } from '@/lib/generateExercises'
+import { HSK1_GREETINGS, HSK1_PRONOUNS, HSK1_NUMBERS, HSK1_FAMILY, HSK1_FOOD, HSK1_PLACES, HSK1_VERBS, HSK1_TIME, HSK1_ADJECTIVES, HSK1_QUESTION_WORDS, HSK2_DAILY_LIFE, HSK2_WORK_STUDY, HSK2_BODY_HEALTH, HSK2_EMOTIONS, HSK3_SOCIETY, HSK3_CULTURE, HSK4_BUSINESS, HSK4_SOCIETY, HSK4_ADVANCED_VERBS, HSK5_ACADEMIC, HSK5_ADVANCED_EXPRESSIONS, HSK6_LITERARY, HSK6_MASTERY, type HskItem } from '@/lib/hskContent'
 import { PRE_A1_VOCAB, PRE_A1_GREETINGS, ARABIC_NUMBERS, type VocabItem } from '@/lib/preA1Content'
 import { MING_STORIES, A1_PRONOUNS, A1_PROFESSIONS, A1_PLACES, A1_TIME, A1_VERBS_PAST, A1_VERBS_PRESENT } from '@/lib/a1Content'
 import { A2_STORIES, A2_SENTENCE_STRUCTURE, A2_BODY_HEALTH, A2_FOOD, A2_TRAVEL, A2_COMPARISON, A2_FAMILY } from '@/lib/a2Content'
-import { B1_STORIES, B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION } from '@/lib/b1Content'
-import { B2_STORIES, B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS } from '@/lib/b2Content'
-import { C1_STORIES, C2_STORIES, C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C2_LITERARY, C2_ACADEMIC_ADVANCED } from '@/lib/c1c2Content'
+import { B1_STORIES, B1_VERBS, B1_CULTURE, B1_WORK, B1_OPINION, B1_HOBBIES, B1_CITY, B1_GRAMMAR } from '@/lib/b1Content'
+import { B2_STORIES, B2_ABSTRACT, B2_MEDIA, B2_POLITICS, B2_ACADEMIC, B2_ADVANCED_VERBS, B2_ECONOMY, B2_ENVIRONMENT, B2_ENVIRONMENT_STORY } from '@/lib/b2Content'
+import { C1_STORIES, C2_STORIES, C1_RHETORIC, C1_CLASSICAL, C1_PHILOSOPHY, C1_DIALECTS, C2_LITERARY, C2_ACADEMIC_ADVANCED, C2_TRANSLATION, C1_TECHNOLOGY, C1_HERITAGE, C2_COMPARATIVE, C2_RESEARCH, C1_TECH_STORY, C1_HERITAGE_STORY, C2_BOOK_STORY } from '@/lib/c1c2Content'
+import { recordXpEarned, recordStudyTime } from '@/lib/localProgress'
 
 interface Lesson {
   id: number
@@ -32,7 +35,7 @@ interface Section { id: number; section_type: string; order_index: number }
 interface Progress { status: string; score?: number }
 interface Props {
   locale: string; lesson: Lesson; sections: Section[]; exercises: DBExercise[]
-  progress: Progress | null; levelId: number
+  progress: Progress | null; levelId: number; nextLessonId?: number | null
 }
 
 const tx = {
@@ -41,11 +44,11 @@ const tx = {
   ar: { back: 'رجوع', of: 'من', start: 'ابدأ', next: 'التالي', prev: 'السابق', finish: 'أنهِ واكسب النقاط', loading: 'جارٍ الحفظ...', great: 'أحسنت!', xp_earned: 'نقاط مكتسبة', minutes: 'د', check: 'تحقق', correct: 'صحيح!', wrong: 'خطأ!', letters: 'حرف', practice: 'تمرين التعزيز' },
 }
 
-type StepType = 'intro' | 'letter' | 'exercise' | 'complete' | 'harakat' | 'vocab' | 'dialogue'
+type StepType = 'intro' | 'letter' | 'exercise' | 'complete' | 'harakat' | 'vocab' | 'dialogue' | 'hanzi'
 interface Step { type: StepType; index: number }
 
 function InlineExercise({ ex, locale, color, onNext }: {
-  ex: GeneratedExercise; locale: string; color: string; onNext: () => void
+  ex: GeneratedExercise; locale: string; color: string; onNext: (wasCorrect: boolean) => void
 }) {
   const [selected, setSelected] = useState<string | null>(null)
   const [checked, setChecked] = useState(false)
@@ -59,8 +62,8 @@ function InlineExercise({ ex, locale, color, onNext }: {
     <div>
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-4">
         <p className="font-semibold text-gray-800 text-lg mb-5 text-center"
-          dir={/[؀-ۿ]/.test(q || '') ? 'rtl' : 'ltr'}
-          style={{ fontFamily: /[؀-ۿ]/.test(q || '') ? 'Noto Naskh Arabic, Amiri, serif' : 'inherit' }}>
+          dir={locale === 'ar' ? 'rtl' : 'ltr'}
+          style={{ unicodeBidi: 'isolate' }}>
           {q}
         </p>
         {ex.type === 'true_false' ? (
@@ -117,7 +120,7 @@ function InlineExercise({ ex, locale, color, onNext }: {
           {t.check}
         </button>
       ) : (
-        <button onClick={onNext}
+        <button onClick={() => onNext(isCorrect)}
           className="w-full py-3 rounded-xl text-white font-semibold transition-all"
           style={{ background: isCorrect ? '#10B981' : color }}>
           {t.next} →
@@ -127,9 +130,9 @@ function InlineExercise({ ex, locale, color, onNext }: {
   )
 }
 
-export default function LessonViewer({ locale, lesson, exercises, progress, levelId }: Props) {
+export default function LessonViewer({ locale, lesson, exercises, progress, levelId, nextLessonId }: Props) {
   const t = tx[locale as keyof typeof tx] || tx.en
-  const color = lesson.levels?.color_primary || '#1E3A5F'
+  const color = lesson.levels?.color_primary || '#C9858A'
   const title = locale === 'zh' ? lesson.title_zh : locale === 'ar' ? lesson.title_ar : lesson.title_en
   const desc = locale === 'zh' ? lesson.description_zh : locale === 'ar' ? lesson.description_ar : lesson.description_en
   const levelName = locale === 'zh' ? lesson.levels?.name_zh : locale === 'ar' ? lesson.levels?.name_ar : lesson.levels?.name_en
@@ -140,75 +143,106 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
   const isVocab = lesson.lesson_type === 'vocabulary'
   const isGreetings = lesson.lesson_type === 'greetings'
   const isNumbers = lesson.lesson_type === 'numbers'
-  const isDialogue = lesson.lesson_type === 'dialogue'
+  const isDialogue = lesson.lesson_type === 'dialogue' || lesson.lesson_type === 'conversation'
 
-  // pick dialogue by level code + day_number
+  // pick dialogue by level code + title keyword
   const activeDialogue = isDialogue ? (() => {
     const c = lesson.levels?.code
-    const d = lesson.day_number - 1
-    if (c === 'a2') return A2_STORIES[d] ?? A2_STORIES[0]
-    if (c === 'b1') return B1_STORIES[d] ?? B1_STORIES[0]
-    if (c === 'b2') return B2_STORIES[d] ?? B2_STORIES[0]
-    if (c === 'c1') return C1_STORIES[d] ?? C1_STORIES[0]
-    if (c === 'c2') return C2_STORIES[d] ?? C2_STORIES[0]
-    return MING_STORIES[d] ?? MING_STORIES[0]
+    const titleLow = lesson.title_en?.toLowerCase() || ''
+    if (c === 'a2') {
+      const idx = A2_STORIES.findIndex(s => titleLow.includes(s.id))
+      return A2_STORIES[idx >= 0 ? idx : 0]
+    }
+    if (c === 'b1') {
+      const idx = B1_STORIES.findIndex(s => titleLow.includes(s.id))
+      return B1_STORIES[idx >= 0 ? idx : 0]
+    }
+    if (c === 'b2') {
+      if (titleLow.includes('environ') || titleLow.includes('un ') || titleLow.includes('climate')) return B2_ENVIRONMENT_STORY
+      const idx = B2_STORIES.findIndex(s => titleLow.includes(s.id))
+      return B2_STORIES[idx >= 0 ? idx : 0]
+    }
+    if (c === 'c1') {
+      if (titleLow.includes('technolog') || titleLow.includes('arabic future')) return C1_TECH_STORY
+      if (titleLow.includes('golden') || titleLow.includes('heritage') || titleLow.includes('legacy')) return C1_HERITAGE_STORY
+      const idx = C1_STORIES.findIndex(s => titleLow.includes(s.id))
+      return C1_STORIES[idx >= 0 ? idx : 0]
+    }
+    if (c === 'c2') {
+      if (titleLow.includes('bridge') || titleLow.includes('builder')) return C2_BOOK_STORY
+      const idx = C2_STORIES.findIndex(s => titleLow.includes(s.id))
+      return C2_STORIES[idx >= 0 ? idx : 0]
+    }
+    const idx = MING_STORIES.findIndex(s => titleLow.includes(s.id))
+    return MING_STORIES[idx >= 0 ? idx : 0]
   })() : null
 
-  // pick A1 vocab bank by title keyword
+  // pick vocab bank by title keyword — use `title` to avoid shadowing outer `t` (translations)
   function pickA1Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('pronoun')) return A1_PRONOUNS
-    if (t.includes('profession')) return A1_PROFESSIONS
-    if (t.includes('place') || t.includes('national')) return A1_PLACES
-    if (t.includes('time')) return A1_TIME
-    if (t.includes('past')) return A1_VERBS_PAST
-    if (t.includes('present')) return A1_VERBS_PRESENT
-    if (t.includes('demonst')) return A1_PRONOUNS
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('pronoun')) return A1_PRONOUNS
+    if (title.includes('profession')) return A1_PROFESSIONS
+    if (title.includes('place') || title.includes('national')) return A1_PLACES
+    if (title.includes('time')) return A1_TIME
+    if (title.includes('past')) return A1_VERBS_PAST
+    if (title.includes('present')) return A1_VERBS_PRESENT
+    if (title.includes('demonst')) return A1_PRONOUNS
     return A1_PRONOUNS
   }
 
   function pickB1Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('verb')) return B1_VERBS
-    if (t.includes('culture') || t.includes('heritage')) return B1_CULTURE
-    if (t.includes('work') || t.includes('career')) return B1_WORK
-    if (t.includes('opinion') || t.includes('express')) return B1_OPINION
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('verb')) return B1_VERBS
+    if (title.includes('culture') || title.includes('heritage')) return B1_CULTURE
+    if (title.includes('work') || title.includes('career')) return B1_WORK
+    if (title.includes('opinion') || title.includes('express')) return B1_OPINION
+    if (title.includes('hobb') || title.includes('free time') || title.includes('leisure')) return B1_HOBBIES
+    if (title.includes('city') || title.includes('neighbor') || title.includes('urban')) return B1_CITY
+    if (title.includes('adjective') || title.includes('adverb') || title.includes('grammar')) return B1_GRAMMAR
     return B1_WORK
   }
 
   function pickB2Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('media') || t.includes('news')) return B2_MEDIA
-    if (t.includes('politic') || t.includes('society')) return B2_POLITICS
-    if (t.includes('abstract')) return B2_ABSTRACT
-    if (t.includes('academic') || t.includes('writing')) return B2_ACADEMIC
-    if (t.includes('verb')) return B2_ADVANCED_VERBS
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('media') || title.includes('news')) return B2_MEDIA
+    if (title.includes('politic') || title.includes('society')) return B2_POLITICS
+    if (title.includes('abstract')) return B2_ABSTRACT
+    if (title.includes('academic') || title.includes('writing')) return B2_ACADEMIC
+    if (title.includes('verb')) return B2_ADVANCED_VERBS
+    if (title.includes('econom') || title.includes('trade') || title.includes('commerce')) return B2_ECONOMY
+    if (title.includes('environ') || title.includes('climate') || title.includes('nature')) return B2_ENVIRONMENT
     return B2_ABSTRACT
   }
 
   function pickC1Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('rhetoric') || t.includes('eloquence')) return C1_RHETORIC
-    if (t.includes('classical')) return C1_CLASSICAL
-    if (t.includes('philosoph')) return C1_PHILOSOPHY
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('rhetoric') || title.includes('eloquence')) return C1_RHETORIC
+    if (title.includes('classical')) return C1_CLASSICAL
+    if (title.includes('philosoph')) return C1_PHILOSOPHY
+    if (title.includes('dialect') || title.includes('colloquial')) return C1_DIALECTS
+    if (title.includes('technolog') || title.includes('language')) return C1_TECHNOLOGY
+    if (title.includes('heritage') || title.includes('islamic') || title.includes('science')) return C1_HERITAGE
     return C1_RHETORIC
   }
 
   function pickC2Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('literary') || t.includes('analysis')) return C2_LITERARY
-    if (t.includes('academic')) return C2_ACADEMIC_ADVANCED
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('literary') || title.includes('analysis')) return C2_LITERARY
+    if (title.includes('academic') && !title.includes('research')) return C2_ACADEMIC_ADVANCED
+    if (title.includes('translat') || title.includes('interpret')) return C2_TRANSLATION
+    if (title.includes('compar')) return C2_COMPARATIVE
+    if (title.includes('research') || title.includes('method')) return C2_RESEARCH
     return C2_LITERARY
   }
 
   function pickA2Vocab(): VocabItem[] {
-    const t = lesson.title_en?.toLowerCase() || ''
-    if (t.includes('connector') || t.includes('sentence')) return A2_SENTENCE_STRUCTURE
-    if (t.includes('body') || t.includes('health')) return A2_BODY_HEALTH
-    if (t.includes('food') || t.includes('drink')) return A2_FOOD
-    if (t.includes('travel') || t.includes('transport')) return A2_TRAVEL
-    if (t.includes('compar')) return A2_COMPARISON
-    if (t.includes('family') || t.includes('relation')) return A2_FAMILY
+    const title = lesson.title_en?.toLowerCase() || ''
+    if (title.includes('connector') || title.includes('sentence')) return A2_SENTENCE_STRUCTURE
+    if (title.includes('body') || title.includes('health')) return A2_BODY_HEALTH
+    if (title.includes('food') || title.includes('drink')) return A2_FOOD
+    if (title.includes('travel') || title.includes('transport')) return A2_TRAVEL
+    if (title.includes('compar')) return A2_COMPARISON
+    if (title.includes('family') || title.includes('relation')) return A2_FAMILY
     return A2_FOOD
   }
 
@@ -217,13 +251,73 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     : isVocab ? (lesson.levels?.code === 'c2' ? pickC2Vocab() : lesson.levels?.code === 'c1' ? pickC1Vocab() : lesson.levels?.code === 'b2' ? pickB2Vocab() : lesson.levels?.code === 'b1' ? pickB1Vocab() : lesson.levels?.code === 'a2' ? pickA2Vocab() : lesson.levels?.code === 'a1' ? pickA1Vocab() : PRE_A1_VOCAB)
     : []
   const vocabExercises = (isGreetings || isNumbers || isVocab)
-    ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4)
+    ? generateVocabExercises(vocabItems.map(v => ({ ar: v.arabic, en: v.meaning_en, zh: v.meaning_zh })), 4, locale)
+    : []
+
+  // ---- Chinese (HSK) lesson support ----
+  const HSK_CODES = ['pre-hsk', 'hsk1', 'hsk2', 'hsk3', 'hsk4', 'hsk5', 'hsk6']
+  const isChineseLesson = HSK_CODES.includes(lesson.levels?.code || '')
+
+  function pickHskItems(): HskItem[] {
+    const titleLow = lesson.title_en?.toLowerCase() || ''
+    const code = lesson.levels?.code || ''
+    if (code === 'hsk1') {
+      if (titleLow.includes('greeting')) return HSK1_GREETINGS
+      if (titleLow.includes('pronoun')) return HSK1_PRONOUNS
+      if (titleLow.includes('number')) return HSK1_NUMBERS
+      if (titleLow.includes('family')) return HSK1_FAMILY
+      if (titleLow.includes('food') || titleLow.includes('drink')) return HSK1_FOOD
+      if (titleLow.includes('place')) return HSK1_PLACES
+      if (titleLow.includes('verb')) return HSK1_VERBS
+      if (titleLow.includes('time') || titleLow.includes('date')) return HSK1_TIME
+      if (titleLow.includes('adjective')) return HSK1_ADJECTIVES
+      if (titleLow.includes('question')) return HSK1_QUESTION_WORDS
+      return HSK1_GREETINGS
+    }
+    if (code === 'hsk2') {
+      if (titleLow.includes('daily') || titleLow.includes('shop') || titleLow.includes('transport') || titleLow.includes('weather')) return HSK2_DAILY_LIFE
+      if (titleLow.includes('work') || titleLow.includes('study')) return HSK2_WORK_STUDY
+      if (titleLow.includes('body') || titleLow.includes('health')) return HSK2_BODY_HEALTH
+      if (titleLow.includes('emotion') || titleLow.includes('feel') || titleLow.includes('color')) return HSK2_EMOTIONS
+      return HSK2_DAILY_LIFE
+    }
+    if (code === 'hsk3') {
+      if (titleLow.includes('culture') || titleLow.includes('festiv') || titleLow.includes('tradit')) return HSK3_CULTURE
+      return HSK3_SOCIETY
+    }
+    if (code === 'hsk4') {
+      if (titleLow.includes('business') || titleLow.includes('company') || titleLow.includes('أعمال')) return HSK4_BUSINESS
+      if (titleLow.includes('society') || titleLow.includes('social') || titleLow.includes('مجتمع')) return HSK4_SOCIETY
+      if (titleLow.includes('verb') || titleLow.includes('express')) return HSK4_ADVANCED_VERBS
+      return HSK4_BUSINESS
+    }
+    if (code === 'hsk5') {
+      if (titleLow.includes('express') || titleLow.includes('connect')) return HSK5_ADVANCED_EXPRESSIONS
+      return HSK5_ACADEMIC
+    }
+    if (code === 'hsk6') {
+      if (titleLow.includes('liter') || titleLow.includes('poetry') || titleLow.includes('أدب')) return HSK6_LITERARY
+      return HSK6_MASTERY
+    }
+    return HSK3_SOCIETY
+  }
+
+  const hskItems: HskItem[] = isChineseLesson ? pickHskItems() : []
+  const hskExercises = isChineseLesson
+    ? generateHskExercises(hskItems, 4, locale)
     : []
 
   const steps: Step[] = isDialogue
     ? [{ type: 'intro', index: 0 }, { type: 'dialogue' as StepType, index: 0 }, { type: 'complete', index: 0 }]
     : isHarakat
     ? [{ type: 'intro', index: 0 }, { type: 'harakat' as StepType, index: 0 }, { type: 'complete', index: 0 }]
+    : isChineseLesson
+    ? [
+        { type: 'intro', index: 0 },
+        ...hskItems.map((_, i) => ({ type: 'hanzi' as StepType, index: i })),
+        ...hskExercises.slice(0, 3).map((_, i) => ({ type: 'exercise' as const, index: i })),
+        { type: 'complete', index: 0 },
+      ]
     : [
         { type: 'intro', index: 0 },
         ...letters.map((_, i) => ({ type: 'letter' as const, index: i })),
@@ -237,11 +331,12 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
     if (progress?.status === 'completed') return 0
     try { return parseInt(localStorage.getItem(posKey) || '0', 10) } catch { return 0 }
   })
+  const [exerciseResults, setExerciseResults] = useState<boolean[]>([])
   const [saving, setSaving] = useState(false)
   const [done, setDone] = useState(progress?.status === 'completed')
   const [confetti, setConfetti] = useState(false)
   const [newAchievements, setNewAchievements] = useState<Array<{ icon: string; name_zh: string; name_en: string; name_ar: string }>>([])
-  const startTime = useRef(Date.now())
+  const startTime = useRef<number | null>(null)
 
   const step = steps[currentStep]
   const isFirst = currentStep === 0
@@ -249,35 +344,48 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   function next() {
     if (!isLast) {
-      const next = currentStep + 1
-      setCurrentStep(next)
-      try { localStorage.setItem(posKey, String(next)) } catch {}
+      // Start timing on first navigation away from intro screen
+      if (startTime.current === null) startTime.current = Date.now()
+      const nextStep = currentStep + 1
+      setCurrentStep(nextStep)
+      try { localStorage.setItem(posKey, String(nextStep)) } catch {}
     }
   }
   function prev() {
     if (!isFirst) {
-      const prev = currentStep - 1
-      setCurrentStep(prev)
-      try { localStorage.setItem(posKey, String(prev)) } catch {}
+      const prevStep = currentStep - 1
+      setCurrentStep(prevStep)
+      try { localStorage.setItem(posKey, String(prevStep)) } catch {}
     }
   }
 
   async function finishLesson() {
     setSaving(true)
-    const timeSpent = Math.round((Date.now() - startTime.current) / 1000)
-    // Track study time in localStorage
+    const timeSpent = Math.round((Date.now() - (startTime.current ?? Date.now())) / 1000)
+    try { recordStudyTime(Math.round(timeSpent / 60)) } catch {}
+    const exerciseScore = exerciseResults.length > 0
+      ? Math.round((exerciseResults.filter(Boolean).length / exerciseResults.length) * 100)
+      : 100
     try {
-      const key = `analia_study_${new Date().toDateString()}`
-      const prev = parseInt(localStorage.getItem(key) || '0', 10)
-      localStorage.setItem(key, String(prev + Math.round(timeSpent / 60)))
+      const res = await fetch('/api/progress/lesson', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lesson_id: lesson.id, status: 'completed', score: exerciseScore, time_spent_seconds: timeSpent, xp_earned: lesson.xp_reward }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (data.achievements?.length) setNewAchievements(data.achievements)
     } catch {}
-    const res = await fetch('/api/progress/lesson', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lesson_id: lesson.id, status: 'completed', score: 100, time_spent_seconds: timeSpent, xp_earned: lesson.xp_reward }),
-    })
-    const data = await res.json().catch(() => ({}))
-    if (data.achievements?.length) setNewAchievements(data.achievements)
+    // Save vocabulary words for SRS review
+    try {
+      await fetch('/api/vocabulary/save-lesson-words', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lesson_id: lesson.id }),
+      })
+    } catch {}
+    try { recordXpEarned(lesson.xp_reward) } catch {}
     try { localStorage.removeItem(posKey) } catch {}
     setDone(true)
     setConfetti(true)
@@ -320,7 +428,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
             </div>
           )}
 
-          {generatedExercises.length > 0 && (
+          {(generatedExercises.length > 0 || vocabExercises.length > 0 || hskExercises.length > 0) && (
             <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id}/practice`}
               className="block w-full py-3 rounded-xl border-2 font-semibold mb-3 transition-all hover:bg-gray-50"
               style={{ borderColor: color, color: color }}>
@@ -332,11 +440,19 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
               className="flex-1 py-3 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50 transition-all text-center">
               {t.back}
             </Link>
-            <Link href={`/${locale}/levels/${levelId}/lessons/${lesson.id + 1}`}
-              className="flex-1 py-3 rounded-xl text-white font-medium transition-all text-center hover:opacity-90"
-              style={{ background: color }}>
-              {t.next + ' →'}
-            </Link>
+            {nextLessonId ? (
+              <Link href={`/${locale}/levels/${levelId}/lessons/${nextLessonId}`}
+                className="flex-1 py-3 rounded-xl text-white font-medium transition-all text-center hover:opacity-90"
+                style={{ background: color }}>
+                {t.next + ' →'}
+              </Link>
+            ) : (
+              <Link href={`/${locale}/levels/${levelId}`}
+                className="flex-1 py-3 rounded-xl text-white font-medium transition-all text-center hover:opacity-90"
+                style={{ background: color }}>
+                {locale === 'zh' ? '返回关卡 →' : locale === 'ar' ? 'العودة للمستوى →' : 'Back to Level →'}
+              </Link>
+            )}
           </div>
         </div>
       </main>
@@ -345,7 +461,6 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
 
   return (
     <main className="lg:ml-64 flex-1 flex flex-col pb-20 lg:pb-0" style={{ minHeight: '100vh' }}>
-      <Confetti active={false} />
 
       {/* Top bar */}
       <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-4">
@@ -428,8 +543,23 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
             <VocabFlashcard item={vocabItems[step.index]} locale={locale} onNext={next} />
           )}
 
+          {step.type === 'hanzi' && (() => {
+            const item = hskItems[step.index]
+            if (!item) return null
+            return (
+              <div>
+                <p className="text-center text-sm text-gray-600 mb-4">
+                  {locale === 'ar' ? 'كلمة' : locale === 'zh' ? '词汇' : 'Word'} {step.index + 1} {t.of} {hskItems.length}
+                </p>
+                <HanziCard item={item} locale={locale} onNext={next} />
+              </div>
+            )
+          })()}
+
           {step.type === 'exercise' && (() => {
-            const allEx = [...generatedExercises, ...vocabExercises].slice(0, 3)
+            const allEx = isChineseLesson
+              ? hskExercises.slice(0, 3)
+              : [...generatedExercises, ...vocabExercises].slice(0, 3)
             const ex = allEx[step.index]
             if (!ex) return null
             return (
@@ -437,7 +567,7 @@ export default function LessonViewer({ locale, lesson, exercises, progress, leve
                 <p className="text-center text-sm text-gray-600 mb-4">
                   {locale === 'ar' ? 'تمرين' : locale === 'zh' ? '练习' : 'Exercise'} {step.index + 1} {t.of} {allEx.length}
                 </p>
-                <InlineExercise key={currentStep} ex={ex} locale={locale} color={color} onNext={next} />
+                <InlineExercise key={currentStep} ex={ex} locale={locale} color={color} onNext={(wasCorrect) => { setExerciseResults(prev => [...prev, wasCorrect]); next() }} />
               </div>
             )
           })()}

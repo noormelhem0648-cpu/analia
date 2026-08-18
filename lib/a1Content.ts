@@ -93,19 +93,26 @@ export const A1_VERBS_PRESENT: VocabItem[] = [
 export interface StoryDialogue {
   id: string
   title_zh: string
+  title_en?: string
   title_ar: string
-  scene_zh: string      // scene description in Chinese
+  scene_zh: string
+  scene_en?: string
+  scene_ar?: string
   scene_emoji: string
   lines: Array<{
     speaker: 'ming' | 'other'
     speaker_name_zh: string
+    speaker_name_en?: string
+    speaker_name_ar?: string
     speaker_emoji: string
     arabic: string
     arabic_with_harakat: string
     meaning_zh: string
+    meaning_en?: string
+    meaning_ar?: string
     transliteration: string
   }>
-  vocab_focus: string[]   // key vocab in this dialogue
+  vocab_focus: string[]
 }
 
 export const MING_STORIES: StoryDialogue[] = [

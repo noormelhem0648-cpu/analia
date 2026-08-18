@@ -148,21 +148,112 @@ export function generateLetterExercises(dayNumber: number, count = 6): Generated
   return exercises.slice(0, count)
 }
 
-export function generateVocabExercises(words: Array<{ ar: string; en: string; zh: string }>, count = 5): GeneratedExercise[] {
+import type { HskItem } from './hskContent'
+
+export function generateHskExercises(items: HskItem[], count = 5, locale = 'ar'): GeneratedExercise[] {
+  if (items.length === 0) return []
   const exercises: GeneratedExercise[] = []
+
+  // 1. What does this hanzi mean? (show hanzi, pick Arabic meaning)
+  for (const item of shuffle([...items]).slice(0, Math.ceil(count / 2))) {
+    if (exercises.length >= count) break
+    const wrongOptions = shuffle(items.filter(i => i.hanzi !== item.hanzi))
+      .slice(0, 3)
+      .map(i => i.meaning_ar)
+    const opts = shuffle([item.meaning_ar, ...wrongOptions])
+    exercises.push({
+      id: `hsk-meaning-${item.hanzi}`,
+      type: 'multiple_choice',
+      question_ar: `ما معنى الكلمة الصينية "${item.hanzi}" (${item.pinyin})؟`,
+      question_en: `What does "${item.hanzi}" (${item.pinyin}) mean?`,
+      question_zh: `"${item.hanzi}"是什么意思？`,
+      correct_answer: item.meaning_ar,
+      options: opts,
+      explanation_ar: `"${item.hanzi}" (${item.pinyin}) تعني "${item.meaning_ar}" بالعربية (${item.meaning_en} بالإنجليزية)`,
+      explanation_en: `"${item.hanzi}" (${item.pinyin}) means "${item.meaning_en}"`,
+      explanation_zh: `"${item.hanzi}"（${item.pinyin}）的意思是"${item.meaning_en}"`,
+      xp_reward: 5,
+    })
+  }
+
+  // 2. Which hanzi matches this Arabic meaning?
+  for (const item of shuffle([...items]).slice(0, Math.floor(count / 2))) {
+    if (exercises.length >= count) break
+    const wrongOptions = shuffle(items.filter(i => i.hanzi !== item.hanzi))
+      .slice(0, 3)
+      .map(i => i.hanzi)
+    const opts = shuffle([item.hanzi, ...wrongOptions])
+    exercises.push({
+      id: `hsk-hanzi-${item.hanzi}`,
+      type: 'multiple_choice',
+      question_ar: `أي كلمة صينية تعني "${item.meaning_ar}"؟`,
+      question_en: `Which Chinese character means "${item.meaning_en}"?`,
+      question_zh: `哪个汉字的意思是"${item.meaning_en}"？`,
+      correct_answer: item.hanzi,
+      options: opts,
+      explanation_ar: `"${item.meaning_ar}" بالصينية هي "${item.hanzi}" وتُنطق "${item.pinyin}"`,
+      explanation_en: `"${item.meaning_en}" in Chinese is "${item.hanzi}" (${item.pinyin})`,
+      explanation_zh: `"${item.meaning_en}"用中文是"${item.hanzi}"，读作"${item.pinyin}"`,
+      xp_reward: 5,
+    })
+  }
+
+  // 3. True/False: does this hanzi mean X?
+  for (const item of shuffle([...items])) {
+    if (exercises.length >= count) break
+    const isTrue = Math.random() > 0.5
+    const shownMeaning = isTrue
+      ? item.meaning_ar
+      : randomFrom(items.filter(i => i.hanzi !== item.hanzi)).meaning_ar
+    exercises.push({
+      id: `hsk-tf-${item.hanzi}-${isTrue}`,
+      type: 'true_false',
+      question_ar: `هل "${item.hanzi}" تعني "${shownMeaning}"؟`,
+      question_en: `Does "${item.hanzi}" mean "${shownMeaning}"?`,
+      question_zh: `"${item.hanzi}"的意思是"${shownMeaning}"吗？`,
+      correct_answer: isTrue ? 'true' : 'false',
+      options: ['true', 'false'],
+      explanation_ar: isTrue
+        ? `نعم! "${item.hanzi}" (${item.pinyin}) تعني "${item.meaning_ar}"`
+        : `لا، "${item.hanzi}" (${item.pinyin}) تعني "${item.meaning_ar}"`,
+      explanation_en: isTrue
+        ? `Yes! "${item.hanzi}" means "${item.meaning_en}"`
+        : `No, "${item.hanzi}" means "${item.meaning_en}"`,
+      explanation_zh: isTrue
+        ? `是的！"${item.hanzi}"的意思是"${item.meaning_en}"`
+        : `不对，"${item.hanzi}"的意思是"${item.meaning_en}"`,
+      xp_reward: 3,
+    })
+  }
+
+  return exercises.slice(0, count)
+}
+
+export function generateVocabExercises(
+  words: Array<{ ar: string; en: string; zh: string }>,
+  count = 5,
+  locale = 'zh'
+): GeneratedExercise[] {
+  const exercises: GeneratedExercise[] = []
+  const useZh = locale === 'zh'
+
   for (const word of words.slice(0, count)) {
-    const wrongEn = shuffle(words.filter(w => w.ar !== word.ar)).slice(0, 3).map(w => w.en)
+    const correctAnswer = useZh ? word.zh : word.en
+    const wrongOptions = shuffle(words.filter(w => w.ar !== word.ar))
+      .slice(0, 3)
+      .map(w => useZh ? w.zh : w.en)
+
     exercises.push({
       id: `vocab-${word.ar}`,
       type: 'multiple_choice',
       question_ar: `ما معنى كلمة "${word.ar}"؟`,
       question_en: `What does "${word.ar}" mean?`,
-      question_zh: `"${word.ar}"是什么意思？`,
-      correct_answer: word.en,
-      options: shuffle([word.en, ...wrongEn]),
+      question_zh: `"${word.ar}" 是什么意思？`,
+      correct_answer: correctAnswer,
+      options: shuffle([correctAnswer, ...wrongOptions]),
       explanation_en: `"${word.ar}" means "${word.en}"`,
       explanation_ar: `"${word.ar}" تعني "${word.en}"`,
-      explanation_zh: `"${word.ar}"的意思是"${word.zh}"`,
+      explanation_zh: `"${word.ar}" 的意思是 "${word.zh}"`,
       xp_reward: 5,
     })
   }

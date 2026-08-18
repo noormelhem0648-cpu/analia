@@ -98,65 +98,133 @@ function LetterPopup({ letter, locale, color, onClose }: {
   color: string
   onClose: () => void
 }) {
+  const [playing, setPlaying] = useState(false)
   const t = tx[locale as keyof typeof tx] || tx.en
   const name = locale === 'zh' ? letter.name_zh : locale === 'ar' ? letter.name_ar : letter.name_en
   const similar = locale === 'zh' ? letter.similar_zh : letter.similar_en
   const tip = letter.tip_zh
   const exMeaning = locale === 'zh' ? letter.example_meaning_zh : letter.example_meaning_en
 
+  async function playLetter() {
+    setPlaying(true)
+    await speakArabicLetter(letter.isolated)
+    setTimeout(() => setPlaying(false), 900)
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3"
       onClick={onClose}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-      <div className="relative bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden"
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div
+        className="relative bg-white rounded-3xl shadow-2xl w-full overflow-hidden flex flex-col"
+        style={{ maxWidth: 400, maxHeight: '92dvh' }}
         onClick={e => e.stopPropagation()}>
 
-        {/* Header */}
-        <div className="p-6 text-white" style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}>
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <p className="text-white/80 text-sm font-medium">{name}</p>
-              <p className="text-white/70 text-xs mt-0.5">{letter.transliteration} — {locale === 'zh' ? letter.makhraj_zh : locale === 'ar' ? letter.makhraj_ar : letter.makhraj_en}</p>
-            </div>
-            <button onClick={onClose} className="text-white/70 hover:text-white text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-all">✕</button>
-          </div>
-
-          {/* Big letter + harakat buttons */}
-          <div className="flex items-center justify-between">
-            <span className="text-7xl text-white" dir="rtl"
-              style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', lineHeight: 1 }}>
+        {/* ── Compact header bar ── */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-3 flex-shrink-0"
+          style={{ background: `linear-gradient(135deg, ${color}, ${color}bb)` }}>
+          <div className="flex items-center gap-3">
+            {/* Big letter */}
+            <span className="text-5xl text-white leading-none" dir="rtl"
+              style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif' }}>
               {letter.isolated}
             </span>
-            <div className="flex flex-col gap-2">
+            <div>
+              <p className="text-white font-bold text-base leading-tight">{name}</p>
+              <p className="text-white/80 text-xs font-mono">{letter.transliteration}</p>
+              {letter.no_chinese_equivalent && (
+                <span className="inline-block mt-0.5 bg-red-500/40 text-white text-[9px] font-semibold px-2 py-0.5 rounded-full">
+                  ⚠️ {t.no_cn}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* Main play button */}
+            <button
+              onClick={playLetter}
+              className="flex items-center gap-1.5 rounded-2xl px-4 py-2 font-bold text-sm transition-all active:scale-95"
+              style={{ background: playing ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)', color: 'white', border: '1.5px solid rgba(255,255,255,0.4)' }}>
+              <span className={playing ? 'animate-bounce' : ''}>{playing ? '♪' : '▶'}</span>
+              <span>{playing ? (locale === 'zh' ? '播放中' : 'Playing') : (locale === 'zh' ? '听发音' : 'Play')}</span>
+            </button>
+            <button onClick={onClose}
+              className="text-white/70 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-all text-lg">✕</button>
+          </div>
+        </div>
+
+        {/* ── Scrollable body ── */}
+        <div className="overflow-y-auto flex-1 p-4 space-y-4">
+
+          {/* ── VIDEO-LIKE ARTICULATION DIAGRAM (main feature) ── */}
+          <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm"
+            style={{ background: 'linear-gradient(145deg, #f8f9ff, #fff)' }}>
+            <div className="flex items-center gap-2 px-4 pt-3 pb-1">
+              <span className="text-base">🎬</span>
+              <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+                {locale === 'zh' ? '口腔发音动画' : 'Articulation Animation'}
+              </p>
+            </div>
+            <ArticulationDiagram
+              activeZone={letter.makhraj_zone}
+              size={220}
+              locale={locale}
+              showLabel={true}
+              animate={true}
+            />
+          </div>
+
+          {/* ── Makhraj description ── */}
+          <div className="rounded-xl px-3 py-2.5 text-xs text-gray-600 leading-relaxed"
+            style={{ background: color + '0F', border: `1px solid ${color}30` }}>
+            {locale === 'zh' ? letter.makhraj_zh : locale === 'ar' ? letter.makhraj_ar : letter.makhraj_en}
+          </div>
+
+          {/* ── Similar sound (Chinese comparison) ── */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5">
+            <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide mb-1">
+              {locale === 'zh' ? '对比中文发音' : t.similar}
+            </p>
+            <p className="text-sm text-gray-700 leading-snug">{similar}</p>
+          </div>
+
+          {/* ── Tip panel ── */}
+          {tip && (
+            <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl px-3 py-2.5">
+              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-wide mb-1">
+                {locale === 'zh' ? '学习提示' : t.tip}
+              </p>
+              <p className="text-xs text-gray-700 leading-relaxed">{tip}</p>
+            </div>
+          )}
+
+          {/* ── 4 harakat buttons ── */}
+          <div>
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-2">
+              {locale === 'zh' ? '配合元音符号' : t.with_ba}
+            </p>
+            <div className="grid grid-cols-4 gap-2">
               {[
-                { form: letter.with_fatha, label: 'a (فَتْحة)' },
-                { form: letter.with_damma, label: 'u (ضَمّة)' },
-                { form: letter.with_kasra, label: 'i (كَسْرة)' },
-                { form: letter.with_sukun,  label: '° (سُكُون)' },
-              ].map(({ form, label }) => (
+                { form: letter.with_fatha, label: 'فَتْحة', sound: 'a' },
+                { form: letter.with_damma, label: 'ضَمَّة', sound: 'u' },
+                { form: letter.with_kasra, label: 'كَسْرة', sound: 'i' },
+                { form: letter.with_sukun,  label: 'سُكُون', sound: '—' },
+              ].map(({ form, label, sound }) => (
                 <button key={label}
                   onClick={() => speakArabicLetter(form)}
-                  className="flex items-center gap-2 bg-white/20 hover:bg-white/35 rounded-xl px-3 py-1 transition-all text-left">
-                  <span className="text-lg text-white" dir="rtl" style={{ fontFamily: 'Amiri, serif', minWidth: 24 }}>{form}</span>
-                  <span className="text-[10px] text-white/80">{label}</span>
+                  className="flex flex-col items-center gap-1 rounded-xl py-2 px-1 transition-all hover:scale-105 active:scale-95 border"
+                  style={{ borderColor: color + '40', background: color + '08' }}>
+                  <span className="text-2xl" dir="rtl" style={{ fontFamily: 'Amiri, serif', color }}>{form}</span>
+                  <span className="text-[9px] text-gray-500 font-mono">{sound}</span>
+                  <span className="text-[8px] text-gray-400">{label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Warning badge */}
-          {letter.no_chinese_equivalent && (
-            <div className="mt-3 bg-red-500/30 border border-red-300/40 rounded-xl px-3 py-1.5 text-xs text-white flex items-center gap-1.5">
-              ⚠️ {t.no_cn}
-            </div>
-          )}
-        </div>
-
-        {/* Body */}
-        <div className="p-5 space-y-3">
-          {/* Letter forms */}
+          {/* ── Letter forms ── */}
           <div>
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">{t.forms}</p>
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-2">{t.forms}</p>
             <div className="grid grid-cols-4 gap-1.5">
               {[
                 { label: t.isolated, form: letter.isolated },
@@ -175,39 +243,22 @@ function LetterPopup({ letter, locale, color, onClose }: {
             </div>
           </div>
 
-          {/* Similar sound */}
-          <div className="bg-green-50 rounded-xl px-3 py-2.5">
-            <p className="text-xs font-semibold text-green-700 mb-0.5">{t.similar}</p>
-            <p className="text-sm text-gray-700">{similar}</p>
-          </div>
-
-          {/* Tip (Chinese only) */}
-          {locale === 'zh' && tip && (
-            <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-xl px-3 py-2 text-sm text-gray-700">
-              {tip}
+          {/* ── Example word ── */}
+          <button
+            onClick={() => speakArabicLetter(letter.example_word_with_harakat)}
+            className="w-full bg-blue-50 hover:bg-blue-100 rounded-xl px-4 py-3 flex items-center justify-between transition-all active:scale-98">
+            <div className="text-left">
+              <p className="text-[10px] text-gray-500">{t.example}</p>
+              <p className="text-sm font-semibold text-gray-800">{exMeaning}</p>
             </div>
-          )}
-
-          {/* Example word */}
-          <div className="bg-blue-50 rounded-xl px-3 py-2.5 flex items-center justify-between">
-            <div>
-              <p className="text-xs text-gray-500">{t.example}</p>
-              <p className="text-sm font-medium text-gray-800">{exMeaning}</p>
+            <div className="flex items-center gap-2">
+              <span className="text-xl" dir="rtl" style={{ fontFamily: 'Amiri, serif', color: '#C9858A' }}>
+                {letter.example_word_with_harakat}
+              </span>
+              <span className="text-lg">🔊</span>
             </div>
-            <button onClick={() => speakArabicLetter(letter.example_word_with_harakat)}
-              className="flex items-center gap-1.5 bg-blue-100 hover:bg-blue-200 rounded-xl px-3 py-1.5 transition-all">
-              <span className="text-lg" dir="rtl" style={{ fontFamily: 'Amiri, serif' }}>{letter.example_word_with_harakat}</span>
-              <span className="text-base">🔊</span>
-            </button>
-          </div>
+          </button>
 
-          {/* Articulation diagram */}
-          <div className="flex flex-col items-center gap-1 pt-1">
-            <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">
-              {locale === 'zh' ? '发音部位' : locale === 'ar' ? 'مخرج الحرف' : 'Articulation'}
-            </p>
-            <ArticulationDiagram activeZone={letter.makhraj_zone} size={180} locale={locale} showLabel={false} />
-          </div>
         </div>
       </div>
     </div>
@@ -228,13 +279,13 @@ function HarakaCell({ h, locale, isActive, onClick }: {
       onClick={onClick}
       className="flex flex-col items-center gap-1 rounded-2xl p-3 transition-all hover:scale-105 active:scale-95 border-2 select-none"
       style={{
-        background: isActive ? h.color + '20' : 'white',
-        borderColor: isActive ? h.color : '#E5E7EB',
+        background: isActive ? h.color + '20' : '#F8F5F2',
+        borderColor: isActive ? h.color : '#E8E2DB',
         boxShadow: isActive ? `0 4px 15px ${h.color}40` : '0 1px 3px rgba(0,0,0,0.06)',
       }}>
       {/* symbol on ب */}
       <span className="text-3xl" dir="rtl"
-        style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: isActive ? h.color : '#1E3A5F' }}>
+        style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: isActive ? h.color : '#C9858A' }}>
         {h.example_with_ba}
       </span>
       {/* symbol alone */}
@@ -303,8 +354,8 @@ export default function ArabicSoundsChart({ locale = 'zh' }: Props) {
                       className="relative flex flex-col items-center gap-0.5 rounded-2xl p-2.5 transition-all hover:scale-110 active:scale-95 select-none group"
                       style={{
                         minWidth: 64,
-                        background: isPlaying ? color + '25' : 'white',
-                        border: `2px solid ${isPlaying ? color : '#E5E7EB'}`,
+                        background: isPlaying ? color + '25' : '#F8F5F2',
+                        border: `2px solid ${isPlaying ? color : '#E8E2DB'}`,
                         boxShadow: isPlaying ? `0 4px 16px ${color}40` : '0 1px 3px rgba(0,0,0,0.06)',
                       }}>
 
@@ -322,7 +373,7 @@ export default function ArabicSoundsChart({ locale = 'zh' }: Props) {
                         dir="rtl"
                         style={{
                           fontFamily: 'Noto Naskh Arabic, Amiri, serif',
-                          color: isPlaying ? color : '#1E3A5F',
+                          color: isPlaying ? color : '#C9858A',
                           lineHeight: 1.2,
                         }}>
                         {letter.isolated}
@@ -417,7 +468,7 @@ export default function ArabicSoundsChart({ locale = 'zh' }: Props) {
         <LetterPopup
           letter={activeLetter}
           locale={locale}
-          color={ZONE_GROUPS.find(g => g.zone === activeLetter.makhraj_zone)?.color ?? '#1E3A5F'}
+          color={ZONE_GROUPS.find(g => g.zone === activeLetter.makhraj_zone)?.color ?? '#C9858A'}
           onClose={() => setActiveLetter(null)}
         />
       )}

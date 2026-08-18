@@ -19,22 +19,51 @@ export async function POST(req: NextRequest) {
         status,
         score,
         time_spent_seconds,
+        xp_earned: xp_earned ?? null,
         completed_at: status === 'completed' ? new Date().toISOString() : null,
       }, { onConflict: 'user_id,lesson_id' })
 
     if (progressErr) throw progressErr
 
     if (status === 'completed') {
-      // Award XP
+      // Award XP (non-fatal)
       if (xp_earned) {
-        await supabase.rpc('increment_xp', { user_id: user.id, xp_amount: xp_earned })
+        try { await supabase.rpc('increment_xp', { user_id: user.id, xp_amount: xp_earned }) } catch {}
       }
 
-      // Update streak (fire-and-forget — non-fatal if fails)
+      // Update streak (non-fatal)
       try { await supabase.rpc('update_streak', { p_user_id: user.id }) } catch {}
 
-      // Check and grant achievements then fetch newly unlocked ones
+      // Check and grant achievements (non-fatal)
       try { await supabase.rpc('check_and_grant_achievements', { p_user_id: user.id }) } catch {}
+
+      // Social: broadcast activity + advance active challenges (all non-fatal)
+      try { await supabase.from('activity_events').insert({ user_id: user.id, type: 'lesson_completed', meta: { lesson_id } }) } catch {}
+      try { await supabase.rpc('bump_challenges', { p_user_id: user.id, p_type: 'lessons', p_amount: 1 }) } catch {}
+      if (xp_earned) {
+        try { await supabase.rpc('bump_challenges', { p_user_id: user.id, p_type: 'xp', p_amount: xp_earned }) } catch {}
+      }
+
+      // Update daily XP and total lessons counter
+      try {
+        await supabase.rpc('update_daily_xp', {
+          p_user_id: user.id,
+          p_xp: xp_earned ?? 0,
+          p_minutes: Math.round((time_spent_seconds ?? 0) / 60),
+        })
+      } catch {}
+
+      // Check if entire level is now complete → issue certificate
+      try {
+        const { data: lessonData } = await supabase
+          .from('lessons').select('level_id').eq('id', lesson_id).maybeSingle()
+        if (lessonData?.level_id) {
+          await supabase.rpc('issue_certificate', {
+            p_user_id: user.id,
+            p_level_id: lessonData.level_id,
+          })
+        }
+      } catch {}
 
       const { data: newAchievements } = await supabase
         .from('user_achievements')

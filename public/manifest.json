@@ -1,0 +1,35 @@
+{
+  "name": "ANALIA — تعلم العربية والصينية",
+  "short_name": "ANALIA",
+  "description": "منصة ذكية لتعلم العربية والصينية — Smart Arabic & Chinese Learning Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A14",
+  "theme_color": "#1E3A5F",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["education"],
+  "shortcuts": [
+    {
+      "name": "لوحة القيادة",
+      "short_name": "Dashboard",
+      "url": "/ar/dashboard",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "المستويات",
+      "short_name": "Levels",
+      "url": "/ar/levels",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    }
+  ]
+}

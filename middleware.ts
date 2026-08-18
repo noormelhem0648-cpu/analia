@@ -3,6 +3,8 @@ import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { updateSession } from '@/lib/supabase/middleware'
 
+export const runtime = 'experimental-edge'
+
 const intlMiddleware = createMiddleware(routing)
 
 export async function middleware(request: NextRequest) {

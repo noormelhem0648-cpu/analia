@@ -164,7 +164,7 @@ export default function AchievementsClient({ locale, achievements, userAchieveme
                         <div className="mt-2">
                           <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                             <div className="h-full rounded-full transition-all"
-                              style={{ width: `${pct * 100}%`, background: 'linear-gradient(90deg, #1E3A5F, #2D5A8E)' }} />
+                              style={{ width: `${pct * 100}%`, background: 'linear-gradient(90deg, #C9858A, #A96368)' }} />
                           </div>
                           <p className="text-xs text-gray-600 mt-1">{Math.round(pct * 100)}%</p>
                         </div>

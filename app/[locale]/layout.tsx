@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -8,6 +9,16 @@ import '@/app/globals.css'
 export const metadata: Metadata = {
   title: 'ANALIA — تعلم العربية | Learn Arabic | 学阿拉伯语',
   description: 'The world\'s most comprehensive Arabic learning platform',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'ANALIA',
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
+  themeColor: '#F8F5F2',
 }
 
 export default async function LocaleLayout({
@@ -36,7 +47,14 @@ export default async function LocaleLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <body className="min-h-screen" style={{ background: '#F8F5F2' }}>
+        <Script id="sw-register" strategy="afterInteractive">{`
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js').catch(function() {});
+            });
+          }
+        `}</Script>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

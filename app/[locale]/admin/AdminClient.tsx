@@ -30,13 +30,20 @@ interface Props {
   locale: string
 }
 
+const adminTx = {
+  zh: { confirm_delete: (name: string) => `删除用户 "${name}"？此操作无法撤销。`, delete_failed: '删除失败' },
+  en: { confirm_delete: (name: string) => `Delete user "${name}"? This action cannot be undone.`, delete_failed: 'Delete failed' },
+  ar: { confirm_delete: (name: string) => `حذف المستخدم "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`, delete_failed: 'فشل الحذف' },
+}
+
 export default function AdminClient({ profiles, stats, locale }: Props) {
+  const at = adminTx[locale as keyof typeof adminTx] || adminTx.en
   const [search, setSearch] = useState('')
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [localProfiles, setLocalProfiles] = useState(profiles)
 
   async function deleteUser(userId: string, name: string) {
-    if (!window.confirm(`حذف المستخدم "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`)) return
+    if (!window.confirm(at.confirm_delete(name))) return
     setDeletingId(userId)
     try {
       const res = await fetch('/api/admin/delete-user', {
@@ -45,7 +52,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
         body: JSON.stringify({ userId }),
       })
       if (res.ok) setLocalProfiles(prev => prev.filter(p => p.id !== userId))
-      else alert('فشل الحذف')
+      else alert(at.delete_failed)
     } finally {
       setDeletingId(null)
     }
@@ -58,12 +65,12 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
   )
 
   const statCards = [
-    { icon: Users, label: 'إجمالي المستخدمين', value: stats.totalUsers, color: '#3B82F6', bg: '#EFF6FF' },
-    { icon: Star, label: 'مجموع النقاط XP', value: stats.totalXp.toLocaleString(), color: '#F59E0B', bg: '#FFFBEB' },
-    { icon: BookOpen, label: 'دروس مكتملة', value: stats.totalLessonsCompleted, color: '#10B981', bg: '#ECFDF5' },
-    { icon: MessageCircle, label: 'محادثات AI', value: stats.totalAiChats, color: '#8B5CF6', bg: '#F5F3FF' },
-    { icon: Award, label: 'إنجازات مكتسبة', value: stats.totalAchievements, color: '#EF4444', bg: '#FEF2F2' },
-    { icon: Brain, label: 'اختبارات أُجريت', value: profiles.filter(p => p.placement_test_done).length, color: '#06B6D4', bg: '#ECFEFF' },
+    { icon: Users, label: 'إجمالي المستخدمين', value: stats.totalUsers, color: '#3B82F6', bg: '#16233A' },
+    { icon: Star, label: 'مجموع النقاط XP', value: stats.totalXp.toLocaleString(), color: '#F59E0B', bg: '#3A2A06' },
+    { icon: BookOpen, label: 'دروس مكتملة', value: stats.totalLessonsCompleted, color: '#10B981', bg: '#06342A' },
+    { icon: MessageCircle, label: 'محادثات AI', value: stats.totalAiChats, color: '#8B5CF6', bg: '#241243' },
+    { icon: Award, label: 'إنجازات مكتسبة', value: stats.totalAchievements, color: '#EF4444', bg: '#3A0D14' },
+    { icon: Brain, label: 'اختبارات أُجريت', value: profiles.filter(p => p.placement_test_done).length, color: '#06B6D4', bg: '#0E2E3A' },
   ]
 
   return (
@@ -72,7 +79,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+            style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
             <TrendingUp size={20} className="text-white" />
           </div>
           <div>
@@ -101,7 +108,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <h2 className="font-bold text-gray-800 flex items-center gap-2">
-            <Users size={18} style={{ color: '#1E3A5F' }} />
+            <Users size={18} style={{ color: '#C9858A' }} />
             المستخدمون ({profiles.length})
           </h2>
           <input
@@ -132,7 +139,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                        style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+                        style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
                         {(p.display_name || p.username || '?')[0].toUpperCase()}
                       </div>
                       <div>
@@ -178,7 +185,7 @@ export default function AdminClient({ profiles, stats, locale }: Props) {
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={7} className="px-6 py-10 text-center text-gray-600 text-sm">لا توجد نتائج</td></tr>
+                <tr><td colSpan={8} className="px-6 py-10 text-center text-gray-600 text-sm">لا توجد نتائج</td></tr>
               )}
             </tbody>
           </table>

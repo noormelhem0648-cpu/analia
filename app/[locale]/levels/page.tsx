@@ -27,14 +27,24 @@ export default async function LevelsPage({ params }: { params: Promise<{ locale:
     if (lvlId) completedByLevel[lvlId] = (completedByLevel[lvlId] || 0) + 1
   })
 
+  const dir = (profile as Record<string, unknown> | null)?.learning_direction as string | undefined || 'zh_learns_ar'
+  const allLevels = levels || []
+  const hasLangPair = allLevels.some((l: Record<string, unknown>) => l.lang_pair != null)
+  const filteredLevels = allLevels.filter((l: Record<string, unknown>) => {
+    if (!hasLangPair) return true // column doesn't exist yet — show all
+    if (dir === 'ar_learns_zh') return l.lang_pair === 'zh'
+    return !l.lang_pair || l.lang_pair === 'ar'
+  })
+
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>
       <AppSidebar locale={locale} xp={profile?.total_xp || 0} streak={profile?.streak_days || 0} />
       <LevelsClient
         locale={locale}
-        levels={levels || []}
+        levels={filteredLevels}
         currentLevelId={profile?.current_level_id || 1}
         completedByLevel={completedByLevel}
+        learningDirection={dir}
       />
     </div>
   )

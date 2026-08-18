@@ -14,7 +14,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
   return (
     <div className="flex min-h-screen" style={{ background: '#F8F9FF' }}>
       <AppSidebar locale={locale} xp={profile?.total_xp || 0} streak={profile?.streak_days || 0} isAdmin={user.email === process.env.ADMIN_EMAIL} />
-      <SettingsClient locale={locale} profile={{ ...profile, email: user.email || '' }} />
+      <SettingsClient locale={locale} profile={{ ...(profile ?? {}), username: profile?.username ?? '', email: user.email || '' }} />
     </div>
   )
 }

@@ -48,7 +48,7 @@ export default function LetterCard({ data, locale = 'zh', onFlip }: Props) {
           {/* ── Front ── */}
           <div
             className="absolute inset-0 rounded-3xl flex flex-col items-center justify-center shadow-lg border border-gray-100"
-            style={{ backfaceVisibility: 'hidden', background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}
+            style={{ backfaceVisibility: 'hidden', background: 'linear-gradient(135deg, #C9858A, #A96368)' }}
           >
             {/* Difficulty badge */}
             <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -144,7 +144,7 @@ export default function LetterCard({ data, locale = 'zh', onFlip }: Props) {
                   ].map(({ label, form }) => (
                     <div key={label} className="bg-gray-50 rounded-xl p-1.5 text-center">
                       <span className="text-2xl block font-bold" dir="rtl"
-                        style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
+                        style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#C9858A' }}>
                         {form}
                       </span>
                       <span className="text-[10px] text-gray-500">{label}</span>
@@ -164,7 +164,7 @@ export default function LetterCard({ data, locale = 'zh', onFlip }: Props) {
                     <button
                       onClick={e => { e.stopPropagation(); speakArabic(data.example_word, 0.7) }}
                       className="text-lg hover:scale-110 transition-transform">🔊</button>
-                    <span className="text-2xl" dir="rtl" style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#1E3A5F' }}>
+                    <span className="text-2xl" dir="rtl" style={{ fontFamily: 'Noto Naskh Arabic, Amiri, serif', color: '#C9858A' }}>
                       {data.example_word_with_harakat}
                     </span>
                   </div>

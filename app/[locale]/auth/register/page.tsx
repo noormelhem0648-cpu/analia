@@ -40,6 +40,11 @@ export default function RegisterPage() {
 
     setLoading(true)
 
+    const learningDirection =
+      typeof window !== 'undefined'
+        ? (localStorage.getItem('analia_direction') || 'zh_learns_ar')
+        : 'zh_learns_ar'
+
     const { error: err } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -50,6 +55,7 @@ export default function RegisterPage() {
           ui_language: locale,
           age: form.age ? parseInt(form.age) : null,
           country: form.country,
+          learning_direction: learningDirection,
         },
       },
     })
@@ -77,7 +83,7 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(155deg, #F8F5F2 0%, #F5E8E9 55%, #F5E8E9 100%)' }}>
         <div className="bg-white rounded-3xl p-10 text-center max-w-md shadow-2xl">
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">{tx.success}</h2>
@@ -87,11 +93,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'linear-gradient(135deg, #1E3A5F 0%, #2D5A8E 100%)' }}>
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'linear-gradient(155deg, #F8F5F2 0%, #F5E8E9 55%, #F5E8E9 100%)' }}>
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8">
 
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#1E3A5F' }}>أ</span>
+          <span className="text-3xl" style={{ fontFamily: 'Amiri, serif', color: '#C9858A' }}>أ</span>
           <span className="text-xl font-bold text-gray-800">ANALIA</span>
         </div>
 
@@ -108,7 +114,7 @@ export default function RegisterPage() {
                 <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="text" value={form.username} onChange={e => set('username', e.target.value)}
                   required minLength={3} maxLength={20}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                   placeholder="username123" />
               </div>
               <p className="text-xs text-gray-400 mt-1">{tx.username_hint}</p>
@@ -116,7 +122,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{tx.display_name}</label>
               <input type="text" value={form.display_name} onChange={e => set('display_name', e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                 placeholder="Your Name" />
             </div>
           </div>
@@ -126,7 +132,7 @@ export default function RegisterPage() {
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
-                required className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                 placeholder="you@example.com" />
             </div>
           </div>
@@ -138,7 +144,7 @@ export default function RegisterPage() {
                 <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type={showPw ? 'text' : 'password'} value={form.password}
                   onChange={e => set('password', e.target.value)} required minLength={6}
-                  className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                   placeholder="••••••" />
                 <button type="button" onClick={() => setShowPw(!showPw)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -149,7 +155,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{tx.confirm_password} *</label>
               <input type="password" value={form.confirm} onChange={e => set('confirm', e.target.value)}
-                required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                 placeholder="••••••" />
             </div>
           </div>
@@ -161,7 +167,7 @@ export default function RegisterPage() {
                 <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="number" value={form.age} onChange={e => set('age', e.target.value)}
                   min={5} max={100}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C9858A]"
                   placeholder="20" />
               </div>
             </div>
@@ -170,7 +176,7 @@ export default function RegisterPage() {
               <div className="relative">
                 <Globe size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <select value={form.country} onChange={e => set('country', e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#C9858A] bg-white">
                   <option value="">—</option>
                   {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
@@ -186,14 +192,14 @@ export default function RegisterPage() {
 
           <button type="submit" disabled={loading}
             className="w-full py-3 rounded-xl font-semibold text-white disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg, #1E3A5F, #2D5A8E)' }}>
+            style={{ background: 'linear-gradient(135deg, #C9858A, #A96368)' }}>
             {loading ? tx.loading : tx.btn}
           </button>
         </form>
 
         <p className="text-center text-gray-500 text-sm mt-5">
           {tx.already}{' '}
-          <Link href={`/${locale}/auth/login`} className="font-semibold text-blue-600 hover:text-blue-700">
+          <Link href={`/${locale}/auth/login`} className="font-semibold text-[#C9858A] hover:text-[#A96368]">
             {tx.login}
           </Link>
         </p>

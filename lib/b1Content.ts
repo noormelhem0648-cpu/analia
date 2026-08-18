@@ -61,9 +61,87 @@ export const B1_OPINION: VocabItem[] = [
 ]
 
 // ─────────────────────────────────────────────────────────────
+//  الهوايات ووقت الفراغ — Hobbies & Free Time (B1 Unit 5)
+// ─────────────────────────────────────────────────────────────
+export const B1_HOBBIES: VocabItem[] = [
+  { arabic: 'هواية', arabic_with_harakat: 'هِوَايَةٌ', transliteration: 'hiwāya', meaning_zh: '爱好', meaning_en: 'Hobby', category: 'hobbies', emoji: '🎨', example_sentence: 'هوايتي رسم اللوحات.', example_meaning_zh: '我的爱好是画画。' },
+  { arabic: 'رسم', arabic_with_harakat: 'رَسْمٌ', transliteration: 'rasm', meaning_zh: '绘画', meaning_en: 'Drawing / Painting', category: 'hobbies', emoji: '🖼️' },
+  { arabic: 'قراءة', arabic_with_harakat: 'قِرَاءَةٌ', transliteration: 'qirāʾa', meaning_zh: '阅读', meaning_en: 'Reading', category: 'hobbies', emoji: '📖', example_sentence: 'القراءة تفتح آفاقاً جديدة.', example_meaning_zh: '阅读打开新的视野。' },
+  { arabic: 'سباحة', arabic_with_harakat: 'سِبَاحَةٌ', transliteration: 'sibāḥa', meaning_zh: '游泳', meaning_en: 'Swimming', category: 'hobbies', emoji: '🏊', example_sentence: 'يمارس مينغ السباحة كل جمعة.', example_meaning_zh: '明每周五游泳。' },
+  { arabic: 'طبخ', arabic_with_harakat: 'طَبْخٌ', transliteration: 'ṭabkh', meaning_zh: '烹饪', meaning_en: 'Cooking', category: 'hobbies', emoji: '🍳' },
+  { arabic: 'تصوير', arabic_with_harakat: 'تَصْوِيرٌ', transliteration: 'taṣwīr', meaning_zh: '摄影', meaning_en: 'Photography', category: 'hobbies', emoji: '📷', example_sentence: 'يحبّ مينغ تصوير المباني التاريخية.', example_meaning_zh: '明喜欢拍摄历史建筑。' },
+  { arabic: 'رياضة', arabic_with_harakat: 'رِيَاضَةٌ', transliteration: 'riyāḍa', meaning_zh: '运动', meaning_en: 'Sport / Exercise', category: 'hobbies', emoji: '⚽' },
+  { arabic: 'سفر', arabic_with_harakat: 'سَفَرٌ', transliteration: 'safar', meaning_zh: '旅行', meaning_en: 'Travel', category: 'hobbies', emoji: '✈️', example_sentence: 'السفر يثري التجارب الإنسانية.', example_meaning_zh: '旅行丰富了人类的体验。' },
+  { arabic: 'متحف', arabic_with_harakat: 'مَتْحَفٌ', transliteration: 'matḥaf', meaning_zh: '博物馆', meaning_en: 'Museum', category: 'places', emoji: '🏛️', example_sentence: 'زرت المتحف المصري أمس.', example_meaning_zh: '我昨天参观了埃及博物馆。' },
+]
+
+// ─────────────────────────────────────────────────────────────
+//  المدينة والأحياء — City & Neighborhoods (B1 Unit 6)
+// ─────────────────────────────────────────────────────────────
+export const B1_CITY: VocabItem[] = [
+  { arabic: 'حي', arabic_with_harakat: 'حَيٌّ', transliteration: 'ḥayy', meaning_zh: '街区/社区', meaning_en: 'Neighborhood / District', category: 'places', emoji: '🏘️', example_sentence: 'يسكن مينغ في حي الزمالك.', example_meaning_zh: '明住在扎马利克街区。' },
+  { arabic: 'شارع', arabic_with_harakat: 'شَارِعٌ', transliteration: 'shāriʿ', meaning_zh: '街道', meaning_en: 'Street', category: 'places', emoji: '🛣️' },
+  { arabic: 'ميدان', arabic_with_harakat: 'مَيْدَانٌ', transliteration: 'maydān', meaning_zh: '广场', meaning_en: 'Square / Plaza', category: 'places', emoji: '🏙️', example_sentence: 'ميدان التحرير في وسط القاهرة.', example_meaning_zh: '解放广场位于开罗市中心。' },
+  { arabic: 'مكتبة', arabic_with_harakat: 'مَكْتَبَةٌ', transliteration: 'maktaba', meaning_zh: '图书馆/书店', meaning_en: 'Library / Bookstore', category: 'places', emoji: '📚', example_sentence: 'أقضي وقتي في المكتبة.', example_meaning_zh: '我在图书馆消磨时光。' },
+  { arabic: 'حديقة', arabic_with_harakat: 'حَدِيقَةٌ', transliteration: 'ḥadīqa', meaning_zh: '公园/花园', meaning_en: 'Park / Garden', category: 'places', emoji: '🌳', example_sentence: 'حديقة الأزهر جميلة في الربيع.', example_meaning_zh: '爱资哈尔公园在春天很美。' },
+  { arabic: 'قريب', arabic_with_harakat: 'قَرِيبٌ', transliteration: 'qarīb', meaning_zh: '近', meaning_en: 'Near / Close', category: 'adjectives', emoji: '📍', example_sentence: 'المحطة قريبة من البيت.', example_meaning_zh: '车站离家很近。' },
+  { arabic: 'بعيد', arabic_with_harakat: 'بَعِيدٌ', transliteration: 'baʿīd', meaning_zh: '远', meaning_en: 'Far', category: 'adjectives', emoji: '🗺️' },
+  { arabic: 'ازدحام', arabic_with_harakat: 'اِزْدِحَامٌ', transliteration: 'izdihām', meaning_zh: '拥挤/堵车', meaning_en: 'Traffic / Crowding', category: 'city', emoji: '🚗', example_sentence: 'الازدحام في القاهرة شديد.', example_meaning_zh: '开罗的交通非常拥挤。' },
+  { arabic: 'ضوضاء', arabic_with_harakat: 'ضَوْضَاءٌ', transliteration: 'ḍawḍāʾ', meaning_zh: '噪音', meaning_en: 'Noise', category: 'city', emoji: '🔊' },
+  { arabic: 'هادئ', arabic_with_harakat: 'هَادِئٌ', transliteration: 'hādiʾ', meaning_zh: '安静的', meaning_en: 'Quiet / Calm', category: 'adjectives', emoji: '🤫', example_sentence: 'الحي الجديد هادئ جداً.', example_meaning_zh: '新街区非常安静。' },
+]
+
+// ─────────────────────────────────────────────────────────────
+//  النعت والحال — Adjectives & Adverbs (B1 Unit 7)
+// ─────────────────────────────────────────────────────────────
+export const B1_GRAMMAR: VocabItem[] = [
+  { arabic: 'بسرعة', arabic_with_harakat: 'بِسُرْعَةٍ', transliteration: 'bi-surʿa', meaning_zh: '快速地', meaning_en: 'Quickly', category: 'adverbs', emoji: '⚡', example_sentence: 'يتعلم مينغ العربية بسرعة كبيرة.', example_meaning_zh: '明学阿拉伯语学得很快。' },
+  { arabic: 'ببطء', arabic_with_harakat: 'بِبُطْءٍ', transliteration: 'bi-buṭʾ', meaning_zh: '慢慢地', meaning_en: 'Slowly', category: 'adverbs', emoji: '🐢' },
+  { arabic: 'بوضوح', arabic_with_harakat: 'بِوُضُوحٍ', transliteration: 'bi-wuḍūḥ', meaning_zh: '清楚地', meaning_en: 'Clearly', category: 'adverbs', emoji: '🔍', example_sentence: 'تكلّم بوضوح من فضلك.', example_meaning_zh: '请说清楚一点。' },
+  { arabic: 'مباشرة', arabic_with_harakat: 'مُبَاشَرَةً', transliteration: 'mubāsharatan', meaning_zh: '直接地', meaning_en: 'Directly', category: 'adverbs', emoji: '➡️' },
+  { arabic: 'مشهور', arabic_with_harakat: 'مَشْهُورٌ', transliteration: 'mashhūr', meaning_zh: '著名的', meaning_en: 'Famous / Well-known', category: 'adjectives', emoji: '⭐', example_sentence: 'القاهرة مدينة مشهورة في العالم.', example_meaning_zh: '开罗是世界著名的城市。' },
+  { arabic: 'رائع', arabic_with_harakat: 'رَائِعٌ', transliteration: 'rāʾiʿ', meaning_zh: '极好的/精彩的', meaning_en: 'Wonderful / Amazing', category: 'adjectives', emoji: '✨', example_sentence: 'الأهرام بناء رائع.', example_meaning_zh: '金字塔是一个宏伟的建筑。' },
+  { arabic: 'قديم', arabic_with_harakat: 'قَدِيمٌ', transliteration: 'qadīm', meaning_zh: '古老的', meaning_en: 'Ancient / Old', category: 'adjectives', emoji: '🏛️' },
+  { arabic: 'حديث', arabic_with_harakat: 'حَدِيثٌ', transliteration: 'ḥadīth', meaning_zh: '现代的', meaning_en: 'Modern', category: 'adjectives', emoji: '🏙️', example_sentence: 'القاهرة مزيج من القديم والحديث.', example_meaning_zh: '开罗是古老与现代的结合。' },
+]
+
+// ─────────────────────────────────────────────────────────────
 //  B1 Story Dialogues
 // ─────────────────────────────────────────────────────────────
 export const B1_STORIES: StoryDialogue[] = [
+  {
+    id: 'ramadan-iftar',
+    title_zh: '斋月开斋宴',
+    title_en: 'Ramadan Iftar Party',
+    title_ar: 'حفلة إفطار رمضان',
+    scene_zh: '🌙 斋月期间，哈立德邀请明参加家族开斋宴。明第一次体验真正的阿拉伯待客之道。',
+    scene_en: '🌙 During Ramadan, Khalid invites Ming to his family\'s iftar dinner. Ming experiences authentic Arab hospitality for the first time.',
+    scene_emoji: '🌙🍽️',
+    vocab_focus: ['رمضان', 'إفطار', 'ضيافة', 'عادة', 'تراث', 'استمتع'],
+    lines: [
+      { speaker: 'other', speaker_name_zh: '哈立德', speaker_name_en: 'Khalid', speaker_emoji: '👨‍🦱', arabic: 'أهلاً وسهلاً يا مينغ! كل رمضان وأنت بخير. تفضّل، الإفطار جاهز.', arabic_with_harakat: 'أَهْلًا وَسَهْلًا يَا مِينْغ! كُلُّ رَمَضَانَ وَأَنْتَ بِخَيْرٍ. تَفَضَّلْ، الإِفْطَارُ جَاهِزٌ.', meaning_zh: '欢迎你，明！斋月快乐。请进，开斋饭已经准备好了。', meaning_en: 'Welcome, Ming! Happy Ramadan. Come in, iftar is ready.', transliteration: 'Ahlan wa-sahlan yā Mīng! Kullu ramaḍān wa-anta bi-khayr. Tafaḍḍal, al-ifṭār jāhiz.' },
+      { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'شكراً جزيلاً يا خالد! هذه أول مرة أحضر إفطار رمضاني. ما هذه الروائح الجميلة؟', arabic_with_harakat: 'شُكْرًا جَزِيلًا يَا خَالِد! هَذِهِ أَوَّلُ مَرَّةٍ أَحْضُرُ إِفْطَارَ رَمَضَانَ. مَا هَذِهِ الرَّوَائِحُ الجَمِيلَةُ؟', meaning_zh: '非常感谢，哈立德！这是我第一次参加斋月开斋宴。这些香味是什么？', meaning_en: 'Thank you so much, Khalid! This is my first time attending a Ramadan iftar. What are these beautiful aromas?', transliteration: 'Shukran jazīlan yā Khālid! Hādhihi awwal marra aḥḍuru ifṭār ramaḍān. Mā hādhihi r-rawāʾiḥ al-jamīla?' },
+      { speaker: 'other', speaker_name_zh: '哈立德的妈妈', speaker_name_en: 'Khalid\'s Mother', speaker_emoji: '👩‍🦳', arabic: 'هذا كنافة ومحشي وشوربة عدس! تفضّل يا بني، كُل معنا. الضيف في بيتنا كالملك.', arabic_with_harakat: 'هَذَا كُنَافَةٌ وَمَحْشِي وَشَوْرْبَةُ عَدَسٍ! تَفَضَّلْ يَا بُنَيَّ، كُلْ مَعَنَا. الضَّيْفُ فِي بَيْتِنَا كَالمَلِكِ.', meaning_zh: '这是甜面条糕、酿蔬菜和扁豆汤！来吧孩子，和我们一起吃。我们家的客人就像国王一样。', meaning_en: 'This is kunafa, stuffed vegetables, and lentil soup! Please, son, eat with us. A guest in our home is like a king.', transliteration: 'Hādhā kunāfa wa-maḥshi wa-shawrba ʿadas! Tafaḍḍal yā bunayya, kul maʿanā. Aḍ-ḍayf fī baytinā ka-l-malik.' },
+      { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'سبحان الله، هذا الطعام رائع! من وجهة نظري، الضيافة العربية لا مثيل لها في العالم.', arabic_with_harakat: 'سُبْحَانَ اللهِ، هَذَا الطَّعَامُ رَائِعٌ! مِنْ وُجْهَةِ نَظَرِي، الضِّيَافَةُ الْعَرَبِيَّةُ لَا مَثِيلَ لَهَا فِي الْعَالَمِ.', meaning_zh: '真主啊，这食物太棒了！从我的观点来看，阿拉伯待客之道在世界上无与伦比。', meaning_en: 'Subhanallah, this food is amazing! From my point of view, Arab hospitality is unmatched in the world.', transliteration: 'Subḥān Allah, hādhā ṭ-ṭaʿām rāʾiʿ! Min wujhat naẓarī, aḍ-ḍiyāfa l-ʿarabiyya lā mathīla lahā fī l-ʿālam.' },
+      { speaker: 'other', speaker_name_zh: '哈立德', speaker_name_en: 'Khalid', speaker_emoji: '👨‍🦱', arabic: 'أوافقك الرأي! رمضان شهر التراث والعائلة. استمتع يا مينغ، هذه ثقافتنا ونحن فخورون بها.', arabic_with_harakat: 'أُوَافِقُكَ الرَّأْيَ! رَمَضَانُ شَهْرُ التُّرَاثِ وَالْعَائِلَةِ. اسْتَمْتِعْ يَا مِينْغ، هَذِهِ ثَقَافَتُنَا وَنَحْنُ فَخُورُونَ بِهَا.', meaning_zh: '我同意你！斋月是传统和家庭的月份。享受吧，明，这是我们的文化，我们为之自豪。', meaning_en: 'I agree with you! Ramadan is the month of heritage and family. Enjoy, Ming, this is our culture and we are proud of it.', transliteration: 'Uwāfiquka r-raʾy! Ramaḍān shahr at-turāth wa-l-ʿāʾila. Istamtiʿ yā Mīng, hādhihi thaqāfatunā wa-naḥnu fakhrūn bihā.' },
+    ],
+  },
+  {
+    id: 'pyramids-visit',
+    title_zh: '参观金字塔',
+    title_en: 'Visiting the Pyramids',
+    title_ar: 'زيارة الأهرام',
+    scene_zh: '🏺 周末，明和哈立德一起去参观吉萨金字塔。明对古代埃及文明叹为观止。',
+    scene_en: '🏺 On the weekend, Ming and Khalid visit the Giza Pyramids. Ming is awestruck by ancient Egyptian civilization.',
+    scene_emoji: '🏺🐪',
+    vocab_focus: ['أهرام', 'قديم', 'رائع', 'مشهور', 'تاريخ', 'حضارة'],
+    lines: [
+      { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'سبحان الله! الأهرام أكبر بكثير مما تصوّرت! كيف بنوها قبل أربعة آلاف سنة؟', arabic_with_harakat: 'سُبْحَانَ اللهِ! الأَهْرَامُ أَكْبَرُ بِكَثِيرٍ مِمَّا تَصَوَّرْتُ! كَيْفَ بَنَوْهَا قَبْلَ أَرْبَعَةِ آلافِ سَنَةٍ؟', meaning_zh: '真主啊！金字塔比我想象的大多了！他们是怎么在四千年前建造它们的？', meaning_en: 'Subhanallah! The Pyramids are much bigger than I imagined! How did they build them 4,000 years ago?', transliteration: 'Subḥān Allah! Al-ahrām akbar bi-kathīr mimmā taṣawwart! Kayfa banawhā qabla arbaʿat ālāf sana?' },
+      { speaker: 'other', speaker_name_zh: '哈立德', speaker_name_en: 'Khalid', speaker_emoji: '👨‍🦱', arabic: 'هذا هو السؤال الذي يسأله الجميع! الحضارة المصرية القديمة كانت متقدمة جداً في الهندسة والرياضيات.', arabic_with_harakat: 'هَذَا هُوَ السُّؤَالُ الَّذِي يَسْأَلُهُ الجَمِيعُ! الحَضَارَةُ المِصْرِيَّةُ القَدِيمَةُ كَانَتْ مُتَقَدِّمَةً جِدًّا فِي الهَنْدَسَةِ والرِّيَاضِيَّاتِ.', meaning_zh: '这是每个人都会问的问题！古埃及文明在工程学和数学方面非常先进。', meaning_en: 'That\'s the question everyone asks! Ancient Egyptian civilization was very advanced in engineering and mathematics.', transliteration: 'Hādhā huwa s-suʾāl alladhī yasʾaluhu l-jamīʿ! Al-ḥaḍāra al-miṣriyya al-qadīma kānat mutaqaddima jiddan fī l-handasa wa-r-riyāḍiyyāt.' },
+      { speaker: 'other', speaker_name_zh: '导游', speaker_name_en: 'Tour Guide', speaker_emoji: '🎙️', arabic: 'هرم خوفو هو الوحيد الباقي من عجائب الدنيا السبع القديمة. بُني قبل 4500 سنة تقريباً.', arabic_with_harakat: 'هَرَمُ خُوفُو هُوَ الوَحِيدُ البَاقِي مِنْ عَجَائِبِ الدُّنْيَا السَّبْعِ القَدِيمَةِ. بُنِيَ قَبْلَ 4500 سَنَةٍ تَقْرِيبًا.', meaning_zh: '胡夫金字塔是古代世界七大奇迹中唯一留存的。建于大约4500年前。', meaning_en: 'The Pyramid of Khufu is the only remaining wonder of the ancient Seven Wonders. It was built approximately 4,500 years ago.', transliteration: 'Haram Khūfū huwa l-waḥīd al-bāqī min ʿajāʾib ad-dunyā s-sabʿ al-qadīma. Buniya qabla 4500 sana taqrīban.' },
+      { speaker: 'ming', speaker_name_zh: '明', speaker_name_en: 'Ming', speaker_emoji: '🧑‍🎓', arabic: 'لا أستطيع أن أصدّق ما أراه! أظن أن مصر تحتفظ بأجمل تراث في العالم. يجب أن أتعلم المزيد عن تاريخها.', arabic_with_harakat: 'لَا أَسْتَطِيعُ أَنْ أُصَدِّقَ مَا أَرَاهُ! أَظُنُّ أَنَّ مِصْرَ تَحْتَفِظُ بِأَجْمَلِ تُرَاثٍ فِي الْعَالَمِ. يَجِبُ أَنْ أَتَعَلَّمَ المَزِيدَ عَنْ تَارِيخِهَا.', meaning_zh: '我无法相信自己所看到的！我认为埃及保存着世界上最美丽的遗产。我必须学习更多关于它的历史。', meaning_en: 'I can\'t believe what I\'m seeing! I think Egypt preserves the most beautiful heritage in the world. I must learn more about its history.', transliteration: 'Lā astaṭīʿu an uṣaddiq mā arāh! Aẓunnu anna Miṣr taḥtafiẓu bi-ajmal turāth fī l-ʿālam. Yajibu an ataʿallam al-mazīd ʿan tārīkhihā.' },
+    ],
+  },
   {
     id: 'job-interview',
     title_zh: '明的工作面试',
@@ -85,9 +163,14 @@ export const B1_STORIES: StoryDialogue[] = [
 //  B1 Lesson Plan
 // ─────────────────────────────────────────────────────────────
 export const B1_LESSON_PLAN = [
-  { day_number: 1, lesson_type: 'vocabulary', title_zh: '高级动词形式', title_ar: 'الأفعال المزيدة', title_en: 'Advanced Verb Forms', xp_reward: 40, estimated_minutes: 25 },
-  { day_number: 1, lesson_type: 'vocabulary', title_zh: '阿拉伯文化与传统', title_ar: 'الثقافة العربية والتراث', title_en: 'Arab Culture & Heritage', xp_reward: 35, estimated_minutes: 22 },
-  { day_number: 1, lesson_type: 'vocabulary', title_zh: '工作与职场', title_ar: 'العمل والمهنة', title_en: 'Work & Career', xp_reward: 35, estimated_minutes: 22 },
-  { day_number: 2, lesson_type: 'dialogue', title_zh: '故事：明的工作面试', title_ar: 'قصة: مقابلة عمل مينغ', title_en: 'Story: Ming\'s Job Interview', xp_reward: 45, estimated_minutes: 28 },
-  { day_number: 1, lesson_type: 'vocabulary', title_zh: '表达观点与意见', title_ar: 'التعبير عن الرأي', title_en: 'Expressing Opinions', xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '高级动词形式',       title_ar: 'الأفعال المزيدة',          title_en: 'Advanced Verb Forms',      xp_reward: 40, estimated_minutes: 25 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '阿拉伯文化与传统',   title_ar: 'الثقافة العربية والتراث',   title_en: 'Arab Culture & Heritage',  xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '工作与职场',         title_ar: 'العمل والمهنة',             title_en: 'Work & Career',            xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 2, lesson_type: 'dialogue',   title_zh: '故事：明的工作面试', title_ar: 'قصة: مقابلة عمل مينغ',    title_en: "Story: Ming's Job Interview", xp_reward: 45, estimated_minutes: 28 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '表达观点与意见',     title_ar: 'التعبير عن الرأي',         title_en: 'Expressing Opinions',      xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 3, lesson_type: 'dialogue',   title_zh: '故事：斋月开斋宴',   title_ar: 'قصة: حفلة إفطار رمضان',   title_en: 'Story: Ramadan Iftar Party', xp_reward: 45, estimated_minutes: 28 },
+  { day_number: 4, lesson_type: 'dialogue',   title_zh: '故事：参观金字塔',   title_ar: 'قصة: زيارة الأهرام',       title_en: 'Story: Visiting the Pyramids', xp_reward: 45, estimated_minutes: 28 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '爱好与业余时间',     title_ar: 'الهوايات ووقت الفراغ',     title_en: 'Hobbies & Free Time',      xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '城市与街区',         title_ar: 'المدينة والأحياء',          title_en: 'City & Neighborhoods',     xp_reward: 35, estimated_minutes: 22 },
+  { day_number: 1, lesson_type: 'vocabulary', title_zh: '形容词与副词',       title_ar: 'النعت والحال',              title_en: 'Adjectives & Adverbs',     xp_reward: 35, estimated_minutes: 22 },
 ]
